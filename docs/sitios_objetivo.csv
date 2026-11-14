@@ -1,0 +1,7 @@
+site,body,lat,lon,note,coord_source,status
+Shackleton rim,moon,-89.9,0.0,Borde de Shackleton / polo sur (aprox.; Wikipedia da el centro del crater en -89.67/129.78 E),https://en.wikipedia.org/wiki/Shackleton_(crater),aproximado; Gazetteer USGS no abierto
+Malapert massif,moon,-85.98,358.33,Mons Malapert (USGS: -85.98/-1.67 = 358.33 E),https://planetarynames.wr.usgs.gov/Feature/16338,verificado (USGS)
+Mare Tranquillitatis pit,moon,8.3355,33.222,Posible tubo de lava,https://en.wikipedia.org/wiki/Mare_Tranquillitatis_pit,coordenada de Wikipedia; fuente primaria (Carrer 2024 / LROC) no abierta
+Jezero,mars,18.38,77.58,Antiguo delta; Perseverance,https://en.wikipedia.org/wiki/Jezero_(crater),coordenada de Wikipedia; NASA/USGS no abiertos
+Oxia Planum,mars,18.2,335.7,Arcillas; sitio ExoMars (ESA 2018: 18.1 N/335.7 E segun planetary.org; Wikipedia: 18.275/335.368),https://en.wikipedia.org/wiki/Oxia_Planum,NO VERIFICADO (ESA dio 404)
+Arcadia Planitia,mars,47.25,196.0,Hielo subsuperficial somero; centro del estudio piloto SWIM (banda Arcadia 150-225 E),SWIM (NASA/USGS) via busqueda; PDF no legible,NO VERIFICADO
