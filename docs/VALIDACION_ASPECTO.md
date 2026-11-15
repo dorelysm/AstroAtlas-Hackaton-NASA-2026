@@ -4,7 +4,7 @@ Pregunta: ¿cada dimensión recupera los análogos conocidos **que lo son por es
 
 Código: `src/analogos/aspect.py` (`python -m analogos.aspect`). Etiquetas: `docs/aspectos_analogos.csv`. Resultados completos: `data/results/aspect_summary.*` (no se versiona).
 
-> **Nota (14 nov 2026):** los resultados de este documento se calcularon con **15 sitios lunares** (Surveyor con las coordenadas antiguas de la NSSDCA). Después se actualizó la Luna con las tablas de LROC y pasó a **21 sitios** (6 nuevos: Luna 16, 17, 20, 21, 23 y Chang'e 3). **Estos resultados todavía no se han repetido con los 21.** Las cifras de Marte no cambian.
+> **Nota (14 nov 2026):** las tablas de este documento son de la primera versión (**15 sitios lunares**). La Luna pasó después a **21 sitios** (tablas de LROC) y todo se repitió: ver la sección "Repetición con 21 sitios lunares" más abajo. Las cifras de Marte no cambian.
 
 ## Cómo se hizo (y qué se fijó antes de medir)
 - **Etiquetas fijadas antes de medir.** Salen solo de lo que dicen las fuentes ya citadas en `docs/analogos_conocidos.csv`. Huella del archivo: **sha256 `ca45726975642cb2…`** (14 nov 2026, 22:38), registrada en los resultados. El análisis principal también se declaró antes: el nivel "fuente + nota".
@@ -117,6 +117,29 @@ Solo cráteres, sin las dunas: Luna 0.488 (0.430 a 0.548), Marte 0.555 (0.497 a 
 - Pipeline (29 objetivos): AUC con celdas 0.479 → 0.505; AUC con sitios exactos 0.556 → 0.539; recall con sitios 0.147 → 0.147.
 - Ablación: Marte "todas" 0.50 → 0.49 y Luna 0.60 → 0.58; "solo hielo" de Marte 0.62 (+0.11), "solo geología" de Marte 0.14, "solo térmica" de la Luna 0.64: igual que antes.
 - Validación por aspecto (nivel principal): topografía de Marte +0.14 → +0.15 y de la Luna +0.08 → +0.12 (siguen sin ser concluyentes); geología (+0.97 Marte, +0.53 Luna), hielo de Marte (−0.75) y térmica de la Luna (−0.48): idénticos.
+
+## Repetición con 21 sitios lunares (14 nov 2026)
+Se repitió todo tras actualizar la Luna con LROC (21 sitios, antes 15). **Marte no cambia.** Las etiquetas de aspecto y el protocolo del USGS no se tocaron.
+
+**Validación por aspecto (nivel fuente + nota), Luna:**
+
+| Dimensión | Con el aspecto | Antes (15 sitios) | **Ahora (21 sitios)** | p permutación |
+|---|---|---|---|---|
+| Geología | Mauna Kea, Askja, Craters of the Moon (frente a Haughton) | +0.53 (0.47 a 0.57) | **+0.64 (0.56 a 0.69)** | 0.25 (el mínimo posible con 1 negativo) |
+| Topografía | Haughton | +0.12 | +0.14 (−0.08 a 0.39) | 0.50 |
+| Térmica | Haughton | −0.48 | −0.48 (−0.58 a −0.29) | 1.00 |
+| Hielo | — | no evaluable | no evaluable | |
+
+La dirección de cada resultado se mantiene. La geología sigue en la dirección correcta y ahora es algo mayor, pero **sigue sin poder ser concluyente** (el p mínimo alcanzable es 0.25). La térmica sigue en contra por el mismo motivo ya explicado (un análogo polar frío contra objetivos casi todos ecuatoriales).
+
+**Topografía con la capa del USGS (misma prueba y criterio):**
+
+| Cuerpo | Antes (15 sitios) | **Ahora (21 sitios)** | ¿Señal? |
+|---|---|---|---|
+| Luna | 0.522 (0.465 a 0.578), p 0.23 | **0.531 (0.473 a 0.586), p 0.144** | **No** |
+| Marte | 0.567 (0.507 a 0.620), p 0.012 | 0.567 (0.507 a 0.620), p 0.012 | Sí (sin cambios; es la repetición tras corregir un defecto, no una confirmación independiente) |
+
+**Pipeline (35 objetivos: 21 lunares y 14 marcianos):** AUC con sitios exactos 0.539 → **0.579** (rango 0.27 a 0.89); recall con sitios 0.147 → **0.171**; AUC con celdas 0.505 → 0.498. Siguen cerca del azar, con una mejora pequeña que viene de los objetivos nuevos y no de un cambio de método.
 
 ## Qué haría falta para poder concluir
 1. **Más análogos por aspecto, con la razón citada** (al menos 5 por aspecto): campos basálticos, desiertos fríos y secos, cráteres de impacto, zonas polares. Cada uno con su fuente de la NASA o la ESA abierta y su etiqueta fijada antes de medir.

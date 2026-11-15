@@ -2,7 +2,7 @@
 
 Pregunta: ¿cuáles de las cuatro dimensiones (topografía, térmica, hielo, geología) ayudan a que el modelo recupere los análogos terrestres conocidos? Código: `src/analogos/ablation.py` (`python -m analogos.ablation`); resultados completos en `data/results/ablation_*.csv` (no se versiona).
 
-> **Nota (14 nov 2026):** los resultados de este documento se calcularon con **15 sitios lunares** (Surveyor con las coordenadas antiguas de la NSSDCA). Después se actualizó la Luna con las tablas de LROC y pasó a **21 sitios** (6 nuevos: Luna 16, 17, 20, 21, 23 y Chang'e 3). **Estos resultados todavía no se han repetido con los 21.** Las cifras de Marte no cambian.
+> **Nota (14 nov 2026):** las tablas de este documento son de la primera versión (**15 sitios lunares**). La Luna pasó después a **21 sitios** (tablas de LROC) y todo se repitió: ver la sección "Repetición con 21 sitios lunares" más abajo. Las cifras de Marte no cambian.
 
 ## Método
 - Para cada uno de los 29 objetivos (15 lunares, 14 marcianos) se puntúa la Tierra con: **todas** las dimensiones, **una sola** y **todas menos una**.
@@ -46,6 +46,23 @@ Pregunta: ¿cuáles de las cuatro dimensiones (topografía, térmica, hielo, geo
 - **La lista de análogos no dice en qué aspecto es análogo cada sitio.** Atacama y Valles Secos lo son por clima seco y frío; Mauna Kea, Askja y Craters of the Moon por su basalto; Haughton por ser un cráter de impacto polar; Río Tinto por la química del agua. Exigirle a *cada* dimensión que recupere *todos* los análogos mezcla criterios distintos y empuja los resultados hacia el azar.
 - Los análogos de la Luna son solo 4, y los objetivos de la Luna comparten el mismo perfil térmico (~390 K salvo los polares), lo que apenas aporta variación.
 - Son varias comparaciones con pocos datos: las diferencias pequeñas (±0.05) no son fiables.
+
+## Repetición con 21 sitios lunares (14 nov 2026)
+Tras actualizar la Luna con las tablas de LROC (6 sitios nuevos y los Surveyor corregidos) se repitió la ablación. **Marte no cambia** (los mismos 14 objetivos y los mismos números). Los análogos de la Luna siguen siendo 4: lo único que cambió es el conjunto de **objetivos** lunares (de 15 a 21), no la lista de análogos contra los que se mide.
+
+| Luna, u medio (IC 95 %) | 1ª versión (15 sitios) | Tras corregir terreno llano (15) | **Ahora (21 sitios)** |
+|---|---|---|---|
+| todas | 0.60 (0.52 a 0.68) | 0.58 (0.49 a 0.67) | **0.64 (0.56 a 0.68)** |
+| solo térmica | 0.64 (0.42 a 0.86) | 0.64 (0.42 a 0.86) | 0.64 (0.42 a 0.86) |
+| solo topografía | 0.58 (0.42 a 0.71) | 0.60 (0.43 a 0.73) | 0.60 (0.42 a 0.75) |
+| solo geología | 0.44 (0.18 a 0.60) | 0.43 (0.17 a 0.60) | 0.51 (0.20 a 0.71) |
+| sin térmica (cambio frente a "todas") | −0.04 (−0.04 a −0.03) | −0.02 (−0.03 a −0.01) | −0.02 (−0.03 a −0.02) |
+| solo hielo (solo 2 objetivos con dato) | 0.68 | 0.68 | 0.68 |
+
+**Cómo leerlo:**
+- El modelo completo para la Luna sube a 0.64 y su límite inferior (0.56) supera por primera vez el 0.5. **No debe leerse como una mejora del modelo**: los análogos son los mismos 4, y el promedio es sobre más objetivos, la mayoría mares ecuatoriales parecidos entre sí. Con 4 análogos el intervalo sigue siendo frágil.
+- La térmica sigue siendo la única dimensión con un efecto consistente (quitarla baja 0.02).
+- La geología de la Luna sube de 0.43 a 0.51 al añadir mares basálticos (Luna 16, Chang'e 3): ahora ni mejora ni empeora el azar.
 
 ## Siguiente paso recomendado: validación por aspecto
 Etiquetar cada análogo con la(s) dimensión(es) por la(s) que se considera análogo, **tomando las etiquetas de las fuentes ya citadas en `docs/analogos_conocidos.csv` y fijándolas antes de volver a medir** (si no, se está ajustando la etiqueta al resultado, y esta ablación ya se ha visto). Después se exigiría a cada dimensión solo lo que le corresponde: la geología debe recuperar los analogos basálticos; el hielo y la térmica, los desiertos fríos y secos; la topografía, los cráteres. También conviene ampliar la lista a más de 4 y 8 análogos.
