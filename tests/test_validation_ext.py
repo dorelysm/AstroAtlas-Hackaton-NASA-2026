@@ -138,3 +138,35 @@ def test_modelos_percentiles_and_max_over():
     out = max_over(S, [0, 1])
     assert out[0] == 0.9 and np.isnan(out[1]) and out[2] == 0.5
     assert np.isnan(max_over(S, [])).all()
+
+
+def test_polar_ice_season_rule_lookup_and_index():
+    from analogos.polar_ice import H_ICE, hydrogen_index, lookup, selected
+
+    assert selected(10.0, 0, 15) and selected(-39.0, 300, 315)                      # |lat| < 40: todos los intervalos
+    assert selected(68.0, 105, 120) and selected(68.0, 150, 165) and not selected(68.0, 90, 105) and not selected(68.0, 165, 180)
+    assert selected(-60.0, 285, 300) and not selected(-60.0, 105, 120)              # el sur usa su propio verano
+    cells = pd.DataFrame({"lat": [87.5, 2.5, -2.5, 2.5], "lon": [2.5, 7.5, 7.5, 2.5], "cepi": [2.0, 8.0, 8.0, 4.0], "n_obs": [1, 1, 1, 1]})
+    out = hydrogen_index(cells)
+    ref = out.attrs["cepi_ref"]
+    assert np.isclose(ref, 8.0)                                                      # mediana de las celdas con |lat| < 30
+    c = lookup(out, 3.0, 8.0)
+    assert c["lat"] == 2.5 and c["lon"] == 7.5 and np.isclose(c["H"], -np.log(8.0 / ref))
+    assert abs(H_ICE - np.log(1.5)) < 1e-12 and lookup(out, 88.0, 361.0)["lat"] == 87.5   # 361° E = 1° E: misma celda
+
+
+def test_permafrost_annual_mean_alignment_and_class():
+    import pytest
+
+    from analogos.permafrost import align, annual_mean_k, to_class
+
+    day = np.full((12, 2), 280.0)
+    night = np.full((12, 2), 260.0)
+    day[:7, 1] = np.nan                                    # solo 5 meses válidos: sin media
+    m = annual_mean_k(day, night)
+    assert np.isclose(m[0], 270.0) and np.isnan(m[1])
+    assert to_class(pd.Series([270.9, 271.0, np.nan])).tolist()[:2] == [1.0, 0.0]
+    cache = np.array([300.0, 310.0, 320.0, 330.0])          # la tabla actual perdió la 2.ª celda
+    assert align(cache, np.array([300.0, 320.0, 330.0])) == [0, 2, 3]
+    with pytest.raises(RuntimeError):
+        align(cache, np.array([300.0, 999.0]))

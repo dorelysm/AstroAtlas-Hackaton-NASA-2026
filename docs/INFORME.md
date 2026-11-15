@@ -48,6 +48,8 @@ Con un conjunto congelado de 23 análogos ([VALIDACION_AMPLIADA.md](VALIDACION_A
 
 **Modelo de análogos Tierra-Tierra y consenso (preregistrado, no adoptados):** puntuar por el parecido con los análogos conocidos no supera el azar en conjunto (Marte 0,499; Luna 0,465), y el consenso por mínimo empeora; pero el modelo Tierra-Tierra **sí reconoce los análogos fríos** (u = 0,743) que el modelo principal no (0,191), mientras que el principal reconoce los cálidos (0,671 frente a 0,418): son complementarios ([PREREGISTRO_MODELOS.md](PREREGISTRO_MODELOS.md)).
 
+**Hielo polar de Marte con neutrones de Odyssey y variable de permafrost (preregistrado, no adoptado):** se consiguió un índice de hidrógeno para todos los objetivos (puerta de validez ρ = 0,816; Phoenix claramente rico en hielo) y se probó una clase de «hielo en el suelo» comparable con el permafrost terrestre. Mejora la dirección en los análogos fríos (+0,060) pero no es concluyente (IC −0,017 a +0,127) ([PREREGISTRO_HIELO_POLAR.md](PREREGISTRO_HIELO_POLAR.md)).
+
 ## 6a. Atlas por aspecto y procesos
 [ATLAS_ASPECTOS.md](ATLAS_ASPECTOS.md) evalúa cada dimensión por separado con una etiqueta de confianza que sale de los resultados medidos (ninguna llega a "alta"). [PROCESOS.md](PROCESOS.md) trata tres procesos (vulcanismo y tubos de lava, transporte eólico, hielo subsuperficial) como estudios de caso cualitativos: solo el volcánico conecta con nuestros resultados.
 
