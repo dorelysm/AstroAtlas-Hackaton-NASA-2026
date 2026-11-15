@@ -10,6 +10,12 @@ AstroAtlas ranks places on Earth by how closely they resemble candidate sites on
 
 ![AstroAtlas pipeline](docs/images/pipeline.svg)
 
+### 🎬 See it in action
+
+[![AstroAtlas demo: featured case, map and place profile with NASA orbital views](docs/media/demo.gif)](https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026/releases/download/v1.0/astroatlas-demo.mp4)
+
+*Silent demo. The GIF shows the featured case, the map and a place profile with NASA orbital views; **click it for the full 85-second MP4** (field-risk map, sensitivity check, PDF site report, filters and English/Spanish).*
+
 ---
 
 ## The idea in 60 seconds
@@ -72,11 +78,13 @@ Directly built on the challenge text: open NASA Earth/Moon/Mars data (LOLA, MOLA
 4. **Check robustness and risks:** a *sensitivity chart* shows how the place's rank changes when each aspect is removed in turn; *field-site risk indicators* (slope, heat, cold, dust, wind, snow, altitude, isolation) can also colour the map; and a **PDF site report** summarises the profile, reliability, risks and orbital views.
 5. **Go deeper:** aspect atlas, use-case profiles (mobility, cold operations, ice, basaltic terrain, lava tubes), technical details and credits.
 
-| Featured case and site selection | Map of similar places and closest matches |
-|---|---|
-| ![App overview](docs/images/app-top.png) | ![Map and matches](docs/images/app-map.png) |
+| Home and featured case | Map by similarity | Map by field-site risk |
+|---|---|---|
+| ![Home](docs/images/01-home.png) | ![Map by similarity](docs/images/02-map-similarity.png) | ![Map by risk](docs/images/03-map-risk.png) |
 
-![Place profile with NASA orbital comparison: Jezero (Mars) vs Harrat ash-Shamah (Earth)](docs/images/app-profile.png)
+| Place profile with NASA orbital views | Risks and rank sensitivity | PDF site report | Mobile |
+|---|---|---|---|
+| ![Profile](docs/images/04-profile.png) | ![Risks and sensitivity](docs/images/05-risks-sensitivity.png) | ![PDF report](docs/images/06-pdf-report.png) | <img src="docs/images/07-mobile.png" width="160" alt="Mobile view"> |
 
 *Jezero (Mars, NASA Viking MDIM 2.1 mosaic) next to Harrat ash-Shamah (Earth, MODIS), both at 150 × 150 km. Imagery: NASA GIBS and NASA Trek.*
 

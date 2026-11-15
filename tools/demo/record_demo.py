@@ -25,7 +25,7 @@ CURSOR_JS = """
   document.body.appendChild(c);
   const cap = document.createElement('div'); cap.id = 'astro-cap';
   cap.style.cssText = 'position:fixed;z-index:2147483646;left:50%;bottom:26px;transform:translateX(-50%);max-width:82%;'
-    + 'padding:12px 22px;border-radius:12px;background:rgba(14,17,23,.88);color:#fff;font:600 21px/1.35 "Source Sans Pro",Segoe UI,sans-serif;'
+    + 'padding:9px 18px;border-radius:12px;background:rgba(14,17,23,.88);color:#fff;font:600 19px/1.3 "Source Sans Pro",Segoe UI,sans-serif;'
     + 'text-align:center;border:1px solid #FF8C42;opacity:0;transition:opacity .35s;pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,.45)';
   document.body.appendChild(cap);
   document.addEventListener('mousemove', e => { c.style.left = e.clientX + 'px'; c.style.top = e.clientY + 'px'; }, true);
@@ -101,36 +101,36 @@ def record_video(url: str, out: pathlib.Path):
         r.start()
 
         r.scene("intro", "AstroAtlas: find places on Earth that resemble Moon and Mars sites")
-        r.pause(4.5)
+        r.pause(3.5)
 
         r.scene("featured", "A featured case: rehearse Mars lava-field operations with two Earth candidates")
         r.scroll_to(page.get_by_text("Featured case:"), "start")
-        r.pause(3.0)
-        r.click(page.get_by_role("button", name="Explore this case"), settle=3.5)
+        r.pause(2.2)
+        r.click(page.get_by_role("button", name="Explore this case"), settle=3.0)
 
         r.scene("map", "An interactive map ranks Earth places by similarity to the chosen Mars site")
         r.scroll_to(page.get_by_role("heading", name="Places similar to Jezero (Mars)"), "start")
-        r.pause(3.0)
+        r.pause(2.2)
         r.caption("Switch the map to field-site risk to see where operations are easier")
-        r.click(page.get_by_text("Field risk", exact=True), settle=3.5)
-        r.click(page.get_by_text("Similarity", exact=True), settle=1.5)
+        r.click(page.get_by_text("Field risk", exact=True), settle=3.0)
+        r.click(page.get_by_text("Similarity", exact=True), settle=1.2)
 
         r.scene("profile", "Each place gets a profile with NASA orbital views at the same 150 km scale")
         r.scroll_to(page.get_by_text("Visual comparison:"), "start")
-        r.pause(4.0)
-        r.click(page.get_by_text("Cloud-free (Blue Marble)"), settle=4.0)
-        r.click(page.get_by_text("One day (MODIS)"), settle=3.0)
+        r.pause(3.0)
+        r.click(page.get_by_text("Cloud-free (Blue Marble)"), settle=3.5)
+        r.click(page.get_by_text("One day (MODIS)"), settle=2.5)
 
         r.scene("aspects", "Match by aspect and indicative field-site risks, with the limits of the analogy")
         page.mouse.wheel(0, 520)
-        r.pause(3.5)
+        r.pause(2.5)
         r.scroll_to(page.get_by_text("Field-site risks (indicative)"), "start")
-        r.pause(4.5)
+        r.pause(3.5)
 
         r.scene("sensitivity", "A sensitivity check shows how the rank changes when each aspect is removed")
-        r.click(page.get_by_text("How robust is this place's rank?"), settle=2.5)
+        r.click(page.get_by_text("How robust is this place's rank?"), settle=2.0)
         r.scroll_to(page.get_by_text("How robust is this place's rank?"), "start")
-        r.pause(5.5)
+        r.pause(4.5)
 
         r.scene("pdf", "Download a PDF site report for a geologist: match, reliability, risks and imagery")
         r.scroll_to(page.get_by_text("Download site report (PDF)"), "center")
@@ -146,7 +146,7 @@ def record_video(url: str, out: pathlib.Path):
           d.style.cssText='position:fixed;inset:0;z-index:2147483000;background:rgba(14,17,23,.92);display:flex;align-items:center;justify-content:center';
           d.innerHTML='<img style="height:94%;border-radius:6px;box-shadow:0 8px 40px #000" src="data:image/png;base64,'+b64+'">';
           document.body.appendChild(d)}""", base64.b64encode(png).decode())
-        r.pause(5.5)
+        r.pause(4.5)
         page.evaluate("document.getElementById('astro-pdf').remove()")
         r.pause(0.8)
 
@@ -158,15 +158,16 @@ def record_video(url: str, out: pathlib.Path):
             page.keyboard.press("Backspace")
             r.pause(0.35)
         page.keyboard.press("Escape")
-        r.pause(4.0)
+        r.pause(3.0)
 
         r.scene("language", "Available in English and Spanish")
         page.evaluate("window.scrollTo(0,0); document.querySelector('section.stMain')?.scrollTo(0,0)")
-        r.click(page.get_by_text("Español", exact=True), settle=3.5)
-        r.click(page.get_by_text("English", exact=True), settle=2.5)
+        r.click(page.get_by_text("Español", exact=True), settle=3.0)
+        r.click(page.get_by_text("English", exact=True), settle=2.0)
 
+        r.scroll_to(page.get_by_role("heading", name="AstroAtlas"), "start")
         r.scene("outro", "Open source (MIT) · built with open NASA, ESA and USGS data · github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026")
-        r.pause(5.5)
+        r.pause(4.5)
         r.caption(None)
         r.pause(0.6)
 
