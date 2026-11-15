@@ -10,11 +10,11 @@ El reto sugiere varias dimensiones. Estado de cada una:
 | Agua y hielo | Modelada (floja) | Nieve; no mide sequedad ni hielo subsuperficial (GLDAS probado, no mejora) |
 | **Biología / habitabilidad** | **Marca de contexto** | `vegetated` (NDVI MODIS): oculta selvas y bosques. No mide extremófilos ni biofirmas |
 | Asentamientos / logística | Marca de contexto | `viable` (GRUMP). No mide accesibilidad ni seguridad |
-| **Polvo, viento y erosión** | **No cubierta** | Haría falta un dato terrestre (p. ej. MERRA-2 de aerosoles y viento, NASA GES DISC, licencia ya aprobada) **y su contraparte en Marte** (opacidad de polvo de MCS/TES); sin la contraparte no se puede comparar |
+| **Polvo, viento y erosión** | **Solo contexto descriptivo** | `dust_surface_ugm3`, `dust_column_mgm2` y `wind10m_ms` (MERRA-2, 2019, rejilla 0.5° × 0.625°) en `earth*.parquet` y en las fichas. **No hay contraparte** en Marte (haría falta la opacidad de polvo de MCS/TES) ni en la Luna, así que no se puntúa similitud |
 | **Cuevas y tubos de lava** | **No cubierta** | No hay un catálogo global abierto de tubos de lava terrestres ni un mapa de cuevas comparable con los candidatos de pozos lunares/marcianos |
 | **Iluminación polar** | **No cubierta** | LOLA publica mapas de iluminación para la Luna, pero la Tierra no tiene un equivalente comparable (la noche polar terrestre depende de la inclinación del eje, no del relieve) |
 | Procesos (no solo lugares) | No cubierta | El método compara lugares, no procesos |
 
 ## Por qué no se añadieron más
 Polvo/viento y cuevas necesitan una fuente en **ambos** cuerpos y una validación con análogos etiquetados por esas dimensiones, y hoy no se tienen ni una cosa ni la otra. Añadir variables sin contraparte o sin validación aumentaría la apariencia de rigor sin el rigor. Lo que sí se hizo fue la marca de vegetación, que corrige un fallo real (selvas como candidatas) con una fuente NASA abierta.
-Si se quiere seguir: el siguiente paso más barato es polvo y viento terrestres con MERRA-2 solo como contexto descriptivo en las fichas, indicando que no hay contraparte marciana.
+Polvo y viento se añadieron solo como contexto descriptivo (15 nov 2026). Para puntuarlos haría falta la contraparte marciana; es el siguiente paso si el equipo lo quiere.

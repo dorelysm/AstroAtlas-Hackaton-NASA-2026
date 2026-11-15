@@ -48,6 +48,8 @@ def details(short: pd.DataFrame, picks: pd.DataFrame, body: str, earth: pd.DataF
             "t_max_k": float(e["thermal__t_max_k"]) if pd.notna(e.get("thermal__t_max_k")) else None,
             "t_range_k": float(e["thermal__t_range_k"]) if pd.notna(e.get("thermal__t_range_k")) else None,
             "basalt_frac": float(e["geo__basalt_frac"]) if pd.notna(e.get("geo__basalt_frac")) else None,
+            "dust_surface_ugm3": float(e["dust_surface_ugm3"]) if pd.notna(e.get("dust_surface_ugm3")) else None,
+            "wind10m_ms": float(e["wind10m_ms"]) if pd.notna(e.get("wind10m_ms")) else None,
             "snow_mean": float(e["ice__water_frac"]) if pd.notna(e.get("ice__water_frac")) else None,
         })
     return out

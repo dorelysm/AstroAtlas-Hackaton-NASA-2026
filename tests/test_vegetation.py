@@ -36,3 +36,11 @@ def test_attach_viability_carries_vegetation_columns():
     earth = pd.DataFrame({"cell_id": ["a"], "viable": [True], "veg_ndvi_max": [0.3], "vegetated": [True]})
     out = attach_viability(pd.DataFrame({"cell_id": ["a"], "score": [1.0]}), earth)
     assert {"viable", "veg_ndvi_max", "vegetated"} <= set(out.columns)
+
+
+def test_nearest_index_circular_longitude():
+    from analogos.data.earth_dust_wind import nearest_index
+
+    lons = np.array([-180.0, -179.375, 179.375])
+    assert nearest_index(lons, np.array([179.9]), period=360.0)[0] == 0   # 179.9 está más cerca de -180 que de 179.375 circularmente
+    assert nearest_index(np.array([0.0, 10.0]), np.array([4.0, 6.0])).tolist() == [0, 1]
