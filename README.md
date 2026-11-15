@@ -108,36 +108,38 @@ All model inputs are open data. Full provenance, URLs, confidence levels and lic
 
 ### NASA
 
-| Data | Mission / product | Used for |
-|---|---|---|
-| Moon topography | LRO **LOLA** LDEM (PDS Geosciences) | Slope, roughness, relief |
-| Moon temperature | LRO **Diviner** Global Cumulative Products | Maximum temperature and daily range |
-| Moon polar ice | LRO **Diviner** Polar Resource Product | Stable-ice fraction (poles only) |
-| Moon composition | **Lunar Prospector** GRS | FeO → basalt proxy |
-| Mars topography | MGS **MOLA** MEGDR (PDS Geosciences) | Slope, roughness, relief |
-| Mars water / iron | **Mars Odyssey** GRS elemental maps | Ice/water fraction, basalt proxy |
-| Mars polar hydrogen | **Mars Odyssey** GRS neutron data | Ice-rich classes, polar targets |
-| Mars thermal inertia | **MGS TES** thermal-inertia maps | Tested experiment (not adopted) |
-| Earth temperature | **MODIS** Terra LST (MOD11C3) | Surface temperature |
-| Earth snow cover | **MODIS** Terra (MOD10CM, NSIDC) | Ice/water proxy |
-| Earth vegetation | **MODIS** Terra NDVI (MOD13C2) | Vegetation flag |
-| Earth dust and wind | **MERRA-2** (GES DISC) | Descriptive context |
-| Earth soil moisture | **GLDAS** Noah (GES DISC) | Diagnostic (tested, not adopted) |
-| Population | **SEDAC** GRUMP v1 | Settlement-proximity flag |
-| Orbital imagery | **GIBS** (MODIS, Blue Marble) and **Trek** (Viking MDIM 2.1, LRO WAC) | Visual comparison in the app |
-| Landing coordinates | LROC tables (LRO), Mars Orbital Data Explorer | Target sites |
+| Data | Mission / product | Used for | Source |
+|---|---|---|---|
+| Moon topography | LRO **LOLA** LDEM (PDS Geosciences) | Slope, roughness, relief | [PDS](https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/) |
+| Moon temperature | LRO **Diviner** Global Cumulative Products | Maximum temperature and daily range | [PDS](https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gcp/) |
+| Moon polar ice | LRO **Diviner** Polar Resource Product | Stable-ice fraction (poles only) | [PDS](https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/) |
+| Moon composition | **Lunar Prospector** GRS | FeO → basalt proxy | [PDS](https://pds-geosciences.wustl.edu/lunar/lp-l-grs-5-elem-abundance-v1/lp_9001/data/) |
+| Mars topography | MGS **MOLA** MEGDR (PDS Geosciences) | Slope, roughness, relief | [PDS](https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg128/) |
+| Mars water / iron | **Mars Odyssey** GRS elemental maps | Ice/water fraction, basalt proxy | [PDS](https://pds-geosciences.wustl.edu/ody/ody-m-grs-5-elements-v1/odgm_xxxx/data/smoothed/) |
+| Mars polar hydrogen | **Mars Odyssey** GRS neutron data | Ice-rich classes, polar targets | [DOI](https://doi.org/10.17189/1522868) |
+| Mars thermal inertia | **MGS TES** thermal-inertia maps | Tested experiment (not adopted) | [PDS](https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/) |
+| Earth temperature | **MODIS** Terra LST (MOD11C3) | Surface temperature | [LP DAAC](https://lpdaac.usgs.gov/products/mod11c3v061/) |
+| Earth snow cover | **MODIS** Terra (MOD10CM, NSIDC) | Ice/water proxy | [NSIDC](https://nsidc.org/data/mod10cm) |
+| Earth vegetation | **MODIS** Terra NDVI (MOD13C2) | Vegetation flag | [LP DAAC](https://lpdaac.usgs.gov/products/mod13c2v061/) |
+| Earth dust and wind | **MERRA-2** (GES DISC) | Descriptive context | [GMAO](https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/) |
+| Earth soil moisture | **GLDAS** Noah (GES DISC) | Diagnostic (tested, not adopted) | [GLDAS](https://ldas.gsfc.nasa.gov/gldas) |
+| Population | **SEDAC** GRUMP v1 | Settlement-proximity flag | [DOI](https://doi.org/10.7927/H4BC3WG1) |
+| Orbital imagery | **GIBS** (MODIS, Blue Marble) and **Trek** (Viking MDIM 2.1, LRO WAC) | Visual comparison in the app | [GIBS](https://earthdata.nasa.gov/gibs) · [Trek](https://trek.nasa.gov/) |
+| Landing coordinates | LROC tables (LRO), Mars Orbital Data Explorer | Target sites | [LROC](https://lroc.im-ldi.com/) · [ODE](https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/Landing_Sites.htm) |
 
 ### ESA and other agencies and organisations
 
-| Data | Source | Used for |
-|---|---|---|
-| Earth topography | **ESA / European Commission** Copernicus DEM GLO-90 | Earth slope, roughness, relief |
-| Analog catalogue | **ESA** *Catalogue of Planetary Analogues* (CAFE project) | Third validation set (13 sites) |
-| Permafrost map | **ESA GlobPermafrost** (Obu et al. 2018) | Cold use case |
-| Analog sites, craters, caves | **USGS** Astrogeology (analog layer, Mars cave catalogue) | Aspect validation, context |
-| Earth lithology | **GLiM** (Hartmann & Moosdorf 2012) | Basalt fraction |
-| Lunar pits, lava tubes | Zenodo catalogues (LROC-based pits; Pyroduct) | Context |
-| Place names | Natural Earth | Place and country names |
+| Data | Source | Used for | Link |
+|---|---|---|---|
+| Earth topography | **ESA / European Commission** Copernicus DEM GLO-90 | Earth slope, roughness, relief | [AWS Open Data](https://registry.opendata.aws/copernicus-dem/) |
+| Analog catalogue | **ESA** *Catalogue of Planetary Analogues* (CAFE project) | Third validation set (13 sites) | [PDF](https://freight.cargo.site/m/D1821053255089660420449933921929/The-Catalogue-of-Planetary-Analogues.pdf) |
+| Permafrost map | **ESA GlobPermafrost** (Obu et al. 2018) | Cold use case | [PANGAEA](https://doi.org/10.1594/PANGAEA.888600) |
+| Analog sites and craters | **USGS** Astrogeology analog layer | Aspect validation | [DOI](https://doi.org/10.5066/P9J72921) |
+| Mars cave candidates | **USGS** Mars Global Cave Candidate Catalog | Context | [USGS](https://www.usgs.gov/center-news/caves-mars) |
+| Earth lithology | **GLiM** (Hartmann & Moosdorf 2012) | Basalt fraction | [PANGAEA](https://doi.org/10.1594/PANGAEA.788537) |
+| Lunar pits | Zenodo catalogue (LROC-based) | Context | [Zenodo](https://doi.org/10.5281/zenodo.20516852) |
+| Terrestrial lava tubes | Pyroduct Digital Catalog | Context | [Zenodo](https://doi.org/10.5281/zenodo.14535886) |
+| Place names | Natural Earth | Place and country names | [naturalearthdata.com](https://www.naturalearthdata.com/) |
 
 CNSA, ISRO and JAXA missions (Chang'e, Chandrayaan, SLIM) appear only as landing-site coordinates, taken from NASA/LROC and secondary sources, not as data products.
 
