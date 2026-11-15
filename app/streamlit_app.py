@@ -37,6 +37,12 @@ with st.sidebar:
 st.html(f"<script>document.documentElement.lang = '{lang}';</script>", unsafe_allow_javascript=True)
 
 
+def pie():
+    """Pie de página con la autoría, en el idioma elegido (también cuando la página se detiene por falta de datos o filtros)."""
+    st.divider()
+    st.caption(t(lang, "pie"))
+
+
 @st.cache_data(show_spinner=t("es", "cargando"))
 def load():
     return load_features("earth"), load_features("moon"), load_features("mars"), load_known()
@@ -108,6 +114,7 @@ with st.sidebar:
 
 if sum(weights.values()) == 0:
     st.warning(t(lang, "sin_pesos"))
+    pie()
     st.stop()
 
 # ---- Cálculo (el modelo no cambia) ----
@@ -124,6 +131,7 @@ if has_veg and hide_vegetated:
 shown = (novel_candidates(view, known_body, n=top_n) if only_novel else view.head(top_n)).copy()
 if shown.empty:
     st.warning(t(lang, "sin_lugares"))
+    pie()
     st.stop()
 lab = nombres(tuple(zip(shown["lat"].round(3), shown["lon"].round(3))), lang)
 shown["lugar"], shown["pais"] = [x[0] for x in lab], [x[1] for x in lab]
@@ -304,3 +312,5 @@ with st.expander(t(lang, "casos_titulo")):
 
 with st.expander(t(lang, "creditos_titulo")):
     st.markdown(t(lang, "creditos"))
+
+pie()

@@ -34,7 +34,7 @@ pip install -e ".[data]"           # solo para regenerar datos: librerías geoes
 ```powershell
 python -m analogos.pipeline          # scores, validación, candidatos (candidates_viable.csv) y clusters en data/results/
 streamlit run app/streamlit_app.py   # mapa, ranking, pesos, filtro de viabilidad y ficha
-pytest                               # 179 tests
+pytest                               # 180 tests
 ```
 
 **Sin descargar nada:** si no existe `data/features/`, la app y el pipeline usan `demo_data/` (≈ 0,6 MB, valores derivados ya calculados). Con datos propios, estos tienen prioridad.

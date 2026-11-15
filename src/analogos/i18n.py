@@ -7,6 +7,9 @@ son listas de textos. Solo textos de la interfaz: el modelo, los datos y las cif
 IDIOMAS = {"es": "Español", "en": "English"}
 
 TEXTOS: dict[str, dict] = {
+    # ---- pie de página ----
+    "pie": {"es": "Desarrollado por el equipo AstroAtlas para el Hackatón NASA Space Apps Challenge 2026.",
+            "en": "Developed by the AstroAtlas team for the NASA Space Apps Challenge 2026 Hackathon."},
     # ---- general ----
     "subtitulo": {"es": "Lugares de la Tierra que se parecen a la Luna y a Marte", "en": "Places on Earth that resemble the Moon and Mars"},
     "idioma_label": {"es": "Idioma / Language", "en": "Idioma / Language"},

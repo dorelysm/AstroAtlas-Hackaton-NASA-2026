@@ -127,3 +127,9 @@ def test_traducciones_de_textos_de_resultados():
     from analogos.i18n import ATLAS_WHY_EN
 
     assert all(w in ATLAS_WHY_EN for w in reg["why"].dropna().unique())
+
+
+def test_pie_de_pagina_en_los_dos_idiomas():
+    es, en = t("es", "pie"), t("en", "pie")
+    assert "AstroAtlas" in es and "AstroAtlas" in en and "2026" in es and "2026" in en
+    assert "Hackatón" in es and "Hackathon" in en and "Space Apps Challenge" in es and "Space Apps Challenge" in en
