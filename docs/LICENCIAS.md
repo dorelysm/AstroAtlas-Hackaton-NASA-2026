@@ -33,3 +33,6 @@ dos servidores —SEDAC y Copernicus— rechazaron la conexión): hay que abrirl
 ## Pendiente antes de la entrega
 1. Abrir las páginas de licencia marcadas "Por comprobar" y copiar el texto exacto de atribución que pidan (sobre todo Copernicus y SEDAC).
 2. Poner en la presentación y en la app una línea de créditos con las fuentes principales.
+
+## Dundas et al. 2021 (coordenadas de hielo somero)
+Del artículo (copia abierta en HAL) solo se toman **ocho pares de coordenadas** (hechos, no texto); la licencia exacta de la copia de HAL **por comprobar**. El data release del USGS (10.5066/P9Y8FR1R) es CC0 pero no se descargó. El PDF y su texto extraído quedan en `data/raw/swim/` (no versionado).

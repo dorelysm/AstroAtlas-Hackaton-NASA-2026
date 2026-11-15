@@ -1,0 +1,9 @@
+site,body,lat,lon,note,coord_source,status
+Milankovic (escarpes),mars,54.5,213.5,Cumulo de mas de 70 escarpes con morfologia de hielo expuesto en el manto del crater Milankovic,"Dundas et al. 2021, JGR Planets (texto seccion 3.1: Milankovic 54.5 N 213.5 E)",coordenada del texto del articulo (latitud planetocentrica; longitud este)
+Escarpe S6 (sur de Hellas),mars,-56.9,96.3,Escarpe que expone hielo con color azulado confinado a la cara del escarpe (Fig. 1B),"Dundas et al. 2021, Fig. 1B (56.9 S 96.3 E)",coordenada del pie de figura del articulo
+Crater con hielo expuesto (norte),mars,69.3,142.2,Crater de impacto que excavo regolito y hielo limpio; eyecta blanca y poligonos de contraccion (Fig. 1A),"Dundas et al. 2021, Fig. 1A (69.3 N 142.2 E)",coordenada del pie de figura del articulo
+Crater helado T1-a,mars,46.35,176.89,Sitio de impactos con color helado; profundidad media al hielo 0.42 m (6 crateres),"Dundas et al. 2021, Tabla 1",coordenada de la Tabla 1 del articulo
+Crater helado T1-b,mars,44.22,164.2,Sitio de impactos con color helado; profundidad media al hielo 0.47 m (5 crateres),"Dundas et al. 2021, Tabla 1",coordenada de la Tabla 1 del articulo
+Crater helado T1-c,mars,50.51,265.2,Sitio de impactos con color helado; profundidad media al hielo 0.42 m (3 crateres),"Dundas et al. 2021, Tabla 1",coordenada de la Tabla 1 del articulo
+Crater helado T1-d,mars,39.11,190.25,Sitio de impactos con color helado; profundidad media al hielo 0.90 m (2 crateres); el de menor latitud,"Dundas et al. 2021, Tabla 1",coordenada de la Tabla 1 del articulo
+Crater helado T1-e,mars,47.43,112.01,Sitio de impactos con color helado; profundidad media al hielo 0.50 m (2 crateres),"Dundas et al. 2021, Tabla 1",coordenada de la Tabla 1 del articulo

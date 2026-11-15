@@ -60,7 +60,7 @@ Aplicando los filtros (sin pueblos cercanos, sin vegetación, lejos de los anál
 - **Una app web** donde se elige un sitio de la Luna o de Marte y se ve el mapa de zonas parecidas, con una ficha que dice **qué se parece, qué no y los límites de la analogía** (gravedad, atmósfera, radiación).
 
 ## 7. Por qué la forma de trabajar también es un resultado
-Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxito **antes** de mirar los números y lo dejamos registrado. Así probamos **diez ideas para mejorar el método** y ninguna mejoró el resultado global:
+Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxito **antes** de mirar los números y lo dejamos registrado. Así probamos **once ideas para mejorar el método**; **ninguna mejoró el resultado global y una mejora solo el caso de los lugares fríos**:
 
 | Idea | Resultado |
 |---|---|
@@ -72,7 +72,8 @@ Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxit
 | Separar análogos fríos y cálidos | Mejora un poco, pero el test no podía acertar: faltan datos de hielo polar de Marte |
 | Comparar con los análogos conocidos (Tierra con Tierra) | Por sí solo no supera el azar, pero reconoce los análogos fríos que el modelo principal no |
 | Combinar los dos modelos por consenso | Empeora |
-| Añadir hielo del suelo medido con neutrones en los polos de Marte, frente a «permafrost» en la Tierra | Con los 23 lugares mejora un poco a los fríos, pero no es concluyente; **con los 9 lugares nuevos empeora (−6 puntos)** |
+| Añadir hielo del suelo medido con neutrones en los polos de Marte, frente a «permafrost» en la Tierra | Con los 23 lugares mejora un poco a los fríos, pero no es concluyente; **con los 9 lugares nuevos empeora (−6 puntos)** en el puntaje global |
+| **Lo mismo, pero probado solo con los lugares fríos frente a 9 sitios de Marte donde se ve hielo expuesto** (de un artículo del USGS) | **Sí mejora: los lugares fríos pasan de 40 % a 75 %** (entre 67 % y 83 %). Es la única idea que cumple su criterio, pero **solo para el caso de uso frío**: el puntaje global empeora, parte del efecto es por construcción y las candidatas que salen son capas de hielo (Antártida, Groenlandia), no permafrost |
 | Combinar los dos modelos como «vale si lo dice cualquiera de los dos» | Con los lugares nuevos no mejora al principal (+0,6 puntos, el margen incluye el cero) |
 
 También **corregimos errores propios a la vista** (por ejemplo, descubrimos que una «señal» del relieve en Marte se debía solo a que los cráteres están en zonas llanas, y que las primeras candidatas eran selvas). Esta transparencia es un punto fuerte frente a un jurado.
@@ -88,7 +89,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 
 ## 9. Limitaciones, dichas con claridad
 - **Pocos análogos para comprobar** (23 + 9 nuevos, y solo 1 nuevo para la Luna): los márgenes son anchos.
-- **El hielo y el frío son el punto débil:** Phoenix y Arcadia no tenían dato de hielo; ya conseguimos un índice con neutrones de la sonda Odyssey (Phoenix sale claramente rico en hielo), pero con tan pocos sitios de hielo la mejora no es concluyente. Hacen falta más sitios de hielo somero en Marte.
+- **El hielo y el frío son el punto débil:** Phoenix y Arcadia no tenían dato de hielo; ya conseguimos un índice con neutrones de la sonda Odyssey (Phoenix sale claramente rico en hielo), pero ese índice solo reconoce 4 de 8 sitios donde se ve hielo expuesto. Con 8 sitios más tomados de un artículo del USGS, la variable de permafrost mejora a los lugares fríos (40 % → 75 %) pero **no da candidatas creíbles** y no se usa en el puntaje global.
 - **Marte no tiene dato de temperatura** en nuestro modelo (no hay un mapa comparable).
 - **Las coordenadas de varios análogos vienen de Wikipedia o de memoria** y no están verificadas en fuente primaria; hay que revisarlas a mano.
 - **Algunas licencias de datos están «por comprobar»** (Copernicus, SEDAC, MODIS, PDS): hay que abrir sus páginas y copiar la atribución exacta.
@@ -107,7 +108,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 - **23** análogos de validación (10 originales + 13 nuevos) · **9** ideas probadas, todas documentadas.
 - **60 %** de acierto en la Luna, **56 %** en Marte (50 % = azar).
 - **100 %** de estabilidad de Harrat ash-Shamah, **79 %** de Haruj.
-- **152** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
+- **161** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
 
 ## 12. Mini-glosario
 - **Análogo:** lugar de la Tierra parecido a otro mundo, usado para ensayar.
