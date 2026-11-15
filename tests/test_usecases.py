@@ -2,14 +2,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from analogos.usecases import USE_CASES, UseCase, pick_regions, score_use_case
+from astroatlas.usecases import USE_CASES, UseCase, pick_regions, score_use_case
 
 
 def test_pick_regions_enforces_separation():
     s = pd.DataFrame({"cell_id": list("abcd"), "lat": [0.0, 0.5, 40.0, -40.0], "lon": [0.0, 0.5, 0.0, 0.0],
                       "score": [0.9, 0.8, 0.7, 0.6]})
     out = pick_regions(s, n=3, min_sep_km=500)
-    assert out["cell_id"].tolist() == ["a", "c", "d"]          # b está a < 500 km de a
+    assert out["cell_id"].tolist() == ["a", "c", "d"]          # b is < 500 km from a
 
 
 def test_use_cases_are_well_formed():

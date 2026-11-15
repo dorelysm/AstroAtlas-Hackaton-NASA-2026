@@ -2,12 +2,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from analogos.config import DIMENSIONS, FEATURES
-from analogos.features import validate_features
-from analogos.report import ficha
-from analogos.similarity import rank_cells, site_profiles
-from analogos.synthetic import synthetic_earth, synthetic_target
-from analogos.validate import evaluate, haversine_km, load_known, novel_candidates
+from astroatlas.config import DIMENSIONS, FEATURES
+from astroatlas.features import validate_features
+from astroatlas.report import ficha
+from astroatlas.similarity import rank_cells, site_profiles
+from astroatlas.synthetic import synthetic_earth, synthetic_target
+from astroatlas.validate import evaluate, haversine_km, load_known, novel_candidates
 
 SITES = pd.DataFrame(
     {"site": ["A", "B"], "body": ["moon", "moon"], "lat": [-89.0, 8.0], "lon": [0.0, 33.0]}
@@ -69,9 +69,9 @@ def test_validation_and_novel_candidates(earth):
 
 
 def test_cluster_ignores_features_without_any_data(earth):
-    from analogos.cluster import cluster_cells
+    from astroatlas.cluster import cluster_cells
 
     e = earth.copy()
-    e["geo__basalt_frac"] = np.nan  # como la Tierra real: aún sin litología
+    e["geo__basalt_frac"] = np.nan  # like the real Earth: still without lithology
     out = cluster_cells(e, min_cluster_size=5)
     assert len(out) == len(e) and "cluster" in out

@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "analogos"
+name = "astroatlas"
 version = "0.1.0"
-description = "Buscador de análogos terrestres para la Luna y Marte (NASA Space Apps 2026)"
+description = "Earth analog finder for Moon and Mars bases (NASA Space Apps 2026)"
 requires-python = ">=3.10"
 dependencies = [
     "numpy",

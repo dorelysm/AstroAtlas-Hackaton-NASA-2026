@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-from analogos.data.earth_vegetation import add_vegetated, annual_ndvi
-from analogos.pipeline import attach_viability
-from analogos.validate import novel_candidates
+from astroatlas.data.earth_vegetation import add_vegetated, annual_ndvi
+from astroatlas.pipeline import attach_viability
+from astroatlas.validate import novel_candidates
 
 
 def test_annual_ndvi_mean_max_ignoring_nan():
@@ -29,7 +29,7 @@ def test_novel_candidates_unvegetated_only():
                            "rank": [1, 2, 3], "vegetated": [True, False, np.nan]})
     known = pd.DataFrame({"name": ["k"], "lat": [-80.0], "lon": [100.0]})
     assert novel_candidates(ranked, known, n=10)["cell_id"].tolist() == ["a", "b", "c"]
-    assert novel_candidates(ranked, known, n=10, unvegetated_only=True)["cell_id"].tolist() == ["b", "c"]  # NaN no se descarta
+    assert novel_candidates(ranked, known, n=10, unvegetated_only=True)["cell_id"].tolist() == ["b", "c"]  # NaN is not discarded
 
 
 def test_attach_viability_carries_vegetation_columns():
@@ -39,27 +39,27 @@ def test_attach_viability_carries_vegetation_columns():
 
 
 def test_nearest_index_circular_longitude():
-    from analogos.data.earth_dust_wind import nearest_index
+    from astroatlas.data.earth_dust_wind import nearest_index
 
     lons = np.array([-180.0, -179.375, 179.375])
-    assert nearest_index(lons, np.array([179.9]), period=360.0)[0] == 0   # 179.9 está más cerca de -180 que de 179.375 circularmente
+    assert nearest_index(lons, np.array([179.9]), period=360.0)[0] == 0   # 179.9 is closer to -180 than to 179.375 circularly
     assert nearest_index(np.array([0.0, 10.0]), np.array([4.0, 6.0])).tolist() == [0, 1]
 
 
 def test_add_pit_context_counts_and_nearest():
-    from analogos.data.caves import add_pit_context
+    from astroatlas.data.caves import add_pit_context
 
     pits = pd.DataFrame({"name": ["A", "B"], "lat": [0.0, 10.0], "lon": [0.0, 359.9]})
     df = pd.DataFrame({"lat": [0.1, 10.0, -50.0], "lon": [0.0, 0.1, 100.0]})
     out = add_pit_context(df, pits)
-    assert out["pits_within_50km"].tolist() == [1, 1, 0]            # el 2º cruza el meridiano 0/360: B está a ~22 km
+    assert out["pits_within_50km"].tolist() == [1, 1, 0]            # the 2nd crosses the 0/360 meridian: B is ~22 km away
     assert out["nearest_pit_name"].tolist()[:2] == ["A", "B"]
     assert out["nearest_pit_km"].iloc[2] > 1000
     assert add_pit_context(out, pits)["pits_within_50km"].tolist() == [1, 1, 0]   # idempotente
 
 
 def test_load_mars_caves_ignores_misordered_header(tmp_path):
-    from analogos.data.caves import MARS_COLUMNS, add_pit_context, load_mars_caves
+    from astroatlas.data.caves import MARS_COLUMNS, add_pit_context, load_mars_caves
 
     f = tmp_path / "c.csv"
     f.write_text("longitude:string,latitude:string,Label:string\nAPC001,240.4585,-0.94678,APC,1,25,32,\"APC, tiny\"\n"
@@ -71,7 +71,7 @@ def test_load_mars_caves_ignores_misordered_header(tmp_path):
 
 
 def test_region_grid_cell_centers_and_ids():
-    from analogos.zoom import region_grid
+    from astroatlas.zoom import region_grid
 
     g = region_grid((29.0, 30.0), (34.0, 35.0), 0.25, "t")
     assert len(g) == 16 and g["cell_id"].is_unique and g["cell_id"].iloc[0] == "zoom_t_0_0"

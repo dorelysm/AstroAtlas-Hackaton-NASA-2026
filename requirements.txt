@@ -1,5 +1,5 @@
-# Dependencias mínimas para correr la app (Railway). El paquete se importa con PYTHONPATH=src (ver railway.json),
-# NO se instala: config.py calcula las rutas (demo_data/, docs/) a partir de la ubicación del repositorio.
+# Minimal dependencies to run the app (Railway). The package is imported with PYTHONPATH=src (see railway.json),
+# NOT installed: config.py computes the paths (demo_data/, docs/) from the repository location.
 numpy
 pandas
 pyarrow

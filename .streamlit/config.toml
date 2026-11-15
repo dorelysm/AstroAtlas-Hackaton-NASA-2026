@@ -5,15 +5,15 @@ enableCORS = false
 [browser]
 gatherUsageStats = false
 
-# Colores tomados de la propuesta de interfaz «AstroAtlas» (Figma): fondo #0E1117, barra lateral #161A23, tarjetas #1B2030,
-# acento naranja #FF8C42, ámbar #FBBF24 (parecido medio y avisos), verde #34D399 (muy parecido) y azul #4C8DF6 (análogos conocidos).
+# Colours taken from the "AstroAtlas" interface proposal (Figma): background #0E1117, sidebar #161A23, cards #1B2030,
+# orange accent #FF8C42, amber #FBBF24 (moderate match and warnings), green #34D399 (very similar) and blue #4C8DF6 (known analogs).
 [theme]
 base = "dark"
 primaryColor = "#FF8C42"
 linkColor = "#FF8C42"
 backgroundColor = "#0E1117"
 secondaryBackgroundColor = "#1B2030"
-borderColor = "#667085"  # ≥ 3:1 frente al fondo: los campos y recuadros se distinguen (WCAG 1.4.11)
+borderColor = "#667085"  # ≥ 3:1 against the background: fields and boxes can be told apart (WCAG 1.4.11)
 showWidgetBorder = true
 headingFontSizes = ["2.75rem", "1.75rem", "1.5rem", "1.25rem", "1rem", "0.875rem"]
 orangeColor = "#FF8C42"

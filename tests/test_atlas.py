@@ -1,7 +1,7 @@
 import pandas as pd
 
-from analogos.atlas import CONFIDENCE, MIN_USEFUL_SCORE, _has_data, aspect_case
-from analogos.config import DIMENSIONS
+from astroatlas.atlas import CONFIDENCE, MIN_USEFUL_SCORE, _has_data, aspect_case
+from astroatlas.config import DIMENSIONS
 
 
 def test_every_body_aspect_has_a_confidence_label():
@@ -12,7 +12,7 @@ def test_every_body_aspect_has_a_confidence_label():
 
 
 def test_no_aspect_is_labelled_high_confidence():
-    """Con 4 a 8 análogos por cuerpo ningún aspecto se puede validar de forma concluyente."""
+    """With 4 to 8 analogs per body no aspect can be validated conclusively."""
     assert all(c.level != "alta" for c in CONFIDENCE.values())
 
 

@@ -1,4 +1,4 @@
-"""Tests del lector Copernicus y de la topografía de la Tierra con un DEM falso (sin red)."""
+"""Tests of the Copernicus reader and the Earth topography with a fake DEM (no network)."""
 import re
 
 import numpy as np
@@ -6,17 +6,17 @@ import pytest
 
 pytest.importorskip("rasterio")
 
-from analogos.data import earth
-from analogos.data.copernicus import MAX_TILES, CopernicusDem, tile_name, tile_url
-from analogos.data.dem import site_topography
-from analogos.features import validate_features
+from astroatlas.data import earth
+from astroatlas.data.copernicus import MAX_TILES, CopernicusDem, tile_name, tile_url
+from astroatlas.data.dem import site_topography
+from astroatlas.features import validate_features
 
 R = CopernicusDem.radius_m
 SLOPE = 0.1
 
 
 class FakeDem(CopernicusDem):
-    """Teselas de 1° con un plano que sube hacia el norte (pendiente 0.1 = 5.71°)."""
+    """1° tiles with a plane rising towards the north (slope 0.1 = 5.71°)."""
 
     def __init__(self, missing=lambda la, lo: False):
         super().__init__()
@@ -45,11 +45,11 @@ def test_tile_names():
 
 def test_plane_slope_across_tile_boundary():
     dem = FakeDem()
-    # 40.0° N es el borde entre dos teselas: la ventana de ±25 km (~0.22°) cruza ambas
+    # 40.0° N is the edge between two tiles: the ±25 km window (~0.22°) crosses both
     f = site_topography(dem, 40.0, 10.5)
     assert f["topo__slope_mean_deg"] == pytest.approx(np.degrees(np.arctan(SLOPE)), abs=0.15)
     assert f["valid_frac"] == 1.0
-    assert f["baseline_m"] == 500.0  # base común con Luna y Marte
+    assert f["baseline_m"] == 500.0  # common baseline with Moon and Mars
     assert f["topo__aspect_equatorward"] == pytest.approx(1.0, abs=0.01)  # sube al norte: ladera mira al sur
 
 
@@ -60,7 +60,7 @@ def test_elevation_matches_plane():
 
 
 def test_missing_tile_is_nan():
-    dem = FakeDem(missing=lambda la, lo: la == 40)  # océano al norte de 40°
+    dem = FakeDem(missing=lambda la, lo: la == 40)  # ocean north of 40°
     z = dem.elevation(np.array([39.5, 40.5]), np.array([10.2, 10.2]))
     assert np.isfinite(z[0]) and np.isnan(z[1])
     f = site_topography(dem, 40.0, 10.5)
@@ -73,7 +73,7 @@ def test_window_over_too_many_tiles_is_nan():
 
 
 def test_build_features_drops_ocean_and_meets_contract(monkeypatch):
-    # tierra solo en el hemisferio norte; el sur es océano (sin tesela)
+    # land only in the northern hemisphere; the south is ocean (no tile)
     monkeypatch.setattr(earth, "CopernicusDem", lambda: FakeDem(missing=lambda la, lo: la < 0))
     df = earth.build_features(step_deg=30, workers=1, topo=True, power=False)
     validate_features(df, "earth")
@@ -94,6 +94,6 @@ def test_flat_water_is_detected_at_any_altitude_but_real_flat_land_is_kept():
     df = pd.DataFrame({
         "topo__relief_m": [0.0, 0.3, 4.0, 5.0, 0.0, 4.15, 500.0],
         "elev_mean_m": [0.0, 0.5, 1.0, 55.0, 174.0, 3050.0, 0.0],
-    })  # mar, mar, polder holandés, plataforma de hielo, lago (Michigan), meseta antártica, costa montañosa
+    })  # sea, sea, Dutch polder, ice shelf, lake (Michigan), Antarctic plateau, mountainous coast
     assert list(earth.is_flat_water(df)) == [True, True, False, False, True, False, False]
-    assert earth.is_flat_ocean is earth.is_flat_water  # el nombre anterior sigue funcionando
+    assert earth.is_flat_ocean is earth.is_flat_water  # the previous name still works

@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
 
-from analogos.data.sites import load_sites
-from analogos.validate import haversine_km
+from astroatlas.data.sites import load_sites
+from astroatlas.validate import haversine_km
 
 
 def test_default_sites_are_verified_and_clean():
@@ -11,7 +11,7 @@ def test_default_sites_are_verified_and_clean():
     assert s[["lat", "lon"]].notna().all().all() and s["lon"].between(0, 360, inclusive="left").all()
     assert set(s["body"]) == {"moon", "mars"}
     assert {"target_base", "landing", "candidate_site"} <= set(s["kind"])
-    assert not s["site"].str.contains("elipse", case=False).any()  # centro de elipse != punto real
+    assert not s["site"].str.contains("elipse", case=False).any()  # ellipse centre != real point
     assert not s["site"].str.contains("Artemis|Zhurong|Chandrayaan|SLIM|Beagle|Polar Lander").any()
     assert {"Apollo 11 LM", "Surveyor 1", "Viking 1", "Spirit (MER-A)", "Shackleton rim", "Jezero"} <= set(s["site"])
     counts = s["body"].value_counts()
@@ -32,7 +32,7 @@ def test_no_two_sites_closer_than_dedupe_distance():
             others = g.drop(index=i)
             if len(others):
                 assert haversine_km(a.lat, a.lon, others["lat"].to_numpy(), others["lon"].to_numpy()).min() >= 15.0
-    # Gale (candidato MSL) y Curiosity están a ~12 km: solo debe quedar uno
+    # Gale (MSL candidate) and Curiosity are ~12 km apart: only one should remain
     assert s["site"].str.contains("Gale|Curiosity").sum() == 1
 
 
@@ -47,21 +47,21 @@ def test_custom_csv_inputs(tmp_path):
     land = tmp_path / "land.csv"
     land.write_text("body,mission,lat,lon_east_0_360,status\nmoon,C,10,20,verificado\nmoon,D,11,21,NO VERIFICADO\n")
     s = load_sites(sites_csv=base, landings_csv=land)
-    assert list(s["site"]) == ["A", "C"]  # B está a ~5 km de A (duplicado); D no verificado
+    assert list(s["site"]) == ["A", "C"]  # B is ~5 km from A (duplicate); D is not verified
     assert s.loc[0, "lon"] == 350.0
 
 
-# --- actualización con las tablas de LROC (28 jul 2016) ---
+# --- update with the LROC tables (28 Jul 2016) ---
 def test_lunar_sites_use_lroc_coordinates_and_include_the_new_ones():
     s = load_sites().set_index("site")
-    # Surveyor: valores de LROC (antes los de la NSSDCA, desplazados 1 a 4 km)
+    # Surveyor: LROC values (before, those from NSSDCA, shifted 1 to 4 km)
     assert (s.loc["Surveyor 1", "lat"], s.loc["Surveyor 1", "lon"]) == pytest.approx((-2.4745, 316.6602))
     assert (s.loc["Surveyor 7", "lat"], s.loc["Surveyor 7", "lon"]) == pytest.approx((-40.9812, 348.4873))
     # sitios nuevos
     for name, lat, lon in [("Luna 16", -0.5137, 56.3638), ("Luna 17", 38.23764, 324.99837), ("Luna 20", 3.7863, 56.6242),
                            ("Luna 21", 25.9994, 30.4076), ("Luna 23", 12.6667, 62.1511), ("Chang'e 3", 44.1214, 340.4883)]:
         assert (s.loc[name, "lat"], s.loc[name, "lon"]) == pytest.approx((lat, lon)), name
-    # Luna 24 está a 2.3 km de Luna 23 y Surveyor 3 a 0.2 km de Apolo 12: mismo sitio, no se cuentan dos veces
+    # Luna 24 is 2.3 km from Luna 23 and Surveyor 3 is 0.2 km from Apollo 12: same site, not counted twice
     assert "Luna 24" not in s.index and "Surveyor 3" not in s.index
     assert (s["body"] == "moon").sum() == 21
 
@@ -75,7 +75,7 @@ def test_apollo_coordinates_agree_with_lroc_within_a_few_meters():
 
 
 def test_merge_site_rows_replaces_and_adds():
-    from analogos.data.moon import merge_site_rows
+    from astroatlas.data.moon import merge_site_rows
 
     old = pd.DataFrame({"site": ["A", "B"], "v": [1, 2]})
     new = pd.DataFrame({"site": ["B", "C"], "v": [20, 30]})

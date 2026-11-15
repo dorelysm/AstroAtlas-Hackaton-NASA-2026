@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="900" height="330" rx="12" fill="#0E1117"/>
+<g font-size="14" fill="#E6EDF3">
+<text x="30" y="30" font-weight="bold" font-size="16">Probability that a known analog outscores a typical Earth cell (mean u, 95 % CI)</text>
+<line x1="300" y1="50" x2="300" y2="290" stroke="#667085"/>
+<line x1="504" y1="50" x2="504" y2="290" stroke="#FF8C42" stroke-dasharray="5 4"/>
+<text x="504" y="308" text-anchor="middle" fill="#FF8C42">0.50 = chance</text>
+<text x="300" y="308" text-anchor="middle" fill="#9AA4B2">0.30</text><text x="860" y="308" text-anchor="middle" fill="#9AA4B2">0.85</text>
+<g fill="#4C8DF6" stroke="#4C8DF6" stroke-width="3">
+<text x="20" y="80" fill="#E6EDF3" stroke="none">Moon, 3 sets (20)</text><line x1="549" y1="75" x2="625" y2="75"/><circle cx="588" cy="75" r="6" stroke="none"/>
+<text x="20" y="125" fill="#E6EDF3" stroke="none">Mars, 3 sets (40)</text><line x1="519" y1="120" x2="677" y2="120"/><circle cx="600" cy="120" r="6" stroke="none"/>
+<text x="20" y="170" fill="#E6EDF3" stroke="none">Mars, set 2 (8, independent)</text><line x1="568" y1="165" x2="830" y2="165"/><circle cx="705" cy="165" r="6" stroke="none"/>
+<text x="20" y="215" fill="#E6EDF3" stroke="none">Mars, ESA catalogue (12)</text><line x1="425" y1="210" x2="734" y2="210"/><circle cx="582" cy="210" r="6" stroke="none"/>
+<text x="20" y="260" fill="#E6EDF3" stroke="none">Mars, set 1 (20)</text><line x1="451" y1="255" x2="685" y2="255"/><circle cx="569" cy="255" r="6" stroke="none"/>
+</g></g></svg>

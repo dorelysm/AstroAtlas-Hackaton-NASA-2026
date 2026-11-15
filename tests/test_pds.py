@@ -1,20 +1,20 @@
-"""Tests sin red de pds_dem.py, planetary.py y de la fusión con dem.py (reintentos)."""
+"""Network-free tests of pds_dem.py, planetary.py and the merge with dem.py (retries)."""
 import numpy as np
 import pandas as pd
 import pytest
 
-from analogos.config import FEATURES
-from analogos.data import dem as dem_mod
-from analogos.data import planetary
-from analogos.data.dem import build_target_features, site_topography
-from analogos.data.pds_dem import PdsTiledDem, Tile, lola_dem, mola_dem
+from astroatlas.config import FEATURES
+from astroatlas.data import dem as dem_mod
+from astroatlas.data import planetary
+from astroatlas.data.dem import build_target_features, site_topography
+from astroatlas.data.pds_dem import PdsTiledDem, Tile, lola_dem, mola_dem
 
 PPD = 4
 R = 100_000.0
 
 
 class FakeTiledDem(PdsTiledDem):
-    """Teselas de 90° de ancho con un plano que sube hacia el norte (z = 100 * lat)."""
+    """90°-wide tiles with a plane rising towards the north (z = 100 * lat)."""
 
     def __init__(self, lat_limit=90.0):
         tiles = [Tile(f"fake/t{la}_{lo}.img", la, la - 90, lo, lo + 180)
@@ -36,8 +36,8 @@ def test_factories_have_expected_resolution():
 def test_pds_dem_elevation_plane_and_longitude_wrap():
     dem = FakeTiledDem()
     lat = np.array([10.0, -33.3, 47.1, 10.0, 10.0])
-    lon = np.array([45.0, 200.0, 359.9, 0.1, 180.0])  # incluye el cruce 0/360 y el borde entre teselas
-    assert dem.elevation(lat, lon) == pytest.approx(100 * lat, abs=30)  # ~1 px (0.25°) de tolerancia
+    lon = np.array([45.0, 200.0, 359.9, 0.1, 180.0])  # includes the 0/360 crossing and the edge between tiles
+    assert dem.elevation(lat, lon) == pytest.approx(100 * lat, abs=30)  # ~1 px (0.25°) of tolerance
     assert dem.elevation(np.array([10.0]), np.array([-1.0])) == pytest.approx(
         dem.elevation(np.array([10.0]), np.array([359.0])))  # lon negativa == lon + 360
 
@@ -49,11 +49,11 @@ def test_pds_dem_latitude_limit_is_nan():
 
 def test_site_topography_on_pds_dem_object():
     f = site_topography(FakeTiledDem(), 20.0, 359.0, half_km=3, baseline_m=1000)
-    # pendiente = 100 m por grado de latitud = 100 / (R·pi/180 m) = 0.0573 -> 3.28°
+    # slope = 100 m per degree of latitude = 100 / (R·pi/180 m) = 0.0573 -> 3.28°
     assert f["topo__slope_mean_deg"] == pytest.approx(np.degrees(np.arctan(100 / (R * np.pi / 180))), abs=0.1)
 
 
-# --- fusión con dem.py: reintentos ---
+# --- merge with dem.py: retries ---
 SITES = pd.DataFrame({"site": ["A", "B"], "body": ["moon", "moon"], "lat": [10.0, 20.0],
                       "lon": [30.0, 40.0], "kind": ["landing", "landing"]})
 
@@ -66,7 +66,7 @@ class FlakyDem(FakeTiledDem):
     def elevation(self, lat, lon):
         self.calls += 1
         if self.always is not None and abs(np.mean(lat) - self.always) < 1:
-            raise OSError("corte permanente")
+            raise OSError("permanent outage")
         if self.calls <= self.fail_first:
             raise OSError("ConnectionReset")
         return super().elevation(lat, lon)
@@ -83,8 +83,8 @@ def test_site_that_keeps_failing_is_skipped_with_warning(monkeypatch, capsys):
     monkeypatch.setattr(dem_mod.time, "sleep", lambda s: None)
     out = build_target_features("moon", FlakyDem(fail_first=0, always_fail_for=20.0), SITES, half_km=3,
                                 baseline_m=1000)
-    assert list(out["site"]) == ["A"]  # B se omite, A sobrevive
-    assert "AVISO" in capsys.readouterr().out
+    assert list(out["site"]) == ["A"]  # B is skipped, A survives
+    assert "WARNING" in capsys.readouterr().out
 
 
 # --- planetary.py (funciones puras) ---
@@ -107,18 +107,18 @@ def test_diviner_file_naming(lat, expected):
     assert planetary._gcp_file(lat)[0] == expected
 
 
-# --- hielo: NaN fuera de la cobertura, nunca 0 supuesto ---
+# --- ice: NaN outside the coverage, never an assumed 0 ---
 @pytest.mark.parametrize("lat", [-79.9, -80.0, -45.0, 0.0, 26.1, 85.0])
 def test_moon_ice_outside_diviner_prp_is_nan_not_zero(lat):
-    r = planetary.moon_ice(lat, 10.0)  # no descarga nada: sale antes de leer el archivo
-    assert np.isnan(r["ice__water_frac"]) and "sin dato" in r["ice_note"]
+    r = planetary.moon_ice(lat, 10.0)  # it downloads nothing: it exits before reading the file
+    assert np.isnan(r["ice__water_frac"]) and "no data" in r["ice_note"]
 
 
 def test_mars_ice_cell_without_data_is_nan_with_explanation():
     planetary._ody["h2o_sr_5x5.tab"] = pd.DataFrame({
         "lat": [47.5, 17.5], "lon": [-162.5, 77.5], "val": [np.nan, 3.5], "sigma": [np.nan, 0.4]})
     try:
-        arcadia = planetary.mars_ice(47.25, 196.0)  # 196° E = -164° -> celda sin dato
+        arcadia = planetary.mars_ice(47.25, 196.0)  # 196° E = -164° -> cell without data
         jezero = planetary.mars_ice(18.38, 77.58)
     finally:
         planetary._ody.pop("h2o_sr_5x5.tab")

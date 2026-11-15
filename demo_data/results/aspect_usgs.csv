@@ -1,4 +1,4 @@
-body,positivos,n_pos,n_ctrl,u_pos,u_ctrl,share_pos_above_half,share_ctrl_above_half,auc_rank,ci_lo,ci_hi,p_mannwhitney,senal,estado
+body,positivos,n_pos,n_ctrl,u_pos,u_ctrl,share_pos_above_half,share_ctrl_above_half,auc_rank,ci_lo,ci_hi,p_mannwhitney,senal,status
 moon,topografía (cráteres + dunas),185,200.0,0.5555920950242716,0.5400958890391067,0.6216216216216216,0.62,0.5313783783783784,0.47312905405405403,0.585958108108108,0.14372002580872417,False,ok
 moon,solo cráteres,184,200.0,0.554433548210122,0.5400958890391067,0.6195652173913043,0.62,0.5289130434782608,0.4722139945652174,0.584375,0.1638505827844196,False,ok
 moon,informativo: Grand Falls (dunes),1,,0.7687647088278003,,,,,,,,,"n = 1, solo informativo"

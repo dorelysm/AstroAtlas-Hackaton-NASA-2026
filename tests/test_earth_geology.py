@@ -1,11 +1,11 @@
-"""Tests sin red de earth_geology.py."""
+"""Network-free tests of earth_geology.py."""
 import zipfile
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from analogos.data import earth_geology as eg
+from astroatlas.data import earth_geology as eg
 
 NAMES = {1: "su", 2: "vb", 3: "ss", 4: "pb", 5: "wb", 6: "ig", 7: "nd"}
 LATS = 90 - 0.5 * (np.arange(360) + 0.5)
@@ -21,33 +21,33 @@ def _cell(lat, lon):
 
 
 def test_basalt_fraction_counts_only_rock_cells():
-    g = _grid(1)  # todo sedimentos
+    g = _grid(1)  # all sediments
     r, c = _cell(10.0, 20.0)
-    g[:, :c] = 2                   # basalto al oeste de la celda central; sedimentos al este
+    g[:, :c] = 2                   # basalt west of the central cell; sediments to the east
     wet = g.copy()
-    wet[r, c] = 5                  # una de las 4 celdas de la ventana (2 x 2) es agua: NO cuenta como roca
+    wet[r, c] = 5                  # one of the 4 cells of the window (2 x 2) is water: it does NOT count as rock
     cells = pd.DataFrame({"lat": [10.0], "lon": [20.0]})
     dry = eg.geology_features(cells, g, NAMES, LATS, LONS, half_km=75)
     wetf = eg.geology_features(cells, wet, NAMES, LATS, LONS, half_km=75)
-    assert 0.15 < dry["geo__basalt_frac"].iloc[0] < 0.55          # una parte de la ventana es basalto
-    assert wetf["geo_glim_rock_cells"].iloc[0] < dry["geo_glim_rock_cells"].iloc[0]  # el agua sale del denominador
-    assert wetf["geo__basalt_frac"].iloc[0] > dry["geo__basalt_frac"].iloc[0]       # y por eso sube la fracción
+    assert 0.15 < dry["geo__basalt_frac"].iloc[0] < 0.55          # part of the window is basalt
+    assert wetf["geo_glim_rock_cells"].iloc[0] < dry["geo_glim_rock_cells"].iloc[0]  # the water leaves the denominator
+    assert wetf["geo__basalt_frac"].iloc[0] > dry["geo__basalt_frac"].iloc[0]       # and that is why the fraction goes up
 
 
 def test_pure_basalt_pure_sediment_and_mafic_plutonic():
     g = _grid(1)
     g[:, :100] = 2          # lon -180..-130: basalto
-    g[:, 100:200] = 4       # lon -130..-80: gabro (máfico, pero no basalto)
+    g[:, 100:200] = 4       # lon -130..-80: gabbro (mafic, but not basalt)
     cells = pd.DataFrame({"lat": [0.0, 0.0, 0.0], "lon": [-170.0, -100.0, 50.0]})
     f = eg.geology_features(cells, g, NAMES, LATS, LONS)
     assert list(f["geo__basalt_frac"]) == [1.0, 0.0, 0.0]
-    assert list(f["geo_glim_mafic_frac"]) == [1.0, 1.0, 0.0]  # el gabro cuenta como máfico
+    assert list(f["geo_glim_mafic_frac"]) == [1.0, 1.0, 0.0]  # gabbro counts as mafic
     assert list(f["geo_glim_class"]) == ["vb", "pb", "su"]
 
 
 def test_ice_water_and_nodata_give_nan_not_zero():
-    g = _grid(6)             # hielo en todas partes
-    g[:, 300:] = eg.NODATA   # océano / sin dato
+    g = _grid(6)             # ice everywhere
+    g[:, 300:] = eg.NODATA   # ocean / no data
     cells = pd.DataFrame({"lat": [72.0, 0.0], "lon": [-100.0, 100.0]})
     f = eg.geology_features(cells, g, NAMES, LATS, LONS)
     assert f["geo__basalt_frac"].isna().all() and (f["geo_glim_rock_cells"] == 0).all()
@@ -76,12 +76,12 @@ def test_load_glim_parses_header_and_orientation(tmp_path):
 def test_safe_extract_blocks_zip_slip(tmp_path):
     bad = tmp_path / "bad.zip"
     with zipfile.ZipFile(bad, "w") as z:
-        z.writestr("../escapado.txt", "no debe salir de la carpeta")
-    with pytest.raises(ValueError, match="sospechosa"):
+        z.writestr("../escapado.txt", "must not leave the folder")
+    with pytest.raises(ValueError, match="suspicious"):
         eg.safe_extract(bad, tmp_path / "out")
     assert not (tmp_path / "escapado.txt").exists()
     ok = tmp_path / "ok.zip"
     with zipfile.ZipFile(ok, "w") as z:
-        z.writestr("datos.txt", "hola")
+        z.writestr("data.txt", "hola")
     eg.safe_extract(ok, tmp_path / "out2")
-    assert (tmp_path / "out2" / "datos.txt").read_text() == "hola"
+    assert (tmp_path / "out2" / "data.txt").read_text() == "hola"

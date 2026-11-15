@@ -1,0 +1,43 @@
+body,grupo,modelo,n,u_medio,ci_lo,ci_hi
+mars,todos,P_A,20,0.5509,0.4268,0.6719
+mars,todos,u_B,20,0.4993,0.3707,0.6312
+mars,todos,u_consenso,20,0.4521,0.3339,0.5783
+mars,todos,u_union_exploratorio,20,0.6005,0.5031,0.7003
+mars,todos,u_B − P_A,20,-0.0516,-0.2299,0.1248
+mars,todos,u_consenso − P_A,20,-0.0988,-0.202,-0.0101
+mars,todos,u_union_exploratorio − P_A,20,0.0496,-0.0564,0.1688
+mars,fríos,P_A,5,0.1905,0.0713,0.3159
+mars,fríos,u_B,5,0.7428,0.5407,0.8507
+mars,fríos,u_consenso,5,0.2736,0.1206,0.4315
+mars,fríos,u_union_exploratorio,5,0.6608,0.4568,0.7722
+mars,fríos,u_B − P_A,5,0.5523,0.4254,0.6791
+mars,fríos,u_consenso − P_A,5,0.0831,0.0463,0.1157
+mars,fríos,u_union_exploratorio − P_A,5,0.4702,0.3415,0.5954
+mars,cálidos,P_A,15,0.671,0.5708,0.7667
+mars,cálidos,u_B,15,0.4181,0.282,0.5631
+mars,cálidos,u_consenso,15,0.5115,0.3714,0.6498
+mars,cálidos,u_union_exploratorio,15,0.5804,0.4636,0.6951
+mars,cálidos,u_B − P_A,15,-0.2529,-0.3642,-0.1445
+mars,cálidos,u_consenso − P_A,15,-0.1595,-0.2731,-0.0526
+mars,cálidos,u_union_exploratorio − P_A,15,-0.0906,-0.1137,-0.0628
+moon,todos,P_A,12,0.699,0.545,0.8393
+moon,todos,u_B,12,0.4655,0.3263,0.6208
+moon,todos,u_consenso,12,0.5095,0.3891,0.6431
+moon,todos,u_union_exploratorio,12,0.6753,0.5103,0.8295
+moon,todos,u_B − P_A,12,-0.2335,-0.4572,-0.0164
+moon,todos,u_consenso − P_A,12,-0.1895,-0.3896,-0.0032
+moon,todos,u_union_exploratorio − P_A,12,-0.0237,-0.0902,0.0634
+moon,fríos,P_A,2,0.9343,0.897,0.9716
+moon,fríos,u_B,2,0.3444,0.2692,0.4196
+moon,fríos,u_consenso,2,0.4458,0.3565,0.5352
+moon,fríos,u_union_exploratorio,2,0.8696,0.796,0.9432
+moon,fríos,u_B − P_A,2,-0.5899,-0.7024,-0.4774
+moon,fríos,u_consenso − P_A,2,-0.4884,-0.6151,-0.3617
+moon,fríos,u_union_exploratorio − P_A,2,-0.0647,-0.1009,-0.0284
+moon,cálidos,P_A,10,0.6519,0.4856,0.8116
+moon,cálidos,u_B,10,0.4897,0.3333,0.6668
+moon,cálidos,u_consenso,10,0.5222,0.3808,0.6765
+moon,cálidos,u_union_exploratorio,10,0.6364,0.4496,0.8126
+moon,cálidos,u_B − P_A,10,-0.1623,-0.3992,0.0631
+moon,cálidos,u_consenso − P_A,10,-0.1298,-0.3429,0.0544
+moon,cálidos,u_union_exploratorio − P_A,10,-0.0156,-0.0952,0.0803

@@ -1,12 +1,12 @@
-"""Segundo conjunto de análogos (docs/PREREGISTRO_VALIDACION2.md): integridad de la lista congelada y de las funciones."""
+"""Second set of analogs (docs/preregistrations/validation-set-2.md): integrity of the frozen list and of the functions."""
 import hashlib
 
 import numpy as np
 import pandas as pd
 
-from analogos.config import DOCS
-from analogos.validate import haversine_km
-from analogos.validation2 import CSV, TAGS, summarize_v2
+from astroatlas.config import DOCS
+from astroatlas.validate import haversine_km
+from astroatlas.validation2 import CSV, TAGS, summarize_v2
 
 
 def _sha(path) -> str:
@@ -20,7 +20,7 @@ def test_frozen_lists_unchanged():
 
 def test_independence_rule_100_km():
     new = pd.read_csv(CSV)
-    old = pd.concat([pd.read_csv(DOCS / "analogos_conocidos.csv"), pd.read_csv(DOCS / "analogos_ampliado.csv")])
+    old = pd.concat([pd.read_csv(DOCS / "catalog/known_analogs.csv"), pd.read_csv(DOCS / "catalog/extended_analogs.csv")])
     for r in new.itertuples():
         assert haversine_km(r.lat, r.lon, old["lat"].to_numpy(), old["lon"].to_numpy()).min() >= 100
     for i in range(len(new)):
@@ -43,11 +43,11 @@ def test_summarize_v2_reports_union_minus_pa():
 
 
 def test_set3_frozen_list_and_independence():
-    from analogos.validation3 import CSV as CSV3
+    from astroatlas.validation3 import CSV as CSV3
 
     assert _sha(CSV3) == "2f3d816540d1cbf5"
     new = pd.read_csv(CSV3)
-    old = pd.concat([pd.read_csv(DOCS / f) for f in ("analogos_conocidos.csv", "analogos_ampliado.csv", "analogos_set2.csv")])
+    old = pd.concat([pd.read_csv(DOCS / f) for f in ("catalog/known_analogs.csv", "catalog/extended_analogs.csv", "catalog/analogs_set2.csv")])
     assert len(new) == 13
     for r in new.itertuples():
         assert haversine_km(r.lat, r.lon, old["lat"].to_numpy(), old["lon"].to_numpy()).min() >= 100

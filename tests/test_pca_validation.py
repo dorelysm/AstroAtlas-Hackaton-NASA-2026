@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from analogos.config import DIMENSIONS, FEATURES
-from analogos.pipeline import run
-from analogos.similarity import fit_topo_model, rank_cells, score_cells
-from analogos.synthetic import synthetic_earth, synthetic_target
-from analogos.validate import evaluate, evaluate_sites, known_for_body, load_known
+from astroatlas.config import DIMENSIONS, FEATURES
+from astroatlas.pipeline import run
+from astroatlas.similarity import fit_topo_model, rank_cells, score_cells
+from astroatlas.synthetic import synthetic_earth, synthetic_target
+from astroatlas.validate import evaluate, evaluate_sites, known_for_body, load_known
 
 TOPO = DIMENSIONS["topo"]
 SITES = pd.DataFrame({"site": ["A", "B"], "body": ["moon", "moon"], "lat": [-80.0, 8.0], "lon": [10.0, 33.0]})
@@ -24,7 +24,7 @@ def test_topo_model_whitens_and_compresses_correlated_features():
     base = rng.normal(size=(400, 1))
     df = pd.DataFrame({f: base[:, 0] * (i + 1) + rng.normal(0, 0.01, 400) for i, f in enumerate(TOPO)})
     m = fit_topo_model(df)
-    assert m.n_components == 1  # 16 variables casi idénticas = 1 sola dirección
+    assert m.n_components == 1  # 16 almost identical variables = a single direction
     pcs = m.transform(df)
     assert pcs["pc1"].std() == pytest.approx(1.0, rel=0.05)  # blanqueada
 
@@ -52,9 +52,9 @@ def test_identical_cell_ranks_first_with_pca(earth):
 
 
 def test_pca_stops_redundant_topo_features_from_counting_twice():
-    """15 copias de A y 1 variable independiente B: sin PCA una diferencia de 1 sd en A pesa ~4 veces
-    más que la misma diferencia en B; con PCA pesan igual."""
-    from analogos.similarity import dimension_scores
+    """15 copies of A and 1 independent variable B: without PCA a difference of 1 sd in A weighs ~4 times
+    more than the same difference in B; with PCA they weigh the same."""
+    from astroatlas.similarity import dimension_scores
 
     rng = np.random.default_rng(0)
     a, b = rng.normal(size=500), rng.normal(size=500)
@@ -64,7 +64,7 @@ def test_pca_stops_redundant_topo_features_from_counting_twice():
     df[TOPO[15]] = b
     mu, sd = df[TOPO].mean(), df[TOPO].std()
 
-    def row(da, db):  # una fila a `da` y `db` desviaciones estándar de la media
+    def row(da, db):  # a row at `da` and `db` standard deviations from the mean
         r = pd.Series(0.0, index=FEATURES)
         r[TOPO[:15]] = mu[TOPO[:15]] + da * sd[TOPO[:15]]
         r[TOPO[15]] = mu[TOPO[15]] + db * sd[TOPO[15]]
@@ -77,15 +77,15 @@ def test_pca_stops_redundant_topo_features_from_counting_twice():
     without = dimension_scores(cells, profile, None, ref=df)["topo"]
     assert m.n_components == 2
     assert abs(with_pca.iloc[0] - with_pca.iloc[1]) < 0.05
-    assert without.iloc[1] - without.iloc[0] > 0.3  # B casi no cuenta sin PCA
+    assert without.iloc[1] - without.iloc[0] > 0.3  # B barely counts without PCA
 
 
 def test_score_cells_uses_reference_stats(earth):
-    """Los sitios análogos se puntúan con la estandarización de la Tierra, no con la suya."""
+    """The analog sites are scored with the Earth's standardisation, not their own."""
     profile = earth.iloc[10][FEATURES]
     sub = earth.iloc[:10]
     a = score_cells(sub, profile, ref=earth)["score"]
-    b = score_cells(sub, profile)["score"]  # estandarizada con solo 10 filas
+    b = score_cells(sub, profile)["score"]  # standardised with only 10 rows
     assert not np.allclose(a, b)
 
 
@@ -107,7 +107,7 @@ def test_evaluate_with_bootstrap_ci(earth):
     assert a["auc_ci"] == b["auc_ci"]  # reproducible
     lo, hi = a["auc_ci"]
     assert 0 <= lo <= hi <= 1 and a["n_known"] == len(known_for_body(known, "mars"))
-    assert "auc_ci" not in evaluate(ranked, known, radius_km=600)  # sin bootstrap no hay IC
+    assert "auc_ci" not in evaluate(ranked, known, radius_km=600)  # without bootstrap there is no CI
 
 
 def test_evaluate_handles_no_analogs_for_body(earth):
@@ -124,7 +124,7 @@ def test_evaluate_sites_extremes():
     assert lo["auc"] == 0.0 and lo["recall_at_top_pct"] == 0.0
     mid = evaluate_sites(cells, pd.Series({"x": 0.5}))
     assert mid["auc"] == pytest.approx(0.5, abs=0.01)
-    assert np.isnan(evaluate_sites(cells, pd.Series(dtype=float))["auc"])  # sin sitios
+    assert np.isnan(evaluate_sites(cells, pd.Series(dtype=float))["auc"])  # no sites
 
 
 @pytest.mark.parametrize("with_sites", [True, False])
@@ -149,23 +149,23 @@ def test_pipeline_end_to_end_tmp(tmp_path, earth, with_sites):
     assert summ["config"]["topo_components"] >= 1
     assert (rdir / "scores.parquet").exists() and (rdir / "candidates.csv").exists()
 
-    # la versión anterior sigue disponible
+    # the previous version is still available
     run(n_boot=0, compress_topo=False, by_body=False, features_dir=fdir, results_dir=tmp_path / "base")
     base = json.loads((tmp_path / "base" / "validation_summary.json").read_text())
     assert base["config"]["compress_topo"] is False and base["config"]["topo_components"] is None
 
 
 def test_pca_scores_flat_terrain_rows_instead_of_dropping_them():
-    """Regresión: antes las filas con pendiente < 0.1° llevaban NaN en la orientación y la PCA no las puntuaba."""
+    """Regression: rows with slope < 0.1° used to carry NaN in the aspect and the PCA did not score them."""
     import numpy as np
 
-    from analogos.config import DIMENSIONS
-    from analogos.similarity import fit_topo_model
-    from analogos.synthetic import synthetic_earth
+    from astroatlas.config import DIMENSIONS
+    from astroatlas.similarity import fit_topo_model
+    from astroatlas.synthetic import synthetic_earth
 
     earth = synthetic_earth(step_deg=5.0)
     model = fit_topo_model(earth)
     flat = earth.iloc[:3].copy()
     for c in DIMENSIONS["topo"]:
-        flat[c] = 0.0  # terreno perfectamente llano, con orientación neutra 0
+        flat[c] = 0.0  # perfectly flat terrain, with neutral aspect 0
     assert np.isfinite(model.transform(flat).to_numpy()).all()

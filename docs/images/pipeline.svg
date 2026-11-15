@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="900" height="250" rx="12" fill="#0E1117"/>
+<g font-size="14" fill="#E6EDF3" text-anchor="middle">
+<rect x="20" y="40" width="170" height="90" rx="10" fill="#1B2030" stroke="#FF8C42"/>
+<text x="105" y="68" font-weight="bold" fill="#FF8C42">1 · Open data</text>
+<text x="105" y="90">LOLA · MOLA · Diviner</text><text x="105" y="108">Copernicus · MODIS · GLiM</text>
+<rect x="235" y="40" width="170" height="90" rx="10" fill="#1B2030" stroke="#FF8C42"/>
+<text x="320" y="68" font-weight="bold" fill="#FF8C42">2 · Same recipe</text>
+<text x="320" y="90">50 km window, 500 m base</text><text x="320" y="108">topo · thermal · ice · geo</text>
+<rect x="450" y="40" width="170" height="90" rx="10" fill="#1B2030" stroke="#FF8C42"/>
+<text x="535" y="68" font-weight="bold" fill="#FF8C42">3 · Similarity</text>
+<text x="535" y="90">exp(−RMS z) per aspect</text><text x="535" y="108">951 Earth cells × 35 sites</text>
+<rect x="665" y="40" width="215" height="90" rx="10" fill="#1B2030" stroke="#FF8C42"/>
+<text x="772" y="68" font-weight="bold" fill="#FF8C42">4 · Honest validation</text>
+<text x="772" y="90">45 known analogs, 3 sets</text><text x="772" y="108">preregistered, frozen model</text>
+<g stroke="#9AA4B2" stroke-width="2"><path d="M190 85h45M405 85h45M620 85h45"/></g>
+<rect x="20" y="160" width="860" height="60" rx="10" fill="#161A23" stroke="#4C8DF6"/>
+<text x="450" y="185" font-weight="bold" fill="#4C8DF6">Output</text>
+<text x="450" y="206">Streamlit app: ranked map · per-aspect profile · NASA orbital comparison · limits of the analogy</text>
+</g></svg>

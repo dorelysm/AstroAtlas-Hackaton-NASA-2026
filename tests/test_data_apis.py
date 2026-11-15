@@ -1,10 +1,10 @@
-"""Tests con respuestas simuladas (sin red). La prueba en vivo está en docs/APIS.md."""
+"""Tests with simulated responses (no network). The live test is in docs/reference/nasa-apis.md."""
 import math
 
 import pytest
 
-from analogos.data import earth, ode
-from analogos.features import validate_features
+from astroatlas.data import earth, ode
+from astroatlas.features import validate_features
 
 POWER_OK = {"properties": {"parameter": {
     "T2M_MAX": {"ANN": 32.75}, "T2M_MIN": {"ANN": -4.33}, "PRECTOTCORR": {"ANN": 0.03}}}}
@@ -28,7 +28,7 @@ def test_build_features_meets_contract(monkeypatch):
     df = earth.build_features(step_deg=60, workers=1, topo=False)
     validate_features(df, "earth")
     assert df["thermal__t_max_k"].notna().all()
-    assert df["topo__slope_mean_deg"].isna().all()  # aún sin DEM
+    assert df["topo__slope_mean_deg"].isna().all()  # still without DEM
 
 
 def test_failed_point_becomes_nan(monkeypatch):
