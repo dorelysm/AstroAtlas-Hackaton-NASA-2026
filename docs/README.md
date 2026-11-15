@@ -7,7 +7,7 @@ Start with the [report](report.md). Everything is in English.
 | [`report.md`](report.md) | Technical report: method, results, candidates, lessons, limits |
 | [`challenge.md`](challenge.md) | Official challenge text |
 | [`validation/`](validation/) | [validation](validation/validation.md) · [extended](validation/extended-validation.md) · [per aspect](validation/per-aspect-validation.md) · [ablation](validation/ablation.md) · [stability](validation/stability.md) · [analog search](validation/analog-search.md) · [coordinate verification](validation/coordinate-verification.md) |
-| [`preregistrations/`](preregistrations/) | Protocols written before measuring, each with its result: analog sets (1–3), ice, polar ice, shallow ice, permafrost, thermal inertia, emissivity, multiscale topography, variability, groups, models, novelty, plains, missing dimensions (draft) |
+| [`preregistrations/`](preregistrations/) | Protocols written before measuring, each with its result: analog sets (1–3), ice, polar ice, shallow ice, permafrost, thermal inertia, emissivity, multiscale topography, variability, groups, models, novelty, plains, missing dimensions (draft, exploratory result) |
 | [`results/`](results/) | [Candidate profiles](results/candidate-profiles.md) · [aspect atlas](results/aspect-atlas.md) · [use cases](results/use-cases.md) |
 | [`context/`](context/) | [Processes](context/processes.md) · [caves and lava tubes](context/caves-and-lava-tubes.md) · [dimensions not modelled](context/unmodeled-dimensions.md) |
 | [`reference/`](reference/) | [Data sources](reference/data-sources.md) · [licences](reference/licenses.md) · [NASA APIs](reference/nasa-apis.md) · [feature contract](reference/feature-contract.md) |

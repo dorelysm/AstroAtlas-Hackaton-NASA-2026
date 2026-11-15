@@ -173,7 +173,7 @@ The validation is also a map of what to do next. Everything below is documented,
 - **Mars temperature:** a comparable thermal product (for example from MRO MCS) to give Mars a fourth, thermal dimension.
 - **More and better analogs:** extend the frozen validation sets with primary-source coordinates (several still come from Wikipedia) so intervals tighten.
 - **Risk layer:** add radiation and security/access data, which the current field-risk indicators deliberately leave unassessed.
-- **Cells with data gaps:** an optional, off-by-default scoring mode (`missing="zero"`) is ready to test on the frozen validation sets 2 and 3; its [draft protocol](docs/preregistrations/missing-dimensions.md) sets the adoption criterion before anything is measured, so the published model stays unchanged until then.
+- **Cells with data gaps:** an optional scoring mode (`missing="zero"`, off by default) improves how the Moon's known analogs are recovered (u 0.565 to 0.614, 95 % CI of the change 0.038 to 0.061, 8 analogs) and is inconclusive for Mars; see the [exploratory result](docs/preregistrations/missing-dimensions.md). Next: freeze a per-body criterion and confirm on a new independent set before changing the published model.
 - **Licences:** Copernicus, SEDAC, MODIS (LST and snow), GIBS and the USGS cave catalogue are checked and cited in [licences](docs/reference/licenses.md); next, copy the PDS bundle DOIs and look for explicit Trek terms.
 - **Scope of the analogy:** Earth cannot reproduce reduced gravity, lunar vacuum, Mars' thin atmosphere or radiation; the profiles say so for every place.
 

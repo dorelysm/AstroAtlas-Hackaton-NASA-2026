@@ -1,6 +1,6 @@
 # Preregistration (DRAFT): cells without data in a dimension (15 Nov 2026)
 
-**Status: DRAFT, not frozen.** Nothing here changes the published model: the option is off by default (`missing="renormalize"`). Whoever freezes it should read the disclosure below, agree the criterion, record the hash and only then measure.
+**Status: DRAFT, not frozen; exploratory result recorded below.** Nothing here changes the published model: the option is off by default (`missing="renormalize"`). Whoever freezes it should read the disclosure below, agree the criterion, record the hash and only then measure.
 
 ## Observation (measured on `demo_data`, reproducible with `python -m astroatlas.missing_data`)
 The global score averages each cell over the dimensions it **has data for** (`global_score`), so a gap is never penalised, while a cell with data that does not match scores near 0 in that dimension.
@@ -30,5 +30,16 @@ With 4 and 8 analogs these differences are **inside the noise**, and the origina
 - **Proposed criterion:** adopt `zero` for a body only if the lower bound of the CI of the change is > 0 with at least 8 analogs; report it as harmful if the upper bound is < 0. If neither, keep the published model and publish the result.
 - **Diagnostic (not a criterion):** gaps among the top 50 cells, before and after.
 
-## Result
-_Not measured._
+## Result (exploratory, 15 Nov 2026)
+Run on the frozen sets 2 and 3 with the proposed criterion, **before the draft was agreed or frozen**, so it is reported as exploratory. Baseline numbers reproduce the published ones (Mars set 3: 0.577; Moon with 8 analogs: 0.565). Nothing in the published model changed.
+
+| Body | Analogs | `renormalize` (published) | `zero` | Change (95 % CI) | Proposed criterion |
+|---|---|---|---|---|---|
+| **Moon** (7 of set 3 + Teide of set 2) | 8 | 0.565 | 0.614 | **+0.049 (0.038 to 0.061)** | **Met** (lower bound > 0, at least 8 analogs) |
+| Mars (sets 2 + 3) | 20 | 0.625 | 0.643 | +0.018 (-0.012 to 0.039) | Inconclusive (interval includes 0); keep the published model |
+
+By set: set 3 Moon (7 analogs) +0.051 (0.039 to 0.063) and Mars (12) +0.034 (0.018 to 0.050); set 2 Mars (8) -0.007 (-0.070 to 0.034). The Moon gain has the same sign in the original 10 analogs (+0.047), in set 3 and in the pooled sets.
+
+**Decision:** `renormalize` stays the default. The Moon result is encouraging and consistent, but the Moon criterion is met narrowly (8 analogs, 7 from one set), Mars is inconclusive, the criterion was not frozen before measuring, and sets 2 and 3 can no longer serve as confirmation.
+
+**Next step (future work):** agree and freeze a per-body criterion, then measure on a new independent set with more lunar analogs before changing any default; keep checking that `zero` does not over-correct (0 to 5 gap cells in the top 50, against about 13 expected).
