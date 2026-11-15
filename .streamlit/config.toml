@@ -5,6 +5,21 @@ enableCORS = false
 [browser]
 gatherUsageStats = false
 
+# Colores tomados de la propuesta de interfaz «AstroAtlas» (Figma): fondo #0E1117, barra lateral #161A23, tarjetas #1B2030,
+# acento naranja #FF8C42, ámbar #FBBF24 (parecido medio y avisos), verde #34D399 (muy parecido) y azul #4C8DF6 (análogos conocidos).
 [theme]
 base = "dark"
-primaryColor = "#F59E42"  # naranja de AstroAtlas (propuesta de interfaz en Figma)
+primaryColor = "#FF8C42"
+linkColor = "#FF8C42"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#1B2030"
+borderColor = "#242A3B"
+orangeColor = "#FF8C42"
+yellowColor = "#FBBF24"
+greenColor = "#34D399"
+blueColor = "#4C8DF6"
+redColor = "#FF4B4B"
+
+[theme.sidebar]
+backgroundColor = "#161A23"
+secondaryBackgroundColor = "#1B2030"

@@ -46,7 +46,7 @@ def nivel_parecido(score: float) -> tuple[str, str]:
     if score >= 0.8:
         return "Muy parecido", "green"
     if score >= 0.5:
-        return "Parecido medio", "orange"
+        return "Parecido medio", "yellow"
     return "Poco parecido", "red"
 
 

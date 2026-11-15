@@ -140,7 +140,7 @@ with col_rel:
     rel = CONFIABILIDAD[body]
     with st.container(border=True):
         st.markdown(f"**¿Qué tan confiable es para {CUERPO_ES[body]}?**")
-        st.badge(rel["nivel"], color="orange")
+        st.badge(rel["nivel"], color="yellow")
         st.metric("de acierto (50 % = adivinar)", f"{rel['pct']} %",
                   help=f"Entre {rel['lo']} % y {rel['hi']} % con {rel['n']} lugares de comprobación.")
         st.progress(rel["pct"] / 100)
