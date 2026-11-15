@@ -11,7 +11,7 @@ Para cada sitio objetivo se calcula qué tan parecida es cada celda de la Tierra
 ## 2. Datos (todos abiertos)
 | | Topografía | Térmica | Hielo / agua | Geología |
 |---|---|---|---|---|
-| **Luna** | LOLA | Diviner | Lunar Prospector GRS | — |
+| **Luna** | LOLA | Diviner | Lunar Prospector GRS (solo 2 objetivos polares con dato) | sí, proxy de FeO (Lunar Prospector GRS) |
 | **Marte** | MOLA | vacía (decisión) | Odyssey GRS | sí |
 | **Tierra** | Copernicus GLO-90 | MODIS LST | MODIS nieve | GLiM (no NASA, CC-BY) |
 
@@ -30,7 +30,10 @@ Los análogos conocidos (10, más una capa del USGS con 185 cráteres y dunas y 
 ## 5. Candidatos
 Aplicando las marcas de población y vegetación y alejándonos de los análogos conocidos, salen **dos campos volcánicos basálticos en desierto para Marte** (Harrat ash-Shamah y Haruj), con coincidencia geológica real y topografía solo moderada, y **dos celdas antárticas para la Luna** que solo salen por ser planas y valoramos como malos análogos. [FICHAS_CANDIDATOS.md](FICHAS_CANDIDATOS.md) detalla qué se parece, qué no y los límites (gravedad, atmósfera, radiación).
 
-## 6. Lo que aprendimos
+## 6. Casos de uso
+En vez de un solo ranking, seis perfiles de uso ([CASOS_DE_USO.md](CASOS_DE_USO.md)): solo el terreno basáltico de Marte da una recomendación defendible (las candidatas de las fichas); movilidad da parecidos moderados y los casos de frío y hielo muestran los límites de la Tierra como análogo.
+
+## 6b. Lo que aprendimos
 - **Falta dimensión de contexto, no ajuste fino:** sin vegetación, las primeras candidatas de Marte eran selvas.
 - **Las variables no significan lo mismo entre cuerpos:** nieve ≠ hielo subsuperficial; la temperatura mensual terrestre no reproduce los extremos diarios de Marte.
 - **Con 4 a 8 análogos por cuerpo, ningún resultado puede ser concluyente**; el cuello de botella es la validación, no el cálculo.

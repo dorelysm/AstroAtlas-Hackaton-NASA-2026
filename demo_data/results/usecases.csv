@@ -1,0 +1,19 @@
+use_case,title,rank,cell_id,lat,lon,score,n_targets,nearest_known,nearest_known_km,dist_settlement_km,ndvi_max
+movilidad_marte,Probar movilidad y aterrizaje (Marte),1,earth_25_54,37.5,92.5,0.5144705377987726,12,Svalbard,5643.44896529942,249.0241364625551,0.054733750000000005
+movilidad_marte,Probar movilidad y aterrizaje (Marte),2,earth_3_21,-72.5,-72.5,0.5054406699569544,12,Dry Valleys (Antartida),2969.701093735559,1977.8814349905672,
+movilidad_marte,Probar movilidad y aterrizaje (Marte),3,earth_22_35,22.5,-2.5,0.5031738381970473,12,Lanzarote,1329.7792408850614,628.1105803651187,0.1070794117647059
+movilidad_luna,Probar movilidad y aterrizaje (Luna),1,earth_23_43,27.5,37.5,0.47906020085549195,18,Askja,5606.332431082099,133.25017792685588,0.09810735294117648
+movilidad_luna,Probar movilidad y aterrizaje (Luna),2,earth_33_30,77.5,-27.5,0.4708652737232995,18,Askja,1432.535333057396,955.1651850809106,-0.03182746478873239
+movilidad_luna,Probar movilidad y aterrizaje (Luna),3,earth_26_57,42.5,107.5,0.4699672352321882,18,Haughton crater (Devon Island),6847.199281604821,182.08050159124048,0.0963595238095238
+frio_luna_polar,Operaciones en frío en los polos lunares,1,earth_25_53,37.5,87.5,0.24467632772855025,2,Askja,6895.6358415199675,487.6078233947732,0.11947875
+frio_luna_polar,Operaciones en frío en los polos lunares,2,earth_25_50,37.5,72.5,0.22425477251815634,2,Askja,6250.932101858604,83.55888860849882,0.14056
+frio_luna_polar,Operaciones en frío en los polos lunares,3,earth_32_18,72.5,-87.5,0.2124444390412098,2,Haughton crater (Devon Island),327.37697401993813,752.5114260024237,0.177137
+hielo_marte_polar,Hielo y permafrost en el norte de Marte,1,earth_21_41,17.5,27.5,0.743605126057729,2,Rio Tinto,4001.946973128771,365.36536312601845,0.108775
+hielo_marte_polar,Hielo y permafrost en el norte de Marte,2,earth_22_46,22.5,52.5,0.7404748650884707,2,Rio Tinto,5828.065188033469,289.9276750482414,0.10108823529411766
+hielo_marte_polar,Hielo y permafrost en el norte de Marte,3,earth_24_43,32.5,37.5,0.7375389951666875,2,Rio Tinto,4011.9507834107467,90.21498908957274,0.12320441176470588
+basalto_marte,Terreno basáltico (Marte),1,earth_24_43,32.5,37.5,0.7796343884093919,9,Rio Tinto,4011.9507834107467,90.21498908957274,0.12320441176470588
+basalto_marte,Terreno basáltico (Marte),2,earth_23_39,27.5,17.5,0.6948268879328509,9,Rio Tinto,2512.0074870693884,228.54928180617824,0.09054558823529409
+basalto_marte,Terreno basáltico (Marte),3,earth_2_10,-77.5,-127.5,0.660870770772972,9,Dry Valleys (Antartida),1595.8623384725295,3391.0682041177815,
+volcanico_luna,Terreno volcánico y tubos de lava (Luna),1,earth_0_46,-87.5,52.5,0.5443401429355975,8,Mauna Kea,12456.5049111636,4062.5153151598033,
+volcanico_luna,Terreno volcánico y tubos de lava (Luna),2,earth_1_9,-82.5,-132.5,0.5330670774927807,8,Mauna Kea,11441.079757273392,3619.650091443797,
+volcanico_luna,Terreno volcánico y tubos de lava (Luna),3,earth_33_30,77.5,-27.5,0.5153309198777162,8,Askja,1432.535333057396,955.1651850809106,-0.03182746478873239

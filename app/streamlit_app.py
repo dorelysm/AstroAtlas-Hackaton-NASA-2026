@@ -132,6 +132,20 @@ with st.expander("Candidatos destacados (ver docs/FICHAS_CANDIDATOS.md)"):
         st.caption("Regla de selección y valoración honesta (las candidatas lunares salen solo por topografía y se consideran pobres) "
                    "en `docs/FICHAS_CANDIDATOS.md`.")
 
+with st.expander("Recomendaciones por caso de uso (ver docs/CASOS_DE_USO.md)"):
+    uc_csv = RESULTS_DIR / "usecases.csv"
+    if not uc_csv.exists():
+        uc_csv = DEMO_DIR / "results" / "usecases.csv"
+    if uc_csv.exists():
+        uc = pd.read_csv(uc_csv)
+        titles = list(dict.fromkeys(uc["title"]))
+        chosen = st.selectbox("Caso de uso", titles)
+        view_uc = uc[uc["title"] == chosen]
+        st.dataframe(view_uc[["rank", "cell_id", "lat", "lon", "score", "n_targets", "nearest_known", "nearest_known_km"]].round(2),
+                     hide_index=True)
+        st.caption("Solo el caso de terreno basáltico de Marte da una recomendación defendible; en frío y hielo el puntaje alto o bajo "
+                   "refleja los límites de la Tierra como análogo (la «nieve» no es hielo subsuperficial). Son hipótesis.")
+
 with st.expander("Créditos y fuentes de datos"):
     st.markdown(
         "- **Luna:** LRO LOLA, LRO Diviner, Lunar Prospector GRS, LROC (NASA/ASU), pits de LROC QuickMap (Losarcos y Dombard 2026, CC BY 4.0).\n"
