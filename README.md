@@ -4,6 +4,8 @@
 
 AstroAtlas ranks places on Earth by how closely they resemble candidate sites on the Moon and Mars — terrain, temperature, ice/water and geology — and then **tests itself, honestly, against terrestrial analogs that scientists already use**. The result is a reproducible method, a public web app, and a clear map of where the method works and where it does not.
 
+[![CI](https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026/actions/workflows/ci.yml)
+
 ### 👉 [Open the live app](https://app-production-6cc653bd.up.railway.app/?lang=en) · available in English and Spanish
 
 ![AstroAtlas pipeline](docs/images/pipeline.svg)
@@ -38,7 +40,7 @@ AstroAtlas ranks places on Earth by how closely they resemble candidate sites on
 - **Preregistered, frozen-model evaluation** with bootstrap intervals over the analogs (the independent unit). Hashes of the protocols and lists are recorded in the documents.
 - **Controls against known biases:** a flat-terrain control showed that an apparent topographic signal was just "craters sit on flat cratons"; a novelty check shows Harrat ash-Shamah is *already* studied as a planetary-pit analog.
 - **A clear roadmap:** the validation shows exactly what to improve next (cold and ice analogs, Mars thermal data, verified analog coordinates, final licence checks); see [Future work](#future-work).
-- **189 automated tests**; the app runs from versioned demo data with no downloads.
+- **207 automated tests** (including a browserless smoke test of the app) run on every push; the app runs from versioned demo data with no downloads.
 
 ![Validation results](docs/images/results.svg)
 
@@ -86,7 +88,7 @@ cd AstroAtlas-Hackaton-NASA-2026
 python -m venv .venv && source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
 pip install -e ".[app,dev]"
 streamlit run app/streamlit_app.py                        # runs on the versioned demo_data/, no downloads
-pytest                                                    # 189 tests
+pytest                                                    # 207 tests
 ```
 
 Reproduce the results: `python -m astroatlas.pipeline` (scores, validation, candidates). Regenerating the raw features needs the `[data]` extra and an Earthdata account (`.env.example`); every data module and experiment is listed in [docs/README.md](docs/README.md#reproducing-everything).
@@ -98,7 +100,7 @@ Reproduce the results: `python -m astroatlas.pipeline` (scores, validation, cand
 | `app/` | Streamlit app (`streamlit_app.py`) |
 | `src/astroatlas/` | Package: similarity model, validation, experiments, i18n, imagery |
 | `src/astroatlas/data/` | Data readers per body (PDS, Copernicus, MODIS, GLiM, SEDAC…) |
-| `tests/` | 189 automated tests |
+| `tests/` | 207 automated tests |
 | `demo_data/` | Small versioned features and results so the app runs anywhere |
 | `docs/` | [Documentation index](docs/README.md): report, validation, preregistrations, data sources, licences, catalogues |
 | `docs/catalog/` | CSV catalogues of targets, landings and analog sets (frozen lists with hashes) |
