@@ -3,7 +3,7 @@
 NASA Space Apps 2026 · reto *Permanent Moon Base Locations and Mars*.
 Ranking de lugares de la Tierra por similitud multidimensional con sitios de la Luna y Marte (topografía, térmica, hielo/agua, geología), validado contra análogos terrestres conocidos.
 
-**Empieza por el [resumen del proyecto](RESUMEN.md).**
+**App en línea: https://app-production-6cc653bd.up.railway.app** · **Empieza por el [resumen del proyecto](RESUMEN.md).**
 
 Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [plan de la Tierra](docs/PLAN_TIERRA.md) · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md) · **[informe](docs/INFORME.md)** · **[fichas de candidatos](docs/FICHAS_CANDIDATOS.md)** · [licencias](docs/LICENCIAS.md) · [coordenadas verificadas](docs/VERIFICACION_COORDENADAS.md) · [dimensiones no modeladas](docs/DIMENSIONES_NO_MODELADAS.md) · [cuevas y tubos de lava](docs/CUEVAS.md) · [despliegue en Railway](docs/DESPLIEGUE.md)
 
