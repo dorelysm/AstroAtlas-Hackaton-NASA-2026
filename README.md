@@ -66,7 +66,8 @@ Directly built on the challenge text: open NASA Earth/Moon/Mars data (LOLA, MOLA
 1. **Pick a Moon or Mars site** and set how much each aspect matters.
 2. **See an interactive map** of the most similar Earth places (named, with country), the known analogs for comparison, and a confidence panel.
 3. **Open a place profile:** match per aspect with a one-line explanation, side-by-side NASA orbital views, and *what Earth cannot imitate*.
-4. **Go deeper:** aspect atlas, use-case profiles (mobility, cold operations, ice, basaltic terrain, lava tubes), technical details and credits.
+4. **Check robustness and risks:** a *sensitivity chart* shows how the place's rank changes when each aspect is removed in turn; *field-site risk indicators* (slope, heat, cold, dust, wind, snow, altitude, isolation) can also colour the map; and a **PDF site report** summarises the profile, reliability, risks and orbital views.
+5. **Go deeper:** aspect atlas, use-case profiles (mobility, cold operations, ice, basaltic terrain, lava tubes), technical details and credits.
 
 | Choose a site and read the reliability notice | Map of similar places and closest matches |
 |---|---|

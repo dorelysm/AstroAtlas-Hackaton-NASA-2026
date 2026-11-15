@@ -4,6 +4,10 @@ Available in Spanish and English (language selector at the top of the sidebar; a
 interface proposal "AstroAtlas — Interface proposal" (Figma). It only changes how things are shown: the model does not change.
 Accessibility, usability and languages: see docs/app/interface.md.
 """
+import re
+from datetime import date
+
+import altair as alt
 import pandas as pd
 import pydeck as pdk
 import streamlit as st
@@ -18,6 +22,9 @@ from astroatlas.presentation import (RELIABILITY, IMPORTANCE, aspect_info, relia
                                    table_selection_id, map_selection_id, short_limits, match_level, pct, weights_from_importance,
                                    new_selection, translate_case, translate_confidence, translate_why)
 from astroatlas.report import ficha
+from astroatlas.report_pdf import build_report
+from astroatlas.risks import KEYS as RISK_KEYS, RGB, RGB_UNKNOWN, level_name, risk_levels, risk_values, target_slope_level
+from astroatlas.sensitivity import rank_span, sensitivity
 from astroatlas.similarity import fit_topo_model, rank_cells, site_profiles
 from astroatlas.validate import evaluate, known_for_body, load_known, novel_candidates
 
@@ -79,6 +86,20 @@ def nombres(coords: tuple, idioma: str) -> list:
 def topo_model_for(_earth):
     """Whitened PCA of the topography (see similarity.py); fitted only once."""
     return fit_topo_model(_earth)
+
+
+@st.cache_data(show_spinner=False)
+def sens_table(_earth, _profile, _topo, body_: str, site_: str, weights_t: tuple, cell_id: str, visible_t: tuple):
+    """Rank of one place when each aspect is switched off in turn (cached per site, weights, place and visible cells)."""
+    return sensitivity(_earth, _profile, dict(weights_t), _topo, cell_id, set(visible_t))
+
+
+LEVEL_TEXT = {"low": "riesgo_bajo", "medium": "riesgo_medio", "high": "riesgo_alto", "unknown": "riesgo_sin_dato"}
+LEVEL_BADGE = {"low": "green", "medium": "orange", "high": "red", "unknown": "gray"}
+
+
+def risk_label(level) -> str:
+    return t(lang, LEVEL_TEXT[level_name(level)])
 
 
 try:
@@ -158,6 +179,12 @@ lab = nombres(tuple(zip(shown["lat"].round(3), shown["lon"].round(3))), lang)
 shown["lugar"], shown["pais"] = [x[0] for x in lab], [x[1] for x in lab]
 shown["parecido"] = (shown["score"] * 100).round().astype(int)
 shown["detalle"] = [t(lang, "tooltip_detalle", pais=p, n=n) for p, n in zip(shown["pais"], shown["parecido"])]
+# field-site risk indicators (information only; they never change the score)
+_rk = risk_levels(earth.set_index("cell_id").reindex(shown["cell_id"].values).reset_index(drop=True))
+shown["riesgo"] = _rk["overall"].values
+shown["riesgo_txt"] = [t(lang, "tooltip_riesgo", pais=p, nivel=risk_label(v)) for p, v in zip(shown["pais"], shown["riesgo"])]
+_rgb = [RGB.get(int(v), RGB_UNKNOWN) if pd.notna(v) else RGB_UNKNOWN for v in shown["riesgo"]]
+shown["rr"], shown["gg"], shown["bb"] = [c[0] for c in _rgb], [c[1] for c in _rgb], [c[2] for c in _rgb]
 top5 = shown.head(5)
 
 # ---- Chosen place: selectbox, map click or table row (each new selection counts only once) ----
@@ -181,11 +208,14 @@ with st.expander(t(lang, "glosario_titulo")):
 col_map, col_rel = st.columns([3, 2])
 with col_map:
     st.header(t(lang, "mapa_titulo", sitio=site, cuerpo=body_name(body, lang)))
+    color_mode = st.segmented_control(t(lang, "mapa_color_label"), ["sim", "risk"], default="sim", required=True, key="map_color",
+                                      format_func=lambda k: t(lang, "mapa_color_sim" if k == "sim" else "mapa_color_riesgo")) or "sim"
     sel = shown[shown["cell_id"].astype(str) == pick]
     known_map = known.assign(lugar=known["name"], detalle=t(lang, "tooltip_conocido"))
     layers = [
         pdk.Layer("ScatterplotLayer", shown, id="candidatos", get_position="[lon, lat]", get_radius=110000,
-                  get_fill_color="[255, 140 - score * 100, 0, 60 + score * 180]", pickable=True),
+                  get_fill_color=("[255, 140 - score * 100, 0, 60 + score * 180]" if color_mode == "sim" else "[rr, gg, bb, 210]"),
+                  pickable=True),
         pdk.Layer("ScatterplotLayer", known_map, id="conocidos", get_position="[lon, lat]", get_radius=110000, filled=False,
                   stroked=True, get_line_color="[76, 141, 246, 255]", line_width_min_pixels=3, pickable=True),
         pdk.Layer("ScatterplotLayer", sel, id="elegido", get_position="[lon, lat]", get_radius=170000, filled=False, stroked=True,
@@ -194,9 +224,9 @@ with col_map:
     # no wheel zoom: so the wheel keeps scrolling the page when the cursor passes over the map (there are + and − buttons)
     st.pydeck_chart(pdk.Deck(layers=layers, initial_view_state=pdk.ViewState(latitude=20, longitude=0, zoom=0.6),
                              views=[pdk.View(type="MapView", controller={"scrollZoom": False})],
-                             tooltip={"text": "{lugar}\n{detalle}"}),
+                             tooltip={"text": "{lugar}\n" + ("{detalle}" if color_mode == "sim" else "{riesgo_txt}")}),
                     on_select="rerun", selection_mode="single-object", key="mapa", alt=t(lang, "mapa_alt", sitio=site))
-    st.caption("  \n".join(t(lang, "leyenda_lista")))
+    st.caption("  \n".join(t(lang, "leyenda_lista" if color_mode == "sim" else "leyenda_riesgo")))
 
 with col_rel:
     rel = reliability(body, lang)
@@ -228,6 +258,69 @@ fila = shown[shown["cell_id"].astype(str) == st.session_state["profile_cell"]].i
 f = ficha(fila, site, body)
 cell = earth[earth["cell_id"] == f["cell_id"]].iloc[0]
 usados = [d for d in DIMENSIONS if d in f["scores"] and weights[d] > 0]
+target_profile = profiles[(body, site)]
+
+# rank sensitivity: the place's rank when each aspect is switched off in turn
+sens = sens_table(earth, target_profile, topo_model_for(earth), body, site, tuple(sorted(weights.items())), str(f["cell_id"]),
+                  tuple(sorted(view["cell_id"].astype(str))))
+
+
+def scenario_label(key: str) -> str:
+    return t(lang, "sens_todas") if key == "all" else t(lang, "sens_sin", aspecto=aspect_info(key, lang)[0].lower())
+
+
+def sens_summary() -> str | None:
+    """Plain-language reading of the sensitivity table (None if there is only one active aspect)."""
+    lo, hi = rank_span(sens)
+    if len(sens) < 2 or hi == 0:
+        return None
+    key = "sens_estable" if hi - lo <= max(3, 0.5 * lo) else "sens_varia"
+    return t(lang, key, k=hi, lo=lo, hi=hi)
+
+
+# field-site risks of this place and of the target site itself
+cell_risk = risk_levels(pd.DataFrame([cell])).iloc[0]
+cell_values = risk_values(cell)
+target_v, target_lvl = target_slope_level(target_profile)
+
+
+def make_pdf() -> bytes:
+    """Site feasibility report (built only when the user clicks the download button)."""
+    objective = (moon if body == "moon" else mars)
+    objective = objective[objective["site"] == site].iloc[0]
+    imgs = []
+    try:
+        imgs.append((body_image(body, round(float(objective["lat"]), 4), round(float(objective["lon"]), 4))
+                     if view_available(body, float(objective["lat"])) else None,
+                     t(lang, "comp_pie_cuerpo", sitio=site, cuerpo=body_name(body, lang)), credit(body, lang=lang)))
+    except NoImage:
+        imgs.append((None, t(lang, "comp_pie_cuerpo", sitio=site, cuerpo=body_name(body, lang)), credit(body, lang=lang)))
+    try:
+        imgs.append((earth_image(round(float(f["lat"]), 4), round(float(f["lon"]), 4), capa),
+                     t(lang, "comp_pie_tierra", lugar=fila["lugar"], pais=fila["pais"]), credit("earth", capa, lang)))
+    except NoImage:
+        imgs.append((None, t(lang, "comp_pie_tierra", lugar=fila["lugar"], pais=fila["pais"]), credit("earth", capa, lang)))
+    rel_ = reliability(body, lang)
+    aspects = []
+    for d in DIMENSIONS:
+        sc = f["scores"].get(d)
+        aspects.append({"name": aspect_info(d, lang)[0], "pct": None if sc is None else round(100 * sc),
+                        "level": t(lang, "sin_comparar") if sc is None else match_level(sc, lang)[0],
+                        "text": explain(d, sc, cell, target_profile, body, site, lang)})
+    sens_rows = [{"scenario": scenario_label(r.scenario), "rank": "-" if pd.isna(r["rank"]) else f"#{int(r['rank'])} / {int(r.n)}",
+                  "score": "-" if pd.isna(r.score) else pct(r.score, lang)} for _, r in sens.iterrows()]
+    risks = [{"name": t(lang, f"r_{k}"), "level": level_name(cell_risk[k]), "level_text": risk_label(cell_risk[k]),
+              "value": "-" if pd.isna(cell_values[k]) else t(lang, f"rv_{k}", v=cell_values[k])} for k in RISK_KEYS]
+    return build_report({
+        "date": date.today().isoformat(), "place": fila["lugar"], "country": fila["pais"], "site": site, "body_name": body_name(body, lang),
+        "coords": coordinates(f["lat"], f["lon"], lang), "terrain": describe_terrain(cell, lang), "match_pct": int(fila["parecido"]),
+        "n_aspects": len(usados), "n_total": len(DIMENSIONS), "aspects": aspects, "reliability": rel_,
+        "sensitivity": {"summary": sens_summary() or t(lang, "sens_una"), "rows": sens_rows},
+        "risk_overall": (risk_label(cell_risk["overall"]), level_name(cell_risk["overall"])), "risks": risks,
+        "target_risk": None if pd.isna(target_v) else t(lang, "riesgo_objetivo", sitio=site, v=target_v, nivel=risk_label(target_lvl)),
+        "limits": f["limits"] if lang == "es" else t(lang, f"limites_largos_{body}"), "images": imgs}, lang)
+
+
 with st.container(border=True):
     cab, der = st.columns([3, 2], vertical_alignment="center")
     with cab:
@@ -236,6 +329,9 @@ with st.container(border=True):
     with der:
         st.markdown(f"**{t(lang, 'se_parece', sitio=site, n=fila['parecido'])}**")
         st.badge(t(lang, "calculado", n=len(usados), total=len(DIMENSIONS)), color="orange")
+        _slug = lambda s: re.sub(r"[^A-Za-z0-9]+", "_", s).strip("_")
+        st.download_button(t(lang, "pdf_boton"), data=make_pdf, mime="application/pdf", icon=":material/download:", on_click="ignore",
+                           file_name=t(lang, "pdf_archivo", lugar=_slug(fila["lugar"]), sitio=_slug(site)), key="pdf_dl")
     # ---- Visual comparison: the Moon or Mars site against the Earth place (orbital views at the same scale) ----
     st.markdown(f"**{t(lang, 'comp_titulo', sitio=site, lugar=fila['lugar'])}**")
     capa = st.segmented_control(t(lang, "comp_capa"), ["modis", "bluemarble"], default="modis", required=True, key="capa_tierra",
@@ -286,6 +382,39 @@ with st.container(border=True):
     with st.container(horizontal=True):
         for txt in short_limits(body, lang):
             st.badge(txt, color="blue")
+    # ---- Field-site risks (indicative) ----
+    st.markdown(f"**{t(lang, 'riesgo_titulo')}**")
+    st.badge(f"{t(lang, 'riesgo_general')}: {risk_label(cell_risk['overall'])}", color=LEVEL_BADGE[level_name(cell_risk["overall"])])
+    for k in RISK_KEYS:
+        val = "-" if pd.isna(cell_values[k]) else t(lang, f"rv_{k}", v=cell_values[k])
+        st.markdown(f"- **{t(lang, f'r_{k}')}**: {val} · {risk_label(cell_risk[k])}")
+    if not pd.isna(target_v):
+        st.caption(t(lang, "riesgo_objetivo", sitio=site, v=target_v, nivel=risk_label(target_lvl)))
+    st.caption(t(lang, "riesgo_nota"))
+    st.caption(t(lang, "riesgo_no_evaluado"))
+
+# ---- Sensitivity: how much does the rank depend on each aspect? ----
+with st.expander(t(lang, "sens_titulo")):
+    ok = sens["rank"].notna()
+    if len(sens) < 2:
+        st.caption(t(lang, "sens_una"))
+    elif not ok.any():
+        st.caption(t(lang, "sens_una"))
+    else:
+        st.caption(t(lang, "sens_intro", lugar=fila["lugar"], n=int(sens["n"].iloc[0])))
+        labels = [scenario_label(k) for k in sens["scenario"]]
+        chart_df = pd.DataFrame({"scenario": labels, "rank": sens["rank"].astype("float")})
+        base = alt.Chart(chart_df).encode(y=alt.Y("scenario:N", sort=None, title=None, axis=alt.Axis(labelLimit=260)), x=alt.X("rank:Q", title=t(lang, "sens_col_puesto")))
+        st.altair_chart(base.mark_bar(color="#FF8C42") + base.mark_text(align="left", dx=4, color="#E6EDF3").encode(text="rank:Q"),
+                        width="stretch")
+        st.caption(t(lang, "sens_alt", lugar=fila["lugar"]))
+        tops = nombres(tuple(zip(sens["top_lat"].round(3), sens["top_lon"].round(3))), lang)
+        st.dataframe(pd.DataFrame({t(lang, "sens_col_escenario"): labels,
+                                   t(lang, "sens_col_puesto"): [None if pd.isna(r) else int(r) for r in sens["rank"]],
+                                   t(lang, "sens_col_parecido"): [None if pd.isna(s) else pct(s, lang) for s in sens["score"]],
+                                   t(lang, "sens_col_primero"): [f"{a} ({b})" for a, b in tops]}), hide_index=True,
+                     alt=t(lang, "sens_alt", lugar=fila["lugar"]))
+        st.markdown(sens_summary())
 
 with st.expander(t(lang, "tec_titulo")):
     m = evaluate(ranked, known_body)
