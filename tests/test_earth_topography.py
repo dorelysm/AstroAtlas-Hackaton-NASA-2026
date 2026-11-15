@@ -88,11 +88,12 @@ def test_known_analog_cells_have_contract_columns():
     assert cells["cell_id"].is_unique and len(cells) >= 10
 
 
-def test_flat_ocean_cells_are_detected_but_flat_land_is_kept():
+def test_flat_water_is_detected_at_any_altitude_but_real_flat_land_is_kept():
     import pandas as pd
 
     df = pd.DataFrame({
-        "topo__relief_m": [0.0, 0.3, 4.0, 0.0, 500.0],
-        "elev_mean_m": [0.0, 0.5, 1.0, 55.0, 0.0],  # mar, mar, polder holandés, plataforma de hielo, costa montañosa
-    })
-    assert list(earth.is_flat_ocean(df)) == [True, True, False, False, False]
+        "topo__relief_m": [0.0, 0.3, 4.0, 5.0, 0.0, 4.15, 500.0],
+        "elev_mean_m": [0.0, 0.5, 1.0, 55.0, 174.0, 3050.0, 0.0],
+    })  # mar, mar, polder holandés, plataforma de hielo, lago (Michigan), meseta antártica, costa montañosa
+    assert list(earth.is_flat_water(df)) == [True, True, False, False, True, False, False]
+    assert earth.is_flat_ocean is earth.is_flat_water  # el nombre anterior sigue funcionando

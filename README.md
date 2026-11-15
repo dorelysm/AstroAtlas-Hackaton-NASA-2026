@@ -5,7 +5,7 @@ NASA Space Apps 2026 · reto *Permanent Moon Base Locations and Mars*.
 
 **Empieza por el [resumen del proyecto](RESUMEN.md).**
 
-Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md)
+Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md) · [validación](docs/VALIDACION.md)
 
 ## Instalación (Windows PowerShell)
 

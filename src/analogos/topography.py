@@ -71,6 +71,7 @@ def roughness_m(z: np.ndarray, spacing_m: float, box_m: float = 1000.0) -> float
 # Umbrales de pendiente para las fracciones de área. A CONFIRMAR con una fuente (aterrizaje/movilidad).
 FLAT_DEG = 5.0
 STEEP_DEG = 15.0
+FLAT_MEAN_SLOPE_DEG = 0.1  # por debajo, la orientación de las laderas no está definida (se toma 0)
 ROUGHNESS_BOXES_M = {"topo__rough_1km_m": 1000.0, "topo__rough_2km_m": 2000.0, "topo__rough_5km_m": 5000.0}
 _FLAT_GRADIENT2 = np.tan(np.radians(1.0)) ** 2  # por debajo de 1° la curvatura se toma como 0
 
@@ -191,9 +192,15 @@ def window_features(z: np.ndarray, spacing_m: float, baseline_m: float = 500.0, 
 
     w = np.hypot(p[inner], q[inner])
     w = np.where(valid, w, np.nan)
-    if np.isfinite(w).any() and _nanmean(slope[inner]) >= 0.1 and np.nansum(w) > 0:
-        pe, qn = np.nansum(-p[inner][valid]), np.nansum(-q[inner][valid])  # vector cuesta abajo
-        out["topo__aspect_concentration"] = float(np.hypot(pe, qn) / np.nansum(w))
-        hemi = 1.0 if lat >= 0 else -1.0  # ecuador = sur en el norte, norte en el sur
-        out["topo__aspect_equatorward"] = float(hemi * np.nansum(q[inner][valid]) / np.nansum(w))
+    if np.isfinite(w).any():
+        if _nanmean(slope[inner]) >= FLAT_MEAN_SLOPE_DEG and np.nansum(w) > 0:
+            pe, qn = np.nansum(-p[inner][valid]), np.nansum(-q[inner][valid])  # vector cuesta abajo
+            out["topo__aspect_concentration"] = float(np.hypot(pe, qn) / np.nansum(w))
+            hemi = 1.0 if lat >= 0 else -1.0  # ecuador = sur en el norte, norte en el sur
+            out["topo__aspect_equatorward"] = float(hemi * np.nansum(q[inner][valid]) / np.nansum(w))
+        else:
+            # Terreno llano: sin laderas no hay orientación preferente. El valor neutro es 0, NO NaN: con NaN la PCA
+            # de la topografía no puntúa la fila y las celdas más llanas (las más parecidas a Marte) salían del ranking.
+            out["topo__aspect_concentration"] = 0.0
+            out["topo__aspect_equatorward"] = 0.0
     return out

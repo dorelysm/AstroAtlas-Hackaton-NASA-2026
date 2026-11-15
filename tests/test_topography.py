@@ -98,7 +98,8 @@ def test_flat_terrain_new_features():
     assert f["topo__relief_m"] == pytest.approx(0, abs=1e-9)
     assert f["topo__tri_m"] == pytest.approx(0, abs=1e-9) and f["topo__tpi_std_m"] == pytest.approx(0, abs=1e-9)
     assert f["topo__curv_profile_abs_per_km"] == 0 and f["topo__curv_plan_abs_per_km"] == 0
-    assert np.isnan(f["topo__aspect_concentration"])  # sin laderas no hay orientación
+    # sin laderas no hay orientación: valor neutro 0 (NO NaN: con NaN la PCA no puntuaba las celdas más llanas)
+    assert f["topo__aspect_concentration"] == 0.0 and f["topo__aspect_equatorward"] == 0.0
     # parche llano = toda la ventana interior: (101-2)^2 píxeles de 0.25 km²
     assert f["topo__flat_patch_km2"] == pytest.approx(99 * 99 * 0.25, rel=1e-6)
 
@@ -169,3 +170,14 @@ def test_all_declared_topo_features_are_returned():
     assert set(DIMENSIONS["topo"]) <= set(f)
     tiny = window_features(np.zeros((4, 4)), 500.0)  # ventana demasiado pequeña: NaN, no excepción
     assert set(DIMENSIONS["topo"]) <= set(tiny)
+
+
+def test_flat_terrain_still_has_a_complete_topography_vector():
+    """Regresión: el terreno llano debe tener TODAS las variables topográficas definidas (se puntúa en la PCA)."""
+    from analogos.config import DIMENSIONS
+
+    for z in (np.full((101, 101), 7.0), np.random.default_rng(1).normal(0, 0.2, (101, 101))):  # llano exacto y casi llano
+        f = window_features(z, 500.0)
+        assert all(np.isfinite(f[k]) for k in DIMENSIONS["topo"]), [k for k in DIMENSIONS["topo"] if not np.isfinite(f[k])]
+    nodata = window_features(np.full((101, 101), np.nan), 500.0)  # sin dato sí sigue siendo NaN (no es "llano")
+    assert np.isnan(nodata["topo__aspect_concentration"]) and np.isnan(nodata["topo__slope_mean_deg"])

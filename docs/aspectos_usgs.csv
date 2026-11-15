@@ -1,0 +1,4 @@
+analog_type,aspect,nivel,razon
+Impact Crater,topo,fuente,El tipo de análogo lo asigna el productor (USGS) y el sitio está verificado con investigación financiada por la NASA; un cráter de impacto aporta forma del terreno (pendientes y relieve)
+Dunes,topo,fuente,Campo de dunas: forma y rugosidad del terreno eólico; mismo criterio de procedencia
+Volcanic Eruption,geo,fuente,Sitio de erupción volcánica: aporta litología volcánica. OJO: volcánico no implica basáltico (puede ser félsico) y la variable geo mide fracción de basalto

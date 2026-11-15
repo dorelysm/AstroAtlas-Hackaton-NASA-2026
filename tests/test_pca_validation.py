@@ -153,3 +153,19 @@ def test_pipeline_end_to_end_tmp(tmp_path, earth, with_sites):
     run(n_boot=0, compress_topo=False, by_body=False, features_dir=fdir, results_dir=tmp_path / "base")
     base = json.loads((tmp_path / "base" / "validation_summary.json").read_text())
     assert base["config"]["compress_topo"] is False and base["config"]["topo_components"] is None
+
+
+def test_pca_scores_flat_terrain_rows_instead_of_dropping_them():
+    """Regresión: antes las filas con pendiente < 0.1° llevaban NaN en la orientación y la PCA no las puntuaba."""
+    import numpy as np
+
+    from analogos.config import DIMENSIONS
+    from analogos.similarity import fit_topo_model
+    from analogos.synthetic import synthetic_earth
+
+    earth = synthetic_earth(step_deg=5.0)
+    model = fit_topo_model(earth)
+    flat = earth.iloc[:3].copy()
+    for c in DIMENSIONS["topo"]:
+        flat[c] = 0.0  # terreno perfectamente llano, con orientación neutra 0
+    assert np.isfinite(model.transform(flat).to_numpy()).all()

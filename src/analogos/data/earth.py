@@ -102,10 +102,15 @@ def build_topography(cells: pd.DataFrame, half_km: float = 25.0, baseline_m: flo
     return pd.DataFrame(results, index=cells.index)
 
 
-def is_flat_ocean(df: pd.DataFrame) -> pd.Series:
-    """Celdas cuya ventana es mar: Copernicus rellena el océano de las teselas costeras con 0 m, y sin este
-    filtro salen como 'llanuras perfectas'. Criterio: relieve local < 1 m y elevación media ~0 (|z| < 2 m)."""
-    return (df["topo__relief_m"] < 1.0) & (df["elev_mean_m"].abs() < 2.0)
+def is_flat_water(df: pd.DataFrame) -> pd.Series:
+    """Celdas cuya ventana es AGUA (mar, lagos, mares interiores): Copernicus aplana las masas de agua a una cota
+    constante, así que sin este filtro salen como 'llanuras perfectas'. Criterio: relieve local < 1 m a CUALQUIER
+    altitud (antes solo a ~0 m, y dejaba pasar lagos como el Michigan o el Caspio). Con los datos de la malla de 5°,
+    el terreno llano real más plano (hielo antártico, llanuras, humedales) tiene relieve >= 4 m, así que hay margen."""
+    return df["topo__relief_m"] < 1.0
+
+
+is_flat_ocean = is_flat_water  # nombre anterior, conservado por compatibilidad
 
 
 def build_features(step_deg: float = 5.0, workers: int = 8, topo: bool = True, power: bool = True,
@@ -118,7 +123,7 @@ def build_features(step_deg: float = 5.0, workers: int = 8, topo: bool = True, p
     df = make_grid(step_deg, "earth") if cells is None else cells.copy()
     if topo:
         df = pd.concat([df, build_topography(df, workers=workers)], axis=1)
-        df = df[(df["valid_frac"].fillna(0) >= min_valid) & ~is_flat_ocean(df)]
+        df = df[(df["valid_frac"].fillna(0) >= min_valid) & ~is_flat_water(df)]
     if power:
         df = add_power(df, workers=min(workers, 4))  # POWER limita con 429: pocas conexiones
     for col in FEATURES:  # dimensiones aún sin extraer quedan como NaN

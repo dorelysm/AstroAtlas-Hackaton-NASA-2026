@@ -1,0 +1,14 @@
+name,aspect,nivel,evidencia,fuente_url
+Lanzarote,topo,fuente,ESA: describe la isla como análogo planetario con terreno muy similar al de Marte,https://www.esa.int/ESA_Multimedia/Images/2016/10/Lanzarote
+Lanzarote,geo,nota,Nota propia del CSV: terreno volcánico (la fuente de ESA solo habla de terreno),https://www.esa.int/ESA_Multimedia/Images/2016/10/Lanzarote
+Dry Valleys (Antartida),thermal,fuente,NASA Earth Observatory: muy parecidos a Marte; fríos y secos,https://science.nasa.gov/earth/earth-observatory/martian-landscape-antarctica-4420
+Dry Valleys (Antartida),ice,fuente,NASA Earth Observatory: muy parecidos a Marte; fríos y secos,https://science.nasa.gov/earth/earth-observatory/martian-landscape-antarctica-4420
+Death Valley,topo,fuente,NPS: las imágenes Viking de 1976 se parecían a Death Valley (apariencia del paisaje),https://www.nps.gov/deva/nasa.htm
+Craters of the Moon,geo,fuente,NPS: la roca es químicamente similar a la de Marte y la Luna,https://www.nps.gov/crmo/planyourvisit/scientific-secrets.htm
+Haughton crater (Devon Island),topo,nota,Nota propia del CSV: cráter de impacto (Mars Institute dice solo análogo de la Luna y Marte sin nombrar el aspecto),https://www.marsinstitute.no/hmp
+Haughton crater (Devon Island),thermal,nota,Nota propia del CSV: cráter de impacto POLAR (Mars Institute no nombra el aspecto),https://www.marsinstitute.no/hmp
+Mauna Kea,geo,nota,Nota propia del CSV: basalto volcánico (la razón de la analogía NO está verificada),
+Askja,geo,nota,Nota propia del CSV: caldera volcánica (la razón de la analogía NO está verificada),
+Atacama,ice,general,Desierto hiperárido; la fuente citada solo dice buen modelo análogo de Marte sin nombrar el aspecto (conocimiento general),https://www.frontiersin.org/journals/astronomy-and-space-sciences/articles/10.3389/fspas.2021.810426/full
+Svalbard,thermal,general,Archipiélago polar; la razón de la analogía NO está verificada (conocimiento general),
+Rio Tinto,ninguno,fuente,NASA Astrobiology: análogo por vida subsuperficial en agua líquida (química y habitabilidad): ninguna dimensión del modelo lo mide,https://astrobiology.nasa.gov/news/red-river-drills-for-mars/

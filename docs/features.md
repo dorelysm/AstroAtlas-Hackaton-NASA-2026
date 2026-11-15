@@ -24,7 +24,7 @@ Las features deben ser **comparables entre cuerpos**: misma definición, misma u
 | topo | `topo__tpi_std_m` | m | desviación estándar del índice de posición topográfica (vecindad 5×5) | idem |
 | topo | `topo__curv_profile_abs_per_km` | 1/km | media de \|curvatura de perfil\| (Zevenbergen-Thorne; 0 si pendiente < 1°) | idem |
 | topo | `topo__curv_plan_abs_per_km` | 1/km | media de \|curvatura en planta\| | idem |
-| topo | `topo__aspect_concentration` | 0-1 | cuánto apuntan las laderas en la misma dirección (1 = todas igual); NaN si pendiente media < 0.1° | idem |
+| topo | `topo__aspect_concentration` | 0-1 | cuánto apuntan las laderas en la misma dirección (1 = todas igual); **0 si la pendiente media < 0.1°** (sin laderas no hay orientación; antes era NaN y dejaba sin puntuar a las celdas más llanas) | idem |
 | topo | `topo__aspect_equatorward` | -1 a 1 | componente de las laderas hacia el ecuador del hemisferio (ponderada por pendiente) | idem |
 | thermal | `thermal__t_max_k` | K | temperatura superficial máxima | MODIS LST / Diviner / TES-THEMIS |
 | thermal | `thermal__t_range_k` | K | amplitud térmica diaria (max-min) | MODIS LST / Diviner / TES-THEMIS |

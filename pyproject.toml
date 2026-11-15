@@ -17,7 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 app = ["streamlit", "pydeck"]
-data = ["earthaccess", "pyhdf", "rasterio", "xarray", "geopandas", "h3", "python-dotenv"]
+data = ["earthaccess", "pyhdf", "pyshp", "rasterio", "xarray", "geopandas", "h3", "python-dotenv"]
 ml = ["umap-learn"]
 dev = ["pytest", "ruff"]
 

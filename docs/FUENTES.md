@@ -114,7 +114,7 @@ Malla de 5° (955 celdas de tierra firme; `earth_sites` = los 10 análogos conoc
 
 **Limitaciones de la nieve como "hielo":** no es hielo subsuperficial (la Luna mide hielo estable a ≤ 1 m y Marte agua en el suelo). En la noche polar el producto no tiene dato, así que la media anual de las celdas polares usa solo los meses con luz (7 a 11 de 12); sesgo hacia valores altos. 20 celdas (casi todas la plataforma de hielo de Ross) quedan en NaN porque MODIS las enmascara como océano. El hielo marino puede contar como nieve.
 
-**Océano:** Copernicus rellena el mar de las teselas costeras con 0 m. Se descartan las celdas con relieve < 1 m y elevación media |z| < 2 m (102 celdas; antes salían como "llanuras perfectas"). Puede quitar alguna llanura costera muy plana.
+**Agua (océano, lagos y mares interiores):** Copernicus rellena el agua con una cota constante (0 m en el mar), y sin filtro esas celdas salían como "llanuras perfectas". Se descartan las celdas con **relieve local < 1 m a cualquier altitud** (14 nov, segunda versión; la primera exigía además elevación ~0 y dejaba pasar lagos como el Michigan o el Caspio). Con la malla de 5° el terreno llano real más plano (hielo antártico, humedales, llanuras) tiene relieve >= 4 m, así que hay margen. Quedan 951 celdas. Puede quitar alguna isla pequeña (p. ej. la de las islas Feroe, casi todo mar en la ventana de 50 km).
 
 **Pendiente:** GLDAS (humedad del suelo y agua en nieve) está implementado en `earth_water.py` (`--gldas`) pero **sin probar con datos reales**: requiere aceptar en el perfil de Earthdata la licencia "NASA GESDISC DATA ARCHIVE" (error `EulaNotAccepted`).
 
