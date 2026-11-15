@@ -117,11 +117,11 @@ def score_cells(cells: pd.DataFrame, profile: pd.Series, weights: dict[str, floa
 
 def rank_cells(earth: pd.DataFrame, profile: pd.Series, weights: dict[str, float] | None = None,
                topo_model: TopoModel | None = None, bbox: tuple[float, float, float, float] | None = None) -> pd.DataFrame:
-    """Returns the cells with scores per dimension, global score and ranking (1 = best).
+    \"\"\"Returns the cells with scores per dimension, global score and ranking (1 = best).
     
     `bbox` is a tuple (min_lat, max_lat, min_lon, max_lon). If provided, only cells 
     within this bounding box are considered for similarity calculation.
-    """
+    \"\"\"
     df = earth
     if bbox:
         min_lat, max_lat, min_lon, max_lon = bbox
