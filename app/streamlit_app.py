@@ -21,6 +21,7 @@ from astroatlas.presentation import (RELIABILITY, IMPORTANCE, aspect_info, relia
                                    body_name_of, describe_terrain, site_description, importance_label, explain, glossary,
                                    table_selection_id, map_selection_id, short_limits, match_level, pct, weights_from_importance,
                                    new_selection, translate_case, translate_confidence, translate_why)
+from astroatlas.regions import REGIONS, macro_region
 from astroatlas.report import ficha
 from astroatlas.report_pdf import build_report
 from astroatlas.risks import KEYS as RISK_KEYS, RGB, RGB_UNKNOWN, level_name, risk_levels, risk_values, target_slope_level
@@ -102,6 +103,26 @@ def risk_label(level) -> str:
     return t(lang, LEVEL_TEXT[level_name(level)])
 
 
+@st.cache_data
+def featured_candidates() -> list:
+    """Top two cells of the basaltic-terrain-for-Mars use case (the featured mission case)."""
+    csv = RESULTS_DIR / "usecases.csv"
+    csv = csv if csv.exists() else DEMO_DIR / "results" / "usecases.csv"
+    uc = pd.read_csv(csv)
+    top = uc[uc["use_case"] == "basalto_marte"].sort_values("rank").head(2)
+    return [{"cell_id": r.cell_id, "lat": float(r.lat), "lon": float(r.lon), "score": float(r.score)} for r in top.itertuples()]
+
+
+FEATURED_NOTE = {"earth_24_43": "destacado_harrat", "earth_23_39": "destacado_haruj"}
+
+
+def go_featured(cell_id: str):
+    """Callback of the featured-case button: Mars (Jezero), volcanic terrain only, and the first candidate opened."""
+    st.session_state["sitio"] = ("mars", "Jezero")
+    st.session_state["only_volcanic"] = True
+    st.session_state["profile_cell"] = cell_id
+
+
 try:
     earth, moon, mars, known = load()
 except FileNotFoundError as e:
@@ -118,6 +139,24 @@ for col, n in zip(st.columns(3), (1, 2, 3)):
     with col.container(border=True, height="stretch"):
         st.markdown(f"**{n} · {t(lang, f'paso{n}')}**")
         st.caption(t(lang, f"paso{n}_texto"))
+
+# ---- Featured mission case: the best-supported use of the tool ----
+_feat = featured_candidates()
+if _feat:
+    with st.container(border=True):
+        st.markdown(f"**{t(lang, 'destacado_titulo')}**")
+        st.caption(t(lang, "destacado_texto"))
+        for col, c in zip(st.columns(len(_feat)), _feat):
+            lugar_c, pais_c = nombres(((round(c["lat"], 3), round(c["lon"], 3)),), lang)[0]
+            risk_c = risk_levels(pd.DataFrame([earth[earth["cell_id"] == c["cell_id"]].iloc[0]])).iloc[0]["overall"]
+            with col:
+                st.markdown(f"**{t(lang, 'destacado_cand', lugar=lugar_c, pais=pais_c, n=round(100 * c['score']))}**")
+                if c["cell_id"] in FEATURED_NOTE:
+                    st.caption(t(lang, FEATURED_NOTE[c["cell_id"]]))
+                st.badge(f"{t(lang, 'riesgo_general')}: {risk_label(risk_c)}", color=LEVEL_BADGE[level_name(risk_c)])
+        st.button(t(lang, "destacado_boton"), on_click=go_featured, args=(_feat[0]["cell_id"],), key="go_featured",
+                  icon=":material/travel_explore:")
+        st.caption(t(lang, "destacado_nota"))
 
 # The site selector goes in the page (not in the sidebar): on mobile the sidebar starts closed.
 with st.container(border=True):
@@ -151,6 +190,11 @@ with st.sidebar:
     has_veg = "vegetated" in earth.columns
     hide_vegetated = st.checkbox(t(lang, "f_veg"), value=has_veg, disabled=not has_veg)
     st.caption(t(lang, "f_veg_ayuda"))
+    only_volcanic = st.checkbox(t(lang, "f_volc"), key="only_volcanic")
+    st.caption(t(lang, "f_volc_ayuda"))
+    sel_regions = st.multiselect(t(lang, "f_region"), REGIONS, default=REGIONS, key="regions",
+                                 format_func=lambda k: t(lang, f"region_{k}"))
+    st.caption(t(lang, "f_region_ayuda"))
     with st.expander(t(lang, "avanzadas")):
         top_n = st.slider(t(lang, "mostrar"), 10, 500, 100)
 
@@ -166,10 +210,16 @@ if has_viability:  # information only: the order and the score do not change
     ranked = ranked.merge(earth[["cell_id", "viable", "dist_settlement_km", "settlement_name"]], on="cell_id", how="left")
 if has_veg:
     ranked = ranked.merge(earth[["cell_id", "veg_ndvi_max", "vegetated"]], on="cell_id", how="left")
+ranked["region"] = macro_region(ranked["lat"].values, ranked["lon"].values)
+ranked = ranked.merge(earth[["cell_id", "geo__basalt_frac"]], on="cell_id", how="left", suffixes=("", "_cell"))
 # the filters only affect what is SHOWN; the validation (in "Technical details") uses the full `ranked`
 view = ranked[ranked["viable"].fillna(True).astype(bool)] if (has_viability and hide_populated) else ranked
 if has_veg and hide_vegetated:
     view = view[~view["vegetated"].fillna(False).astype(bool)]
+if set(sel_regions) != set(REGIONS):
+    view = view[view["region"].isin(sel_regions)]
+if only_volcanic:
+    view = view[view["geo__basalt_frac"].fillna(0) >= 0.5]
 shown = (novel_candidates(view, known_body, n=top_n) if only_novel else view.head(top_n)).copy()
 if shown.empty:
     st.warning(t(lang, "sin_lugares"))

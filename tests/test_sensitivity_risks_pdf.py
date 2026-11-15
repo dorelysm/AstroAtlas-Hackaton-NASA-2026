@@ -83,7 +83,7 @@ def test_demo_earth_has_all_risk_columns_and_a_spread_of_levels():
 
 
 def test_new_texts_exist_in_both_languages():
-    for key in [k for k in TEXTS if k.startswith(("sens_", "riesgo_", "r_", "rv_", "pdf_", "mapa_color", "leyenda_riesgo", "tooltip_riesgo"))]:
+    for key in [k for k in TEXTS if k.startswith(("sens_", "riesgo_", "r_", "rv_", "pdf_", "mapa_color", "leyenda_riesgo", "tooltip_riesgo", "f_region", "f_volc", "region_", "destacado_"))]:
         assert {"es", "en"} <= set(TEXTS[key]), key
 
 
@@ -108,3 +108,22 @@ def test_pdf_report_is_a_valid_pdf(lang):
          "images": [(None, "Jezero (Mars)", "NASA/JPL/USGS"), (None, "Harrat ash-Shamah", "NASA GIBS")]}
     pdf = build_report(d, lang)
     assert pdf[:5] == b"%PDF-" and len(pdf) > 2000 and b"%%EOF" in pdf[-20:]
+
+
+def test_macro_regions_of_known_places():
+    from astroatlas.regions import REGIONS, macro_region
+    pts = {"south_america": (-24.5, -69.25), "asia": (32.5, 37.5), "africa": (27.5, 17.5), "oceania": (19.8, -155.5),
+           "europe": (37.5, -2.5), "north_america": (36.5, -117.0), "polar": (-77.5, 172.5)}
+    for key, (la, lo) in pts.items():
+        assert macro_region(la, lo)[0] == key, key
+    assert macro_region(27.5, 17.5 + 360)[0] == "africa"            # longitude 0..360 is accepted
+    e = load_features("earth")
+    assert set(macro_region(e["lat"].values, e["lon"].values)) <= set(REGIONS)
+
+
+def test_featured_case_cells_exist_in_demo_data():
+    uc = pd.read_csv("demo_data/results/usecases.csv")
+    top = uc[uc["use_case"] == "basalto_marte"].sort_values("rank").head(2)
+    assert list(top["cell_id"]) == ["earth_24_43", "earth_23_39"]
+    e = load_features("earth").set_index("cell_id")
+    assert (e.loc[top["cell_id"], "geo__basalt_frac"] >= 0.5).all()   # both pass the "volcanic terrain only" filter

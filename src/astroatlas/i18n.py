@@ -391,6 +391,38 @@ TEXTS.update({
 })
 
 
+# ---- region filter and featured mission case ----
+TEXTS.update({
+    "f_region": {"es": "Regiones a mostrar", "en": "Regions to show"},
+    "f_region_ayuda": {"es": "Acota la lista y el mapa a regiones del mundo (límites aproximados). No cambia el puntaje.",
+                       "en": "Narrows the list and map to world regions (approximate boundaries). It does not change the score."},
+    "f_volc": {"es": "Solo terreno volcánico (basalto)", "en": "Volcanic terrain only (basalt)"},
+    "f_volc_ayuda": {"es": "Muestra lugares donde la mitad o más de la roca de la ventana es basalto (GLiM). No cambia el puntaje.",
+                     "en": "Shows places where half or more of the window's rock is basalt (GLiM). It does not change the score."},
+    "region_africa": {"es": "África", "en": "Africa"},
+    "region_europe": {"es": "Europa", "en": "Europe"},
+    "region_asia": {"es": "Asia y Medio Oriente", "en": "Asia and Middle East"},
+    "region_north_america": {"es": "Norteamérica", "en": "North America"},
+    "region_south_america": {"es": "Sudamérica", "en": "South America"},
+    "region_oceania": {"es": "Oceanía", "en": "Oceania"},
+    "region_polar": {"es": "Regiones polares (más allá de 60°)", "en": "Polar regions (beyond 60°)"},
+    "region_other": {"es": "Otras islas", "en": "Other islands"},
+    "destacado_titulo": {"es": "Caso destacado: ensayar operaciones en campos de lava de Marte",
+                         "en": "Featured case: rehearse Mars lava-field operations"},
+    "destacado_texto": {"es": "Dos campos volcánicos basálticos en desierto son los análogos terrestres que mejor reproducen el terreno basáltico de Marte (geología del 85 % al 86 %). Sirven como hipótesis de trabajo para ensayar navegación de rovers y muestreo geológico sobre lava, con apoyo de la literatura y de datos abiertos de la NASA.",
+                        "en": "Two basaltic volcanic fields in desert are the Earth analogs that best reproduce Mars' basaltic terrain (geology 85% to 86%). They are working hypotheses for rehearsing rover navigation and geological sampling on lava, backed by the literature and open NASA data."},
+    "destacado_cand": {"es": "{lugar} ({pais}) · {n} % de parecido medio con 9 sitios de Marte",
+                       "en": "{lugar} ({pais}) · {n}% average match with 9 Mars sites"},
+    "destacado_harrat": {"es": "Ya se usó como análogo de pits planetarios y hay 8 tubos de lava documentados en su región.",
+                         "en": "Already used as a planetary-pit analog, with 8 documented lava tubes in its region."},
+    "destacado_haruj": {"es": "Campo de unos 45 000 km² sin estudio propio como análogo en nuestra búsqueda: una oportunidad.",
+                        "en": "A ~45,000 km² field with no analog study of its own in our search: an opportunity."},
+    "destacado_boton": {"es": "Explorar este caso", "en": "Explore this case"},
+    "destacado_nota": {"es": "El modelo ve el terreno y la geología, no las cuevas; revisa los riesgos de campo en cada ficha.",
+                       "en": "The model sees terrain and geology, not caves; check the field-site risks in each profile."},
+})
+
+
 def t(lang: str, clave: str, **valores):
     """Interface text in `lang` ("es" or "en"; any other value uses English). Fills the `{fields}` with `values`."""
     fila = TEXTS[clave]
