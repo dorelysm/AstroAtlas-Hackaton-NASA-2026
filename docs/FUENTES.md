@@ -184,3 +184,6 @@ Ver [CUEVAS.md](CUEVAS.md). **Luna:** capa `Pit-locations` (278 pits) de Losarco
 
 ## Emisividad MODIS como índice de basalto (15 nov 2026, probado y descartado)
 Se probó el contraste de emisividad de MOD11C3 (`C = E29 − (E31 + E32)/2`) como medida de basalto, con un protocolo preregistrado ([PREREGISTRO_EMISIVIDAD.md](PREREGISTRO_EMISIVIDAD.md)). **La Fase 1 falló** (cobertura 64 % de las celdas frente al 80 % exigido; AUC 0,69 frente a 0,80): el índice separa los arenales de cuarzo pero no el basalto de lo cubierto por vegetación o libre de cuarzo. Se bajó un mes (julio de 2019) y se borró. Código: `src/analogos/emissivity.py`. La geología sigue siendo GLiM.
+
+## Limitación de la cobertura del hielo de Marte (15 nov 2026)
+El mapa `h2o_sr_5x5.tab` de Mars Odyssey GRS (hidrógeno, PDS `ody-m-grs-5-elements-v1`) **no tiene valores entre ≈ 57° y 90° de latitud** en ningún hemisferio y tiene huecos entre 42° y 57° N (1 084 de 2 592 celdas sin dato). **Phoenix (68,2° N) y Arcadia Planitia (47,25° N) quedan con `ice__water_frac` = NaN**; Viking 2 (47,7° N) tiene 0,046. Los 12 objetivos de Marte con dato tienen entre 0,03 y 0,07 de agua (todos secos). Detalle e implicaciones: [PREREGISTRO_MODELOS.md](PREREGISTRO_MODELOS.md).

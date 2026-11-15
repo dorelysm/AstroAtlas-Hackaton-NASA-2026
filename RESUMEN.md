@@ -34,7 +34,7 @@ Para medir el acierto usamos una cifra sencilla: **«si tomo un lugar que sabemo
 | **Marte** | **56 %** (entre 45 % y 68 %) | **No se puede afirmar que funcione**: el margen incluye el azar |
 
 **Lo que sí hace bien:** reconoce los análogos **áridos, volcánicos y de impacto** (Lanzarote 96 %, Pinacate 79 %, Atacama 65 %, el cráter de Ries 75 %...).
-**Lo que no hace bien:** los análogos **fríos y de hielo** (Valles Secos de la Antártida 4 %, Axel Heiberg 10 %, Svalbard 18 %). La razón principal es que **la «nieve» de la Tierra no mide lo mismo que el hielo bajo el suelo de Marte**, y no tenemos todavía un dato terrestre equivalente.
+**Lo que no hace bien:** los análogos **fríos y de hielo** (Valles Secos de la Antártida 4 %, Axel Heiberg 10 %, Svalbard 18 %). La razón principal es que **ninguno de nuestros sitios objetivo de Marte con dato representa un lugar con hielo somero**: los dos polares (Phoenix y Arcadia) no tienen dato de hielo, así que el método no puede reconocer ese tipo de análogo. Un segundo modelo, que compara directamente Tierra con Tierra (qué lugares se parecen a los análogos ya conocidos), **sí los reconoce (74 %)**, mientras que el principal los reconoce en un 19 %; y a la inversa con los áridos (67 % frente a 42 %). **Los dos modelos se complementan.**
 **El único aspecto con señal clara es la geología** (si el terreno es volcánico), aunque descansa en pocos casos.
 
 > **Mensaje clave para las diapositivas:** «Construimos un método transparente, lo sometimos a pruebas con criterios fijados de antemano, y sabemos exactamente dónde funciona (terreno árido y volcánico) y dónde no (hielo y frío)».
@@ -58,7 +58,7 @@ Aplicando los filtros (sin pueblos cercanos, sin vegetación, lejos de los anál
 - **Una app web** donde se elige un sitio de la Luna o de Marte y se ve el mapa de zonas parecidas, con una ficha que dice **qué se parece, qué no y los límites de la analogía** (gravedad, atmósfera, radiación).
 
 ## 7. Por qué la forma de trabajar también es un resultado
-Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxito **antes** de mirar los números y lo dejamos registrado. Así probamos **seis ideas para mejorar el método** y las seis salieron mal o sin efecto:
+Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxito **antes** de mirar los números y lo dejamos registrado. Así probamos **ocho ideas para mejorar el método** y ninguna mejoró el resultado global:
 
 | Idea | Resultado |
 |---|---|
@@ -67,7 +67,9 @@ Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxit
 | Usar la emisividad infrarroja para detectar basalto | No funciona (detecta arena de cuarzo, no basalto) |
 | Describir la rugosidad a varias escalas | Sin efecto |
 | Ajustar la tolerancia según lo variable que sea cada sitio | Empeora un poco |
-| Separar análogos fríos y cálidos | Mejora los fríos, pero siguen por debajo del azar |
+| Separar análogos fríos y cálidos | Mejora un poco, pero el test no podía acertar: faltan datos de hielo polar de Marte |
+| Comparar con los análogos conocidos (Tierra con Tierra) | Por sí solo no supera el azar, pero reconoce los análogos fríos que el modelo principal no |
+| Combinar los dos modelos por consenso | Empeora |
 
 También **corregimos errores propios a la vista** (por ejemplo, descubrimos que una «señal» del relieve en Marte se debía solo a que los cráteres están en zonas llanas, y que las primeras candidatas eran selvas). Esta transparencia es un punto fuerte frente a un jurado.
 
@@ -82,7 +84,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 
 ## 9. Limitaciones, dichas con claridad
 - **Pocos análogos para comprobar** (23): los márgenes son anchos.
-- **El hielo y el frío son el punto débil:** no hay un dato terrestre equivalente al hielo de Marte.
+- **El hielo y el frío son el punto débil:** faltan datos de hielo de Marte en los polos (Phoenix y Arcadia no tienen dato), así que esa parte no se puede comprobar bien. Conseguir ese dato es el siguiente paso.
 - **Marte no tiene dato de temperatura** en nuestro modelo (no hay un mapa comparable).
 - **Las coordenadas de varios análogos vienen de Wikipedia o de memoria** y no están verificadas en fuente primaria; hay que revisarlas a mano.
 - **Algunas licencias de datos están «por comprobar»** (Copernicus, SEDAC, MODIS, PDS): hay que abrir sus páginas y copiar la atribución exacta.
@@ -98,7 +100,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 
 ## 11. Cifras para tener a mano
 - **35** sitios objetivo (21 Luna, 14 Marte) · **951** zonas de la Tierra · **4** aspectos medidos.
-- **23** análogos de validación (10 originales + 13 nuevos) · **6** ideas probadas, todas documentadas.
+- **23** análogos de validación (10 originales + 13 nuevos) · **8** ideas probadas, todas documentadas.
 - **60 %** de acierto en la Luna, **56 %** en Marte (50 % = azar).
 - **100 %** de estabilidad de Harrat ash-Shamah, **79 %** de Haruj.
 - **152** pruebas automáticas · una sola rama de código (`main`) · app desplegada.

@@ -43,5 +43,5 @@ Criterio: el límite inferior del IC 95 % del u medio («todas las dimensiones»
 - Con 23 análogos los intervalos siguen siendo anchos; un segundo conjunto independiente daría más poder.
 
 ## Qué sugiere para mejorar el modelo
-1. **El hielo/frío es lo que impide recuperar un tercio de los análogos de Marte.** Cualquier mejora debe atacar eso: una variable física comparable (inercia térmica o emisividad) y rellenar la térmica de Marte, que es la dimensión que distingue los análogos fríos de los cálidos.
+1. **El hielo/frío es lo que impide recuperar un tercio de los análogos de Marte** (**corrección:** no por la variable de nieve, sino porque los objetivos polares de Marte no tienen dato de hielo; ver [PREREGISTRO_MODELOS.md](PREREGISTRO_MODELOS.md)). Cualquier mejora debe atacar eso: una variable física comparable (inercia térmica o emisividad) y rellenar la térmica de Marte, que es la dimensión que distingue los análogos fríos de los cálidos.
 2. Las mejoras se probarán contra **este mismo conjunto congelado**, sin tocarlo, y se reportarán aparte.

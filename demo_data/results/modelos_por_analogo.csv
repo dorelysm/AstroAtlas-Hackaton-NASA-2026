@@ -1,0 +1,33 @@
+body,analog,n_refs,P_A,u_B,u_consenso,u_union_exploratorio,frio
+moon,Haughton crater (Devon Island),11,0.897,0.4196,0.5352,0.796,True
+moon,Mauna Kea,11,0.1725,0.2292,0.2366,0.1304,False
+moon,Askja,11,0.9716,0.2692,0.3565,0.9432,True
+moon,Craters of the Moon,11,0.98,0.3113,0.3943,0.96,False
+moon,Pinacate (Mexico),10,0.4564,0.3365,0.429,0.3323,False
+moon,Meteor Crater (EE. UU.),10,0.9327,0.164,0.2271,0.8654,False
+moon,Ries (Alemania),11,0.5174,0.9232,0.6656,0.8465,False
+moon,Rochechouart (Francia),11,0.7771,0.9537,0.9453,0.9075,False
+moon,Sudbury (Canada),11,0.6193,0.4585,0.5857,0.4269,False
+moon,Vredefort (Sudafrica),11,0.755,0.7729,0.9295,0.6036,False
+moon,Lava Beds (EE. UU.),11,0.9842,0.3134,0.3975,0.9685,False
+moon,Etna (Italia),11,0.3249,0.4343,0.4111,0.3228,False
+mars,Atacama,18,0.613,0.2082,0.3165,0.4837,False
+mars,Haughton crater (Devon Island),18,0.3775,0.8549,0.5068,0.7781,True
+mars,Lanzarote,19,0.9947,0.7424,0.8391,0.9895,False
+mars,Dry Valleys (Antartida),19,0.0137,0.3396,0.0273,0.2545,True
+mars,Rio Tinto,19,0.6761,0.5615,0.7077,0.572,False
+mars,Svalbard,19,0.1577,0.8297,0.2608,0.7424,True
+mars,Craters of the Moon,19,0.3743,0.1325,0.2282,0.2419,False
+mars,Death Valley,19,0.5636,0.2829,0.388,0.429,False
+mars,Pinacate (Mexico),18,0.7655,0.2587,0.3649,0.6688,False
+mars,Axel Heiberg (McGill Arctic Research Station),17,0.0705,0.836,0.1314,0.7529,True
+mars,Eureka (Ellesmere),18,0.3333,0.8538,0.4416,0.776,True
+mars,Salar Grande (Chile),17,0.6814,0.2692,0.3985,0.5731,False
+mars,Salar de Uyuni (Bolivia),18,0.2955,0.3007,0.4206,0.1767,False
+mars,Danakil / Dallol (Etiopia),19,0.674,0.245,0.3491,0.5699,False
+mars,Meteor Crater (EE. UU.),18,0.6562,0.0021,0.0042,0.5436,False
+mars,Ries (Alemania),19,0.7739,0.8959,0.8696,0.8275,False
+mars,Rochechouart (Francia),19,0.9295,0.9264,0.9905,0.8675,False
+mars,Sudbury (Canada),19,0.4111,0.3775,0.5026,0.2723,False
+mars,Vredefort (Sudafrica),19,0.9064,0.7897,0.9106,0.837,False
+mars,Lava Beds (EE. UU.),19,0.7497,0.2787,0.3828,0.654,False

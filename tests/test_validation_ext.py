@@ -125,3 +125,16 @@ def test_grupos_rules_and_exact_test():
     lat = pd.Series({"polar": 68.0, "borde": COLD_LAT, "tropical": 5.0})
     cold, warm = split_targets(prof, lat)
     assert cold == ["polar", "borde"] and warm == ["tropical"]
+
+
+def test_modelos_percentiles_and_max_over():
+    from analogos.modelos import max_over, percentile_below, rank_pct
+
+    v = np.array([1.0, 2.0, 2.0, 4.0, np.nan])
+    assert percentile_below(v, 2.0) == (1 + 0.5 * 2) / 4 and np.isnan(percentile_below(v, np.nan))
+    r = rank_pct(v)
+    assert np.isclose(r[0], 0.125) and np.isclose(r[1], r[2]) and np.isnan(r[4]) and r[3] > r[1]
+    S = np.array([[0.2, 0.9], [np.nan, np.nan], [0.5, 0.1]])
+    out = max_over(S, [0, 1])
+    assert out[0] == 0.9 and np.isnan(out[1]) and out[2] == 0.5
+    assert np.isnan(max_over(S, [])).all()
