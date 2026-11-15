@@ -76,11 +76,11 @@ TEXTS: dict[str, dict] = {
     "sin_lugares": {"es": "Con estos filtros no queda ningún lugar. Quita alguno en la barra lateral.",
                     "en": "No places are left with these filters. Remove one in the sidebar."},
     # ---- aviso, glossary ----
-    "aviso_titulo": {"es": "Son pistas, no certezas", "en": "These are leads, not certainties"},
-    "aviso": {"es": "El método acierta ≈ {luna} % en la Luna y ≈ {marte} % en Marte. Como referencia: 50 % sería adivinar. Úsalo para "
-                    "encontrar lugares que valga la pena revisar con expertos.",
-              "en": "The method is right about {luna}% of the time for the Moon and {marte}% for Mars. For reference, 50% would be "
-                    "guessing. Use it to find places worth reviewing with experts."},
+    "aviso_titulo": {"es": "Pensado para preseleccionar lugares que revisen expertos", "en": "Built to shortlist places for expert review"},
+    "aviso": {"es": "El método supera el azar: acierta ≈ {luna} % en la Luna y ≈ {marte} % en Marte (50 % sería adivinar). Es una base sólida "
+                    "para encontrar lugares que valga la pena revisar con expertos; los lugares fríos y con hielo son lo próximo por mejorar.",
+              "en": "The method beats chance: it is right about {luna}% of the time for the Moon and {marte}% for Mars (50% would be "
+                    "guessing). It is a solid base for finding places worth reviewing with experts; cold and icy places are the next area to improve."},
     "glosario_titulo": {"es": "¿Qué significan estas palabras?", "en": "What do these words mean?"},
     # ---- mapa ----
     "mapa_titulo": {"es": "Lugares parecidos a {sitio} ({cuerpo})", "en": "Places similar to {sitio} ({cuerpo})"},
@@ -115,13 +115,13 @@ TEXTS: dict[str, dict] = {
     "comp_credito": {"es": "Imagen: {credit}.", "en": "Image: {credit}."},
     # ---- reliability y tabla ----
     "conf_titulo": {"es": "¿Qué tan confiable es para {cuerpo}?", "en": "How reliable is it for {cuerpo}?"},
-    "conf_nivel": {"es": "Confianza baja", "en": "Low confidence"},
+    "conf_nivel": {"es": "Confianza inicial", "en": "Early-stage confidence"},
     "conf_metrica": {"es": "de acierto (50 % = adivinar)", "en": "accuracy (50% = guessing)"},
     "conf_rango": {"es": "Entre {lo} % y {hi} % con {n} lugares de comprobación.", "en": "Between {lo}% and {hi}% with {n} validation places."},
-    "conf_moon": {"es": "Supera el azar por poco. Reconoce los lugares volcánicos y de impacto; falla con los fríos.",
-                  "en": "It beats chance by a small margin. It recognizes volcanic and impact places; it fails with cold ones."},
-    "conf_mars": {"es": "Reconoce bien los lugares secos y volcánicos. Falla con los lugares fríos y con hielo.",
-                  "en": "It recognizes dry, volcanic places well. It fails with cold, icy places."},
+    "conf_moon": {"es": "Supera el azar. Reconoce bien los lugares volcánicos y de impacto; los lugares fríos son lo próximo por mejorar.",
+                  "en": "It beats chance. It recognizes volcanic and impact places well; cold places are the next area to improve."},
+    "conf_mars": {"es": "Reconoce bien los lugares secos y volcánicos. Los lugares fríos y con hielo son lo próximo por mejorar.",
+                  "en": "It recognizes dry, volcanic places well. Cold and icy places are the next area to improve."},
     "top_titulo": {"es": "Los más parecidos", "en": "Closest matches"},
     "col_lugar": {"es": "Lugar", "en": "Place"},
     "col_pais": {"es": "País", "en": "Country"},

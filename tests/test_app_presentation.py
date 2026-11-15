@@ -60,7 +60,7 @@ def test_pct_and_reliability_consistent_with_docs():
         assert c["lo"] < c["pct"] < c["hi"] and c["pct"] > 50
     assert "50 %" in reliability_notice("es") and "58" in reliability_notice("es") and "60" in reliability_notice("es")
     assert "50%" in reliability_notice("en") and "58%" in reliability_notice("en")
-    assert reliability("mars", "en")["nivel"] == "Low confidence" and reliability("mars", "es")["nivel"] == "Confianza baja"
+    assert reliability("mars", "en")["nivel"] == "Early-stage confidence" and reliability("mars", "es")["nivel"] == "Confianza inicial"
 
 
 def test_explanations_name_missing_data_and_the_snow_warning():

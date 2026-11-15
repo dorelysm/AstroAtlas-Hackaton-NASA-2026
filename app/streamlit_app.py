@@ -199,10 +199,6 @@ for clave, elegido in (("mapa", map_selection_id(st.session_state.get("mapa"))),
         st.session_state["profile_cell"] = nuevo
 pick = st.session_state["profile_cell"]
 
-st.warning(reliability_notice(lang), title=t(lang, "aviso_titulo"), icon=":material/warning:")
-with st.expander(t(lang, "glosario_titulo")):
-    for termino, definicion in glossary(lang):
-        st.markdown(f"- **{termino}:** {definicion}")
 
 # ---- Mapa y reliability ----
 col_map, col_rel = st.columns([3, 2])
@@ -246,6 +242,11 @@ with col_rel:
                      column_config={c_par: st.column_config.ProgressColumn(c_par, format="%d %%", min_value=0, max_value=100)})
         st.caption(t(lang, "top_nota"))
 
+
+st.info(reliability_notice(lang), title=t(lang, "aviso_titulo"), icon=":material/target:")
+with st.expander(t(lang, "glosario_titulo")):
+    for termino, definicion in glossary(lang):
+        st.markdown(f"- **{termino}:** {definicion}")
 
 # ---- Place profile ----
 def _nombre_celda(c: str) -> str:

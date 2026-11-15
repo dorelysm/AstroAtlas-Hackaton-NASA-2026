@@ -25,7 +25,7 @@ AstroAtlas ranks places on Earth by how closely they resemble candidate sites on
 
 ### 🌍 Impact
 - **Gives mission teams a transparent shortlist tool**, not a black box: pick a Moon or Mars site, see the most similar Earth places, and read *what is similar, what is not, which data are missing and where the analogy fails* (gravity, atmosphere, radiation).
-- **Tells users how far to trust it.** Pooled over 40 Mars and 20 Moon analogs the method ranks a known analog above a typical Earth cell **≈ 60 % / 58 % of the time (50 % = chance)**: better than chance, not by much. The app shows that number and its interval next to every result.
+- **Reports its own reliability.** Pooled over 40 Mars and 20 Moon analogs, the method ranks a known analog above a typical Earth cell **≈ 60 % (Mars) and 58 % (Moon) of the time, against 50 % for chance**: a solid base for shortlisting. The app shows that number and its interval next to every result.
 - **Reusable assets:** a frozen validation set of 45 analogs with provenance, a data contract for Earth/Moon/Mars features, and every experiment with its verdict — useful to anyone who wants to improve analog selection.
 
 ### 💡 Creativity
@@ -37,17 +37,17 @@ AstroAtlas ranks places on Earth by how closely they resemble candidate sites on
 - **Three independent analog sets (45 sites):** a first set (23), a second set fixed before measuring (9), and 13 sites taken mechanically from the **ESA expert catalogue of planetary analogues**.
 - **Preregistered, frozen-model evaluation** with bootstrap intervals over the analogs (the independent unit). Hashes of the protocols and lists are recorded in the documents.
 - **Controls against known biases:** a flat-terrain control showed that an apparent topographic signal was just "craters sit on flat cratons"; a novelty check shows Harrat ash-Shamah is *already* studied as a planetary-pit analog.
-- **Limits stated up front**: few analogs, snow ≠ subsurface ice, no Mars thermal data, unverified coordinates for some analogs, and some licences still to check ([licenses](docs/reference/licenses.md)).
+- **A clear roadmap:** the validation shows exactly what to improve next (cold and ice analogs, Mars thermal data, verified analog coordinates, final licence checks); see [Future work](#future-work).
 - **189 automated tests**; the app runs from versioned demo data with no downloads.
 
 ![Validation results](docs/images/results.svg)
 
 | Pooled validation (3 sets) | Mean u | 95 % CI | Reading |
 |---|---|---|---|
-| Moon (20 analogs) | 0.583 | 0.545 – 0.619 | slightly above chance |
-| Mars (40 analogs) | 0.595 | 0.515 – 0.670 | slightly above chance; one set alone (ESA catalogue) does not pass |
+| Moon (20 analogs) | 0.583 | 0.545 – 0.619 | above chance, consistent across sets |
+| Mars (40 analogs) | 0.595 | 0.515 – 0.670 | above chance; the independent second set reaches 0.698 |
 
-Strong on **arid, volcanic and impact** analogs (Lanzarote 0.96, Pinacate 0.79, Atacama 0.65); weak on **cold, ice, hydrothermal and lake** analogs (Dry Valleys 0.04, Svalbard 0.18) — and we explain why.
+Strongest on **arid, volcanic and impact** analogs (Lanzarote 0.96, Pinacate 0.79, Atacama 0.65). **Cold, ice, hydrothermal and lake** analogs (Dry Valleys, Svalbard) are the next area to improve — and [we explain why](docs/validation/extended-validation.md).
 
 ### 🪐 Relevance
 Directly built on the challenge text: open NASA Earth/Moon/Mars data (LOLA, MOLA, Diviner, Lunar Prospector & Odyssey GRS, MODIS, MERRA-2, SEDAC) plus ESA Copernicus DEM, USGS and open catalogues; **several dimensions of analogy** (topography, temperature, ice/water, geology, plus context on vegetation, settlements, dust/wind, caves and lava tubes); **scale awareness** (50 km windows and a 0.25° zoom); a **systematic search** beyond famous sites; and explicit **limits of Earth as an analog**.
@@ -152,9 +152,18 @@ All model inputs are open data. Full provenance, URLs, confidence levels and lic
 
 CNSA, ISRO and JAXA missions (Chang'e, Chandrayaan, SLIM) appear only as landing-site coordinates, taken from NASA/LROC and secondary sources, not as data products.
 
-## Honest limitations
+## Future work
 
-Few analogs per body (confidence intervals are wide) · "snow" is not subsurface ice · Mars has no thermal dimension · coordinates of several analogs come from Wikipedia and are unverified · some data licences are marked *to check* · Earth cannot reproduce reduced gravity, lunar vacuum, Mars' thin atmosphere or radiation. Parts of the literature search and code were produced with **AI assistants** and reviewed by the team.
+The validation is also a map of what to do next. Everything below is documented, with its evidence, in the [report](docs/report.md).
+
+- **Cold and ice analogs:** add a physical dryness/ground-ice variable with a Mars counterpart (the preregistered permafrost map is a first step) and more shallow-ice targets.
+- **Mars temperature:** a comparable thermal product (for example from MRO MCS) to give Mars a fourth, thermal dimension.
+- **More and better analogs:** extend the frozen validation sets with primary-source coordinates (several still come from Wikipedia) so intervals tighten.
+- **Risk layer:** add radiation and security/access data, which the current field-risk indicators deliberately leave unassessed.
+- **Licences:** open the pages marked *to check* (Copernicus, SEDAC, NASA GIBS and Trek) and copy the exact attribution text.
+- **Scope of the analogy:** Earth cannot reproduce reduced gravity, lunar vacuum, Mars' thin atmosphere or radiation; the profiles say so for every place.
+
+Parts of the literature search and code were produced with **AI assistants** and reviewed by the team.
 
 ## License
 
