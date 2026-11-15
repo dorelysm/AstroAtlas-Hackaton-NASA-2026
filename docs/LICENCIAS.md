@@ -42,3 +42,6 @@ Solo se toman hechos (nombres, asignación a cuerpo y coordenadas), no texto. La
 
 ## Mapa de permafrost de Obu et al. (2018)
 Licencia **CC-BY 3.0** (indicada en el registro de PANGAEA): hay que citar a los autores y el DOI. Se usa solo para clasificar celdas y sitios; no se redistribuye el archivo.
+
+## Natural Earth (nombres de lugares y países)
+Dominio público (sin condiciones de atribución; se cita igualmente en los créditos de la app). Los límites son a escala 1:110m y no representan posiciones políticas.

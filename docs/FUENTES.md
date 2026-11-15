@@ -202,3 +202,6 @@ Catálogo experto: Preston, L., Grady, M. y Barber, S. (2012), *The Catalogue of
 
 ## Mapa de permafrost (15 nov 2026)
 Obu, J., Westermann, S., Kääb, A. y Bartsch, A. (2018), *Ground Temperature Map, 2000-2016, Northern Hemisphere Permafrost*, PANGAEA, [doi:10.1594/PANGAEA.888600](https://doi.org/10.1594/PANGAEA.888600), proyecto ESA GlobPermafrost. Archivo de 25 km (`UiO_PEX_5.0_20181127_2000_2016_25km.nc`, variable `PerProb`); queda en `data/raw/permafrost/` (no versionado).
+
+## Nombres de lugares y países en la app (15 nov 2026)
+Natural Earth 1:110m, capas `ne_110m_admin_0_countries` y `ne_110m_geography_regions_polys` (dominio público; https://www.naturalearthdata.com). Se simplifican en `src/analogos/data/lugares.json` (`python -m analogos.lugares --build`; los datos crudos quedan en `data/raw/naturalearth/`, no versionados).

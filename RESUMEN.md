@@ -61,7 +61,7 @@ Aplicando los filtros (sin pueblos cercanos, sin vegetación, lejos de los anál
 - **Atlas por aspecto:** en vez de una sola nota, muestra qué lugares se parecen **en relieve, en geología, en temperatura o en hielo por separado**, con una etiqueta de **confianza** que sale de los resultados medidos (ninguno llega a «alta»). El reto pide justamente esto: un lugar puede ser un gran análogo geológico y uno malo en temperatura.
 - **Recomendaciones por caso de uso:** probar el movimiento de un rover, operar en frío, buscar terreno volcánico... Solo el caso volcánico de Marte da una recomendación defendible.
 - **Contexto de procesos:** cuevas y tubos de lava, polvo y viento, y hielo bajo el suelo, con lo que dice la literatura científica y qué parte cubrimos nosotros.
-- **Una app web** donde se elige un sitio de la Luna o de Marte y se ve el mapa de zonas parecidas, con una ficha que dice **qué se parece, qué no y los límites de la analogía** (gravedad, atmósfera, radiación).
+- **Una app web (AstroAtlas)** donde se elige un sitio de la Luna o de Marte y se ve el mapa de zonas parecidas **con nombre de lugar y país**, una guía de tres pasos, la **confiabilidad explicada** y una ficha que dice **qué se parece, qué no, qué datos faltan y los límites de la analogía** (gravedad, atmósfera, radiación). Diseño según la propuesta de interfaz del equipo (`docs/INTERFAZ.md`).
 
 ## 7. Por qué la forma de trabajar también es un resultado
 Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxito **antes** de mirar los números y lo dejamos registrado. Así probamos **once ideas para mejorar el método**; **ninguna mejoró el resultado global y una mejora solo el caso de los lugares fríos**:
@@ -112,7 +112,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 - **23** análogos de validación (10 originales + 13 nuevos) · **9** ideas probadas, todas documentadas.
 - **60 %** de acierto en la Luna, **56 %** en Marte (50 % = azar).
 - **100 %** de estabilidad de Harrat ash-Shamah, **79 %** de Haruj.
-- **164** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
+- **173** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
 
 ## 12. Mini-glosario
 - **Análogo:** lugar de la Tierra parecido a otro mundo, usado para ensayar.

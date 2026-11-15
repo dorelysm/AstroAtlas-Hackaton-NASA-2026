@@ -7,3 +7,4 @@ gatherUsageStats = false
 
 [theme]
 base = "dark"
+primaryColor = "#F59E42"  # naranja de AstroAtlas (propuesta de interfaz en Figma)
