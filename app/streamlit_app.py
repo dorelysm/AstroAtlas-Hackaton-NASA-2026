@@ -3,7 +3,7 @@ import pandas as pd
 import pydeck as pdk
 import streamlit as st
 
-from analogos.config import DIMENSIONS
+from analogos.config import DEMO_DIR, DIMENSIONS, RESULTS_DIR
 from analogos.features import load_features
 from analogos.report import ficha
 from analogos.similarity import fit_topo_model, rank_cells, site_profiles
@@ -11,6 +11,15 @@ from analogos.validate import evaluate, known_for_body, load_known, novel_candid
 
 st.set_page_config(page_title="Análogos terrestres", layout="wide")
 st.title("Análogos terrestres para la Luna y Marte")
+st.markdown(
+    "Elige un sitio de la Luna o de Marte en la barra lateral: el mapa muestra las celdas de la Tierra que más se le parecen "
+    "en **topografía, térmica, hielo y geología** (NASA y otras agencias, datos abiertos)."
+)
+st.info(
+    "**Son hipótesis, no hallazgos.** La validación contra análogos conocidos sale cerca del azar y varias dimensiones "
+    "tienen datos limitados o vacíos (p. ej. la térmica de Marte). Más en el informe del proyecto (`docs/INFORME.md`).",
+    icon="⚠️",
+)
 
 
 @st.cache_data
@@ -28,7 +37,9 @@ profiles = {("moon", s): p for s, p in site_profiles(moon).iterrows()}
 profiles |= {("mars", s): p for s, p in site_profiles(mars).iterrows()}
 
 with st.sidebar:
-    body, site = st.selectbox("Sitio objetivo", list(profiles), format_func=lambda k: f"{k[0]} · {k[1]}")
+    options = list(profiles)
+    default = options.index(("mars", "Jezero")) if ("mars", "Jezero") in options else 0
+    body, site = st.selectbox("Sitio objetivo", options, index=default, format_func=lambda k: f"{k[0]} · {k[1]}")
     st.caption("Pesos por dimensión")
     weights = {d: st.slider(d, 0.0, 1.0, 1.0, 0.05) for d in DIMENSIONS}
     top_n = st.slider("Celdas a mostrar", 10, 500, 100)
@@ -70,7 +81,7 @@ shown = novel_candidates(view, known_body, n=top_n) if only_novel else view.head
 col_map, col_info = st.columns([3, 2])
 with col_map:
     layers = [
-        pdk.Layer("ScatterplotLayer", shown, get_position="[lon, lat]", get_radius=150000,
+        pdk.Layer("ScatterplotLayer", shown, get_position="[lon, lat]", get_radius=110000,
                   get_fill_color="[255, 140 - score * 100, 0, 60 + score * 180]", pickable=True),
         pdk.Layer("ScatterplotLayer", known, get_position="[lon, lat]", get_radius=90000,
                   get_fill_color="[40, 120, 255, 220]"),
@@ -88,4 +99,46 @@ with col_info:
     extra = [c for c in ("viable", "dist_settlement_km", "settlement_name", "veg_ndvi_max") if c in shown.columns]
     st.dataframe(shown[["rank", "cell_id", "lat", "lon", "score", *DIMENSIONS, *extra]].round(3), height=250)
     pick = st.selectbox("Ficha de la celda", shown["cell_id"])
-    st.json(ficha(shown[shown["cell_id"] == pick].iloc[0], site, body))
+    f = ficha(shown[shown["cell_id"] == pick].iloc[0], site, body)
+    st.subheader(f"Ficha: {f['cell_id']}  ({f['lat']:.1f}°, {f['lon']:.1f}°)")
+    st.caption(f"Parecida a **{f['site']}** ({f['body']}) · puntaje global {f['score']:.2f} · puesto {f['rank']}")
+    for dim in DIMENSIONS:
+        if dim in f["scores"]:
+            st.progress(min(max(f["scores"][dim], 0.0), 1.0), text=f"{dim}: {f['scores'][dim]:.2f}")
+        else:
+            st.caption(f"{dim}: sin dato")
+    if f["similar"]:
+        st.success("Se parece en: " + ", ".join(f["similar"]))
+    if "ice" in f["similar"]:
+        st.caption("⚠️ Ojo con «ice»: en la Tierra es la cobertura de nieve. Coincide por **ausencia de nieve**, no por hielo "
+                   "subsuperficial ni sequedad (ver docs/VALIDACION_ASPECTO.md).")
+    if f["different"]:
+        st.warning("Es distinta en: " + ", ".join(f["different"]))
+    if f["no_data"]:
+        st.caption("No se pudo comparar: " + ", ".join(f["no_data"]))
+    with st.expander("Límites de la analogía (lo que la Tierra no reproduce)"):
+        for item in f["limits"]:
+            st.markdown(f"- {item}")
+
+with st.expander("Candidatos destacados (ver docs/FICHAS_CANDIDATOS.md)"):
+    fichas_csv = RESULTS_DIR / "fichas_candidatos.csv"
+    if not fichas_csv.exists():
+        fichas_csv = DEMO_DIR / "results" / "fichas_candidatos.csv"
+    if fichas_csv.exists():
+        fc = pd.read_csv(fichas_csv)
+        cols = [c for c in ("body", "cell_id", "lat", "lon", "n_targets", "score_mean", "ndvi_max", "dust_surface_ugm3",
+                            "dist_settlement_km", "nearest_known", "nearest_known_km") if c in fc.columns]
+        st.dataframe(fc[cols].round(2), hide_index=True)
+        st.caption("Regla de selección y valoración honesta (las candidatas lunares salen solo por topografía y se consideran pobres) "
+                   "en `docs/FICHAS_CANDIDATOS.md`.")
+
+with st.expander("Créditos y fuentes de datos"):
+    st.markdown(
+        "- **Luna:** LRO LOLA, LRO Diviner, Lunar Prospector GRS, LROC (NASA/ASU), pits de LROC QuickMap (Losarcos y Dombard 2026, CC BY 4.0).\n"
+        "- **Marte:** MGS MOLA, Mars Odyssey GRS, Mars Global Cave Candidate Catalog (USGS, Cushing).\n"
+        "- **Tierra:** Copernicus DEM GLO-90 (ESA; contiene datos modificados de Copernicus), NASA MODIS (LST, nieve, NDVI), "
+        "NASA GLDAS y MERRA-2, NASA SEDAC GRUMP (CIESIN), GLiM (Hartmann y Moosdorf 2012, CC BY 3.0), "
+        "capa de análogos del USGS (Hunter 2020), Pyroduct (Romio y Lobosco 2024, CC BY 4.0).\n"
+        "- Procedencia completa, licencias y límites: `docs/FUENTES.md` y `docs/LICENCIAS.md`. "
+        "Parte de la búsqueda de fuentes y del código se hizo con asistentes de IA y se revisó por el equipo."
+    )

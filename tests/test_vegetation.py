@@ -68,3 +68,11 @@ def test_load_mars_caves_ignores_misordered_header(tmp_path):
     assert c["name"].tolist() == ["APC001", "CC0002"] and abs(c["lon"][0] - 240.4585) < 1e-9 and abs(c["lat"][0] + 0.94678) < 1e-9
     out = add_pit_context(pd.DataFrame({"lat": [-0.9], "lon": [240.4]}), c, columns=MARS_COLUMNS)
     assert out["caves_within_50km"].iloc[0] == 1 and out["nearest_cave_name"].iloc[0] == "APC001"
+
+
+def test_region_grid_cell_centers_and_ids():
+    from analogos.zoom import region_grid
+
+    g = region_grid((29.0, 30.0), (34.0, 35.0), 0.25, "t")
+    assert len(g) == 16 and g["cell_id"].is_unique and g["cell_id"].iloc[0] == "zoom_t_0_0"
+    assert np.isclose(g["lat"].min(), 29.125) and np.isclose(g["lon"].max(), 34.875) and (g["body"] == "earth").all()

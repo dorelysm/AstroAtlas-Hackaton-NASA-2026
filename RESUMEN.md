@@ -60,7 +60,7 @@ pip install -e ".[data]"          # solo para regenerar datos; con Python 3.14 u
 
 python -m analogos.pipeline         # scores, validación, candidatos y clusters
 streamlit run app/streamlit_app.py
-pytest                              # 133 tests
+pytest                              # 134 tests
 ```
 
 `data/` no se versiona. Los módulos para regenerar los datos están en el [README](README.md).

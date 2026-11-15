@@ -65,3 +65,19 @@ Aparecen en **7 de 21** objetivos lunares (puntaje medio 0.51 y 0.51).
 
 ## Datos de apoyo
 `data/results/fichas_candidatos.{csv,json}` (no se versiona; se regenera con `python -m analogos.fichas`).
+
+## Zoom a escala de campo volcánico (15 nov 2026)
+El reto pide mirar a la escala de un campo volcánico y no de un desierto. Para las dos candidatas de Marte se recalculó la **topografía** en una malla de **0.25° (~28 km)** (la global es de 5°), con las mismas variables, ventana de 50 km y base de 500 m, y se puntuó contra los 14 objetivos de Marte. Código: `src/analogos/zoom.py` (`python -m analogos.zoom --name harrat --lat 29 36 --lon 34 42`).
+
+| Región | Caja | Celdas | Puntaje topográfico medio (rango) | Mejor celda fina |
+|---|---|---|---|---|
+| Harrat ash-Shamah | 29-36° N, 34-42° E | 895 | 0.43 (0.15 a 0.55) | 0.55 en 29.9° N, 36.6° E |
+| Haruj | 25-30° N, 14-21° E | 560 | 0.47 (0.15 a 0.55) | 0.55 en 28.6° N, 16.4° E |
+
+**Qué dice:**
+- **Dentro de cada región el parecido topográfico varía mucho** (de 0.15 a 0.55): tratar la región como un solo análogo pierde información, y el zoom sirve para elegir *dónde* dentro de ella. Es el punto que pide el reto sobre la escala.
+- **En Harrat, la celda original de 5° (topografía 0.53) ya era de las mejores** de su región: el zoom no encuentra nada claramente mejor.
+- **En Haruj, la celda original (0.32) era floja** y el zoom encuentra celdas de 0.55 a ~1.5° al norte del centro de la celda, es decir, **la candidata de 5° estaba mal centrada**. Esto refuerza que la malla gruesa solo debe usarse para elegir regiones.
+- Ningún subpunto supera 0.55 de media: ni siquiera el mejor sitio fino es un buen match topográfico global con los objetivos de Marte.
+
+**Límites:** el zoom es **solo topografía** (la geología GLiM es de 0.5° y no aporta a esta escala; térmica e hielo necesitarían descargar de nuevo los productos MODIS para las celdas nuevas). Que las mejores celdas finas sean las más parecidas **por topografía** no garantiza que estén sobre el campo de lava: no se comprobó contra un mapa geológico de detalle. Las coordenadas de la mejor celda no están verificadas en el terreno.

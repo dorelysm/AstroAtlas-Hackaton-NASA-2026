@@ -1,0 +1,9 @@
+# Dependencias mínimas para correr la app (Railway). El paquete se importa con PYTHONPATH=src (ver railway.json),
+# NO se instala: config.py calcula las rutas (demo_data/, docs/) a partir de la ubicación del repositorio.
+numpy
+pandas
+pyarrow
+scipy
+scikit-learn>=1.3
+streamlit
+pydeck
