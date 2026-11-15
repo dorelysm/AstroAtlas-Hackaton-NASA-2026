@@ -110,8 +110,14 @@ def evaluate_sites(cell_scores, site_scores: pd.Series, top_pct: float = 5) -> d
             "top_pct": top_pct, "n": len(sites), "percentile_per_known": pct}
 
 
-def novel_candidates(ranked: pd.DataFrame, known: pd.DataFrame, min_km: float = 500, n: int = 10) -> pd.DataFrame:
-    """Top-n celdas a más de `min_km` de cualquier análogo conocido."""
+def novel_candidates(ranked: pd.DataFrame, known: pd.DataFrame, min_km: float = 500, n: int = 10,
+                     viable_only: bool = False) -> pd.DataFrame:
+    """Top-n celdas a más de `min_km` de cualquier análogo conocido.
+
+    viable_only: descarta las celdas marcadas como inviables por cercanía a población (columna `viable`, ver
+    data/settlements.py). Solo es para buscar candidatos nuevos; la VALIDACIÓN no se filtra."""
     ranked = ranked.dropna(subset=["score"])
+    if viable_only and "viable" in ranked:
+        ranked = ranked[ranked["viable"].fillna(True).astype(bool)]
     far = dist_to_known_km(ranked, known).min(axis=1) > min_km
     return ranked[far].head(n).reset_index(drop=True)

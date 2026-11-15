@@ -123,6 +123,23 @@ Malla de 5° (955 celdas de tierra firme; `earth_sites` = los 10 análogos conoc
 
 **Pendiente:** GLDAS (humedad del suelo y agua en nieve) está implementado en `earth_water.py` (`--gldas`) pero **sin probar con datos reales**: requiere aceptar en el perfil de Earthdata la licencia "NASA GESDISC DATA ARCHIVE" (error `EulaNotAccepted`).
 
+### Viabilidad por cercanía a centros poblados (solo Tierra; 14 nov 2026)
+**Regla decidida por el equipo:** un punto es **inviable** si hay un asentamiento de **1 000 habitantes o más a menos de 50 km**. Es una **marca** (columna `viable`), no parte del score: no cambia el ranking, la ablación ni la validación con análogos conocidos. Se puede ocultar en la app (casilla activada por defecto) y en `data/results/candidates_viable.csv`.
+
+**Fuente (NASA SEDAC):** *Global Rural-Urban Mapping Project, Version 1 (GRUMPv1): Settlement Points, Revision 01* (CIESIN, Universidad de Columbia, et al. 2017), https://doi.org/10.7927/H4BC3WG1. CSV de 2.85 MB (zip) con 70 629 asentamientos y su población, bajado con el login de Earthdata y extraído con comprobación de rutas. Código: `src/analogos/data/settlements.py` (`python -m analogos.data.settlements`).
+
+**Columnas añadidas** a `earth.parquet`, `earth_sites.parquet` y `earth_usgs.parquet` (no son variables del modelo): `dist_settlement_km`, `settlement_name`, `settlement_country`, `settlement_pop` (el asentamiento de >= 1 000 habitantes más cercano), `dist_any_settlement_km` (al más cercano de cualquier tipo, incluso sin población: aviso) y `viable`. La población es `ES00POP` (año 2000) si existe, si no `Pop` del año disponible; 1 629 puntos no tienen población y no cuentan para `viable`.
+
+**Resultado:** 708 de las 951 celdas de la malla son viables (74 %). **5 de los 10 análogos conocidos quedan inviables** (Mauna Kea a 28.6 km de Honokaa, Lanzarote a 4.2 km, Río Tinto a 23.5 km, Svalbard a 1.1 km —su coordenada es Longyearbyen—, Craters of the Moon a 28.5 km de Arco, de 1 026 habitantes, casi en el umbral). **Por eso la marca no se aplica a la validación:** los campos de entrenamiento análogos se usan cerca de pueblos, y filtrarlos castigaría a análogos legítimos. El filtro es para **buscar candidatos nuevos**.
+
+**Limitaciones importantes (de la documentación de SEDAC y comprobadas):**
+- **La lista es "mejor disponible" y NO exhaustiva:** la probabilidad de que un asentamiento esté incluido crece con su población, así que los pueblos de 1 000 a 10 000 habitantes están peor cubiertos. **Comprobado: San Pedro de Atacama no aparece**, y nuestro análogo de Atacama sale "viable" (a 150 km de Antofagasta).
+- **Sin estaciones antárticas ni asentamientos árticos extremos** (latitudes de -54.8° a 78.9°): las 273 celdas de latitud inferior a -60° salen todas "viables", lo cual **no significa que estén deshabitadas** (hay estaciones de investigación).
+- **Datos de 1990 a 2010:** poblaciones y asentamientos han cambiado.
+- "Viable" significa *"ningún asentamiento de >= 1 000 habitantes conocido en esta lista a menos de 50 km"*, no *"deshabitado"*. Para poblaciones dispersas o no listadas haría falta una capa de densidad de población (GPWv4, también del SEDAC) o de luces nocturnas (Black Marble); no se usan.
+- La distancia se mide desde el centro del punto, no desde la ventana de 50 km, y cada celda de la malla es una muestra de ~550 km.
+- Los nombres de la fuente traen un artefacto (493 nombres con "ÿ" en lugar de espacio) que se corrige al leer; son solo para mostrar.
+
 ### Revisión de la entrega del PDS (14 nov 2026) y limitaciones que quedan
 Integrada con `dem.py` fusionado (acepta un DEM ya creado y conserva los reintentos de red). La topografía del PDS coincide con la que se había calculado antes con los mosaicos del USGS (p. ej. Shackleton 11.52° en ambas). Problemas abiertos:
 

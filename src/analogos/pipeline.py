@@ -37,6 +37,16 @@ def summarize(metrics: dict) -> dict:
     return out
 
 
+VIABILITY_COLS = ["viable", "dist_settlement_km", "settlement_name", "settlement_pop", "dist_any_settlement_km"]
+
+
+def attach_viability(df: pd.DataFrame, earth: pd.DataFrame) -> pd.DataFrame:
+    """Añade a un ranking las columnas de viabilidad por población (data/settlements.py), si `earth` las tiene.
+    Es solo información: no altera el orden ni el score."""
+    cols = [c for c in VIABILITY_COLS if c in earth.columns and c not in df.columns]
+    return df.merge(earth[["cell_id", *cols]], on="cell_id", how="left") if cols else df
+
+
 def run(top_n: int = 500, weights: dict[str, float] | None = None, compress_topo: bool = True,
         by_body: bool = True, n_boot: int = 500, features_dir: Path = FEATURES_DIR,
         results_dir: Path = RESULTS_DIR) -> dict:
@@ -48,7 +58,7 @@ def run(top_n: int = 500, weights: dict[str, float] | None = None, compress_topo
     topo_model = fit_topo_model(earth) if compress_topo else None
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    all_scores, metrics, cands = [], {}, []
+    all_scores, metrics, cands, cands_viable = [], {}, [], []
     for body in ("moon", "mars"):
         profiles = site_profiles(load_features(body, features_dir))
         known_b = known_for_body(known, body) if by_body else known
@@ -61,12 +71,15 @@ def run(top_n: int = 500, weights: dict[str, float] | None = None, compress_topo
             if sites_b is not None and len(sites_b):
                 sc = score_cells(sites_b, profile, weights, topo_model, ref=earth)
                 m["sites"] = evaluate_sites(ranked["score"], sc.set_index("name")["score"])
-            metrics[f"{body}/{site}"] = m
-            all_scores.append(ranked.head(top_n).assign(site=site, body=body))
-            cands.append(novel_candidates(ranked, known_b).assign(site=site, body=body))
+            metrics[f"{body}/{site}"] = m  # la validación usa `ranked` SIN filtrar por viabilidad
+            ranked_v = attach_viability(ranked, earth)
+            all_scores.append(ranked_v.head(top_n).assign(site=site, body=body))
+            cands.append(novel_candidates(ranked_v, known_b).assign(site=site, body=body))
+            cands_viable.append(novel_candidates(ranked_v, known_b, viable_only=True).assign(site=site, body=body))
 
     pd.concat(all_scores).to_parquet(results_dir / "scores.parquet", index=False)
-    pd.concat(cands).to_csv(results_dir / "candidates.csv", index=False)
+    pd.concat(cands).to_csv(results_dir / "candidates.csv", index=False)  # con la columna `viable`
+    pd.concat(cands_viable).to_csv(results_dir / "candidates_viable.csv", index=False)  # solo los viables
     cluster_cells(earth).to_parquet(results_dir / "clusters.parquet", index=False)
     (results_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, ensure_ascii=False))
     summary = {"config": {"compress_topo": compress_topo, "by_body": by_body, "n_boot": n_boot,

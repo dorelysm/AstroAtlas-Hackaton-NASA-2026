@@ -35,5 +35,7 @@ Las features deben ser **comparables entre cuerpos**: misma definición, misma u
 
 **Altitud absoluta:** no es una feature, porque los datums de elevación de la Tierra, la Luna y Marte no son comparables. Se guarda `elev_mean_m` solo como diagnóstico (no entra al modelo). Todas las `topo__*` se calculan sobre la misma base de ~500 m y una ventana de 50 × 50 km.
 
+**Viabilidad por población (solo Tierra, NO es una variable del modelo):** columnas `dist_settlement_km`, `settlement_name`, `viable` (inviable si hay un asentamiento de >= 1 000 habitantes a < 50 km). Ver `docs/FUENTES.md`. No entra al score ni a la validación.
+
 Agregar una feature: añadirla a `DIMENSIONS` en `src/analogos/config.py` y a esta tabla.
 Pendientes (extras): polvo/viento, subsuelo (cuevas, tubos de lava), iluminación.
