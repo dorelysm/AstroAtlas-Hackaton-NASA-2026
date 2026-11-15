@@ -172,7 +172,9 @@ with st.expander("Recomendaciones por caso de uso (ver docs/CASOS_DE_USO.md)"):
         st.dataframe(view_uc[["rank", "cell_id", "lat", "lon", "score", "n_targets", "nearest_known", "nearest_known_km"]].round(2),
                      hide_index=True)
         st.caption("Solo el caso de terreno basáltico de Marte da una recomendación defendible; en frío y hielo el puntaje alto o bajo "
-                   "refleja los límites de la Tierra como análogo (la «nieve» no es hielo subsuperficial). Son hipótesis.")
+                   "refleja los límites de la Tierra como análogo (la «nieve» no es hielo subsuperficial). Son hipótesis. "
+                   "El caso «Hielo en el suelo y permafrost» usa el mapa de permafrost de Obu et al. (2018) y objetivos de Marte con hielo "
+                   "expuesto publicado; son regiones de permafrost real (Groenlandia libre de hielo y Ártico canadiense), no una predicción.")
 
 with st.expander("Créditos y fuentes de datos"):
     st.markdown(

@@ -199,3 +199,6 @@ Coordenadas de 8 sitios con hielo expuesto leídas del texto, figuras y Tabla 1 
 
 ## Tercer conjunto de análogos (15 nov 2026; `docs/analogos_set3.csv`)
 Catálogo experto: Preston, L., Grady, M. y Barber, S. (2012), *The Catalogue of Planetary Analogues* (CAFE TN2, The Open University para la ESA, contrato 4000104716/11/NL/AF), [PDF](https://freight.cargo.site/m/D1821053255089660420449933921929/The-Catalogue-of-Planetary-Analogues.pdf). De él solo se toman nombres, asignación a Luna/Marte (tabla «Directory») y coordenadas; el PDF queda en `data/raw/cafe/` (no versionado).
+
+## Mapa de permafrost (15 nov 2026)
+Obu, J., Westermann, S., Kääb, A. y Bartsch, A. (2018), *Ground Temperature Map, 2000-2016, Northern Hemisphere Permafrost*, PANGAEA, [doi:10.1594/PANGAEA.888600](https://doi.org/10.1594/PANGAEA.888600), proyecto ESA GlobPermafrost. Archivo de 25 km (`UiO_PEX_5.0_20181127_2000_2016_25km.nc`, variable `PerProb`); queda en `data/raw/permafrost/` (no versionado).

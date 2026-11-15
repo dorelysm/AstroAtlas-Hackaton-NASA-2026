@@ -39,3 +39,6 @@ Del artículo (copia abierta en HAL) solo se toman **ocho pares de coordenadas**
 
 ## Catálogo CAFE de la ESA (Preston, Grady y Barber 2012)
 Solo se toman hechos (nombres, asignación a cuerpo y coordenadas), no texto. La licencia o condiciones de reutilización del PDF (alojado en un servidor de terceros) **están por comprobar**; el documento es un informe de la ESA y la Open University.
+
+## Mapa de permafrost de Obu et al. (2018)
+Licencia **CC-BY 3.0** (indicada en el registro de PANGAEA): hay que citar a los autores y el DOI. Se usa solo para clasificar celdas y sitios; no se redistribuye el archivo.

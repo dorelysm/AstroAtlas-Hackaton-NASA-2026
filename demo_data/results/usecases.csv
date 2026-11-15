@@ -17,3 +17,9 @@ basalto_marte,Terreno basáltico (Marte),3,earth_2_10,-77.5,-127.5,0.66087077077
 volcanico_luna,Terreno volcánico y tubos de lava (Luna),1,earth_0_46,-87.5,52.5,0.5443401429355975,8,Mauna Kea,12456.5049111636,4062.5153151598033,
 volcanico_luna,Terreno volcánico y tubos de lava (Luna),2,earth_1_9,-82.5,-132.5,0.5330670774927807,8,Mauna Kea,11441.079757273392,3619.650091443797,
 volcanico_luna,Terreno volcánico y tubos de lava (Luna),3,earth_33_30,77.5,-27.5,0.5153309198777162,8,Askja,1432.535333057396,955.1651850809106,-0.03182746478873239
+frio_marte_permafrost,"Hielo en el suelo y permafrost (Marte), con mapa de permafrost",1,earth_33_32,77.5,-17.5,0.8603943414893714,9,Bockfjord Volcanic Complex (Svalbard),706.3047175179217,768.0439726345519,0.009015999999999998
+frio_marte_permafrost,"Hielo en el suelo y permafrost (Marte), con mapa de permafrost",2,earth_34_31,82.5,-22.5,0.8349947893652234,9,Bockfjord Volcanic Complex (Svalbard),689.1388679744955,830.6327227891455,0.17324163090128758
+frio_marte_permafrost,"Hielo en el suelo y permafrost (Marte), con mapa de permafrost",3,earth_31_22,67.5,-67.5,0.8280637666276633,9,Haughton crater (Devon Island),1162.030377442531,170.66285785496208,0.04803687499999999
+frio_marte_permafrost,"Hielo en el suelo y permafrost (Marte), con mapa de permafrost",4,earth_32_31,72.5,-22.5,0.8204895358225232,9,Krysuvik (Islandia),956.8933751220934,714.3046843640393,0.19058116883116882
+frio_marte_permafrost,"Hielo en el suelo y permafrost (Marte), con mapa de permafrost",5,earth_32_25,72.5,-52.5,0.818831482709399,9,Haughton crater (Devon Island),1165.254834252745,125.263910788159,-0.026873499999999998
+frio_marte_permafrost,"Hielo en el suelo y permafrost (Marte), con mapa de permafrost",6,earth_32_15,72.5,-102.5,0.8159331789561991,9,Haughton crater (Devon Island),506.71126580003397,1088.7077153106197,0.14793454545454549

@@ -29,3 +29,12 @@ def test_pf2_class_and_ice_sheet_rule():
     assert list(c.iloc[:3]) == [1.0, 0.0, 0.0] and np.isnan(c.iloc[3])
     assert on_ice_sheet(-82.5, 167.5, float("nan")) and on_ice_sheet(75.0, -40.0, 0.95)
     assert not on_ice_sheet(72.5, -102.5, 0.65)
+
+
+def test_permafrost_map_class_threshold():
+    import numpy as np
+
+    from analogos.permafrost_mapa import pf3_class
+
+    c = pf3_class(np.array([1.0, 0.5, 0.49, np.nan, 0.0]))
+    assert list(c) == [1.0, 1.0, 0.0, 0.0, 0.0]
