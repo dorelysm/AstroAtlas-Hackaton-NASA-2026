@@ -12,9 +12,11 @@ AstroAtlas ranks places on Earth by how closely they resemble candidate sites on
 
 ### 🎬 See it in action
 
-[![AstroAtlas demo: featured case, map and place profile with NASA orbital views](docs/media/demo.gif)](https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026/releases/download/v1.0/astroatlas-demo.mp4)
+[![AstroAtlas demo: featured case, map and place profile with NASA orbital views](docs/media/demo.gif)](https://youtu.be/K_QtqzqOx6U)
 
-*Silent demo. The GIF shows the featured case, the map and a place profile with NASA orbital views; **click it for the full 85-second MP4** (field-risk map, sensitivity check, PDF site report, filters and English/Spanish).*
+**[▶ Watch the full demo on YouTube](https://youtu.be/K_QtqzqOx6U)** · [MP4 download](https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026/releases/download/v1.0/astroatlas-demo.mp4)
+
+*Silent demo. The GIF shows (click it to open the video on YouTube) the featured case, the map and a place profile with NASA orbital views; **the full 85-second video** (field-risk map, sensitivity check, PDF site report, filters and English/Spanish).*
 
 ---
 
