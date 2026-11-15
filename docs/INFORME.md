@@ -30,6 +30,8 @@ Los análogos conocidos (10, más una capa del USGS con 185 cráteres y dunas y 
 ## 5. Candidatos
 Aplicando las marcas de población y vegetación y alejándonos de los análogos conocidos, salen **dos campos volcánicos basálticos en desierto para Marte** (Harrat ash-Shamah y Haruj), con coincidencia geológica real y topografía solo moderada, y **dos celdas antárticas para la Luna** que solo salen por ser planas y valoramos como malos análogos. [FICHAS_CANDIDATOS.md](FICHAS_CANDIDATOS.md) detalla qué se parece, qué no y los límites (gravedad, atmósfera, radiación).
 
+Control de novedad ([PREREGISTRO_NOVEDAD.md](PREREGISTRO_NOVEDAD.md)): **Harrat ash-Shamah ya se ha usado como análogo de pits planetarios** (resúmenes de 2018 y 2019) y **Haruj no tiene un estudio propio como análogo** en una búsqueda preregistrada (con control positivo que sí funcionó); es la candidata menos estudiada, aunque «sin evidencia» no prueba ausencia.
+
 ## 6. Casos de uso
 En vez de un solo ranking, seis perfiles de uso ([CASOS_DE_USO.md](CASOS_DE_USO.md)): solo el terreno basáltico de Marte da una recomendación defendible (las candidatas de las fichas); movilidad da parecidos moderados y los casos de frío y hielo muestran los límites de la Tierra como análogo.
 
