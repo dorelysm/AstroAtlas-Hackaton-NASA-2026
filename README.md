@@ -1,8 +1,8 @@
-# 🌍🌕🔴 AstroAtlas — finding Earth analogs for Moon and Mars bases
+# 🌍🌕🔴 AstroAtlas: finding Earth analogs for Moon and Mars bases
 
 **NASA Space Apps Challenge 2026 · *Permanent Moon Base Locations and Mars***
 
-AstroAtlas ranks places on Earth by how closely they resemble candidate sites on the Moon and Mars — terrain, temperature, ice/water and geology — and then **tests itself, honestly, against terrestrial analogs that scientists already use**. The result is a reproducible method, a public web app, and a clear map of where the method works and where it does not.
+AstroAtlas ranks places on Earth by how closely they resemble candidate sites on the Moon and Mars (terrain, temperature, ice/water and geology) and then **tests itself, honestly, against terrestrial analogs that scientists already use**. The result is a reproducible method, a public web app, and a clear map of where the method works and where it does not.
 
 [![CI](https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026/actions/workflows/ci.yml)
 
@@ -36,7 +36,7 @@ AstroAtlas ranks places on Earth by how closely they resemble candidate sites on
 ### 🌍 Impact
 - **Gives mission teams a transparent shortlist tool**, not a black box: pick a Moon or Mars site, see the most similar Earth places, and read *what is similar, what is not, which data are missing and where the analogy fails* (gravity, atmosphere, radiation).
 - **Reports its own reliability.** Pooled over 40 Mars and 20 Moon analogs, the method ranks a known analog above a typical Earth cell **≈ 60 % (Mars) and 58 % (Moon) of the time, against 50 % for chance**: a solid base for shortlisting. The app shows that number and its interval next to every result.
-- **Reusable assets:** a frozen validation set of 45 analogs with provenance, a data contract for Earth/Moon/Mars features, and every experiment with its verdict — useful to anyone who wants to improve analog selection.
+- **Reusable assets:** a frozen validation set of 45 analogs with provenance, a data contract for Earth/Moon/Mars features, and every experiment with its verdict, useful to anyone who wants to improve analog selection.
 
 ### 💡 Creativity
 - **Multi-aspect, not one score.** The challenge says a place can be a great geological analog and a poor thermal one; AstroAtlas scores and labels each aspect separately (the *aspect atlas*).
@@ -57,12 +57,12 @@ AstroAtlas ranks places on Earth by how closely they resemble candidate sites on
 | Moon (20 analogs) | 0.583 | 0.545 – 0.619 | above chance, consistent across sets |
 | Mars (40 analogs) | 0.595 | 0.515 – 0.670 | above chance; the independent second set reaches 0.698 |
 
-Strongest on **arid, volcanic and impact** analogs (Lanzarote 0.96, Pinacate 0.79, Atacama 0.65). **Cold, ice, hydrothermal and lake** analogs (Dry Valleys, Svalbard) are the next area to improve — and [we explain why](docs/validation/extended-validation.md).
+Strongest on **arid, volcanic and impact** analogs (Lanzarote 0.96, Pinacate 0.79, Atacama 0.65). **Cold, ice, hydrothermal and lake** analogs (Dry Valleys, Svalbard) are the next area to improve, and [we explain why](docs/validation/extended-validation.md).
 
 ### 🪐 Relevance
 Directly built on the challenge text: open NASA Earth/Moon/Mars data (LOLA, MOLA, Diviner, Lunar Prospector & Odyssey GRS, MODIS, MERRA-2, SEDAC) plus ESA Copernicus DEM, USGS and open catalogues; **several dimensions of analogy** (topography, temperature, ice/water, geology, plus context on vegetation, settlements, dust/wind, caves and lava tubes); **scale awareness** (50 km windows and a 0.25° zoom); a **systematic search** beyond famous sites; and explicit **limits of Earth as an analog**.
 
-**Two candidates for Mars**, with caveats: **Harrat ash-Shamah** (Syria/Jordan) — basaltic plateau, 8 documented lava tubes in the same region, previously studied for planetary pits — and **Haruj** (Libya) — a ~45,000 km² volcanic field with no analog study found in our preregistered search. Both are *hypotheses for expert review*, not discoveries. For the Moon the method finds no credible candidates, and says so.
+**Two candidates for Mars**, with caveats: **Harrat ash-Shamah** (Syria/Jordan), a basaltic plateau with 8 documented lava tubes in the same region and previous study for planetary pits, and **Haruj** (Libya), a ~45,000 km² volcanic field with no analog study found in our preregistered search. Both are *hypotheses for expert review*, not discoveries. For the Moon the method finds no credible candidates, and says so.
 
 ### 🎤 Presentation
 - A guided three-step app: *choose a site → read the map → read the profile*, with a plain-language glossary, percentages instead of raw scores, and accessibility fixes (language attribute, headings, contrast, keyboard, mobile layout).
@@ -73,7 +73,7 @@ Directly built on the challenge text: open NASA Earth/Moon/Mars data (LOLA, MOLA
 
 ## What the app shows
 
-0. **Start from the featured case** — rehearsing Mars lava-field operations at Harrat ash-Shamah and Haruj — with one click.
+0. **Start from the featured case** (rehearsing Mars lava-field operations at Harrat ash-Shamah and Haruj) with one click.
 1. **Pick a Moon or Mars site**, set how much each aspect matters, and narrow the results by **world region** or **volcanic terrain**.
 2. **See an interactive map** of the most similar Earth places (named, with country), the known analogs for comparison, and a confidence panel.
 3. **Open a place profile:** match per aspect with a one-line explanation, side-by-side NASA orbital views, and *what Earth cannot imitate*.
