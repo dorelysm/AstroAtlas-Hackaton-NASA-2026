@@ -34,7 +34,7 @@ pip install -e ".[data]"           # solo para regenerar datos: librerías geoes
 ```powershell
 python -m analogos.pipeline          # scores, validación, candidatos (candidates_viable.csv) y clusters en data/results/
 streamlit run app/streamlit_app.py   # mapa, ranking, pesos, filtro de viabilidad y ficha
-pytest                               # 176 tests
+pytest                               # 179 tests
 ```
 
 **Sin descargar nada:** si no existe `data/features/`, la app y el pipeline usan `demo_data/` (≈ 0,6 MB, valores derivados ya calculados). Con datos propios, estos tienen prioridad.
@@ -67,7 +67,7 @@ python -m analogos.hielo_somero             # P1/P2: permafrost con análogos fr
 python -m analogos.frio                     # permafrost sin capas de hielo: Q1/Q2/Q3 y candidatas frías
 python -m analogos.validation3 --build      # características del tercer conjunto (13 sitios del catálogo CAFE de la ESA)
 python -m analogos.validation3              # evalúa V1/V2 en ese conjunto
-python -m analogos.lugares --build              # nombres de lugar y país de la app (desde Natural Earth; ver docs/INTERFAZ.md)
+python -m analogos.lugares --build              # nombres de lugar y país en español e inglés (desde Natural Earth; ver docs/INTERFAZ.md)
 python -m analogos.permafrost_mapa          # clase de permafrost con el mapa de Obu et al. 2018 (necesita data/raw/permafrost/UiO_PEX_25km.nc); añade el caso frío a usecases.csv
 python -m analogos.inertia                  # experimento de inercia térmica (no adoptado)
 python -m analogos.emissivity --phase1      # experimento de emisividad (fase 1, descartado)

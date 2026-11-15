@@ -205,3 +205,5 @@ Obu, J., Westermann, S., Kääb, A. y Bartsch, A. (2018), *Ground Temperature Ma
 
 ## Nombres de lugares y países en la app (15 nov 2026)
 Natural Earth 1:110m, capas `ne_110m_admin_0_countries` y `ne_110m_geography_regions_polys` (dominio público; https://www.naturalearthdata.com). Se simplifican en `src/analogos/data/lugares.json` (`python -m analogos.lugares --build`; los datos crudos quedan en `data/raw/naturalearth/`, no versionados).
+
+Los nombres de lugares y países de la app están también en inglés (`NAME_EN` de Natural Earth 1:110m).

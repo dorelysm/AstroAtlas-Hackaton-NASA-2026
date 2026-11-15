@@ -1,8 +1,9 @@
-"""Nombres de lugar para las celdas de la Tierra (país y región), sin servicios externos.
+"""Nombres de lugar para las celdas de la Tierra (país y región), en español e inglés, sin servicios externos.
 
 Los límites salen de Natural Earth (dominio público, escala 1:110 millones): países (`ne_110m_admin_0_countries`) y regiones
-geográficas (`ne_110m_geography_regions_polys`). Se simplifican y se guardan en `data/lugares.json` (versionado, para que la app
-no necesite los datos crudos). Un nombre curado manda sobre el de la región (`NOMBRES_CURADOS`).
+geográficas (`ne_110m_geography_regions_polys`), con sus nombres en español (`NAME_ES`) y en inglés (`NAME_EN`). Se simplifican y se
+guardan en `data/lugares.json` (versionado, para que la app no necesite los datos crudos). Un nombre curado manda sobre el de la región
+(`NOMBRES_CURADOS`).
 
     python -m analogos.lugares --build     # regenera data/lugares.json desde data/raw/naturalearth/
 """
@@ -17,15 +18,21 @@ from .config import RAW_DIR
 
 JSON_PATH = Path(__file__).parent / "data" / "lugares.json"
 RAW = RAW_DIR / "naturalearth"
+LANGS = ("es", "en")
 
 # Regiones que sirven como nombre de lugar, por orden de preferencia (los continentes y los países ya dicen poco).
 CLASES = ["Desert", "Plateau", "Range/mtn", "Tundra", "Plain", "Basin", "Island", "Island group", "Geoarea", "Pen/cape", "Peninsula"]
 
-# Nombres propios de lugares que citan los documentos del proyecto: (nombre, lat, lon, radio en km). Mandan sobre la región.
+# Nombres propios de lugares que citan los documentos del proyecto: (nombre, lat, lon, radio en km, país en cada idioma).
 NOMBRES_CURADOS = [
-    ("Harrat ash-Shamah", 32.5, 37.5, 250.0, "Siria / Jordania"),
-    ("Haruj", 27.5, 17.5, 200.0, "Libia"),
+    ("Harrat ash-Shamah", 32.5, 37.5, 250.0, {"es": "Siria / Jordania", "en": "Syria / Jordan"}),
+    ("Haruj", 27.5, 17.5, 200.0, {"es": "Libia", "en": "Libya"}),
 ]
+
+# Textos de respaldo cuando no hay región o país nombrado
+SIN_PAIS = {"es": "Sin país", "en": "No country"}
+ZONA_DE = {"es": "Zona de {pais}", "en": "Area of {pais}"}
+SIN_NOMBRE = {"es": "Zona sin nombre", "en": "Unnamed area"}
 
 
 def _round_ring(ring, nd: int = 2) -> list:
@@ -46,10 +53,19 @@ def _title(name: str) -> str:
 def build() -> dict:
     c = json.loads((RAW / "ne_110m_admin_0_countries.geojson").read_text(encoding="utf-8"))
     r = json.loads((RAW / "ne_110m_geography_regions_polys.geojson").read_text(encoding="utf-8"))
-    paises = [{"nombre": f["properties"].get("NAME_ES") or f["properties"]["NAME"], "polys": _polys(f["geometry"])}
-              for f in c["features"] if f["geometry"]]
-    regiones = [{"nombre": _title(f["properties"].get("NAME_ES") or f["properties"]["NAME"]), "clase": f["properties"]["FEATURECLA"],
-                 "polys": _polys(f["geometry"])} for f in r["features"] if f["properties"]["FEATURECLA"] in CLASES]
+    paises = []
+    for f in c["features"]:
+        if not f["geometry"]:
+            continue
+        p = f["properties"]
+        paises.append({"nombre": {"es": p.get("NAME_ES") or p["NAME"], "en": p.get("NAME_EN") or p["NAME"]}, "polys": _polys(f["geometry"])})
+    regiones = []
+    for f in r["features"]:
+        p = f["properties"]
+        if p["FEATURECLA"] not in CLASES:
+            continue
+        regiones.append({"nombre": {"es": _title(p.get("NAME_ES") or p["NAME"]), "en": _title(p.get("NAME_EN") or p["NAME"])},
+                         "clase": p["FEATURECLA"], "polys": _polys(f["geometry"])})
     out = {"paises": paises, "regiones": regiones, "fuente": "Natural Earth 1:110m (dominio público)"}
     JSON_PATH.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return out
@@ -86,25 +102,27 @@ def _km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 
 @lru_cache(maxsize=4096)
-def etiqueta(lat: float, lon: float) -> tuple[str, str]:
-    """(lugar, país) de un punto. `lon` en -180..180 o 0..360. Sin país conocido (mar, hielo) devuelve «Sin país»."""
+def etiqueta(lat: float, lon: float, lang: str = "es") -> tuple[str, str]:
+    """(lugar, país) de un punto en el idioma `lang` («es» o «en»). `lon` en -180..180 o 0..360."""
+    lang = lang if lang in LANGS else "es"
     lon = ((lon + 180.0) % 360.0) - 180.0
     d = _data()
     pais = next((p["nombre"] for p in d["paises"] if _contiene(p, lat, lon)), None)
     if pais is None:  # costa o hielo marino que el mapa a 1:110m deja fuera: país con el vértice más cercano, si está a < 700 km
         best = min(((_km(lat, lon, y, x), p["nombre"]) for p in d["paises"] for r in p["_p"] for x, y in r[::3]), default=(1e9, None))
         pais = best[1] if best[0] < 700 else None
+    pais_t = pais[lang] if pais else None
     for nombre, la, lo, radio, pais_curado in NOMBRES_CURADOS:
         if _km(lat, lon, la, lo) <= radio:
-            return nombre, pais_curado
+            return nombre, pais_curado[lang]
     region = None
     for clase in CLASES:  # entre las de la mejor clase, la más pequeña (Hawái antes que Polinesia)
         dentro = [r for r in d["regiones"] if r["clase"] == clase and _contiene(r, lat, lon)]
         if dentro:
-            region = min(dentro, key=lambda r: sum((b[1] - b[0]) * (b[3] - b[2]) for b in r["_bb"]))["nombre"]
+            region = min(dentro, key=lambda r: sum((b[1] - b[0]) * (b[3] - b[2]) for b in r["_bb"]))["nombre"][lang]
             break
-    lugar = region or (f"Zona de {pais}" if pais else "Zona sin nombre")
-    return lugar, pais or "Sin país"
+    lugar = region or (ZONA_DE[lang].format(pais=pais_t) if pais_t else SIN_NOMBRE[lang])
+    return lugar, pais_t or SIN_PAIS[lang]
 
 
 if __name__ == "__main__":

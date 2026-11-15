@@ -1,68 +1,81 @@
-"""Textos y reglas de presentación de la app (docs de diseño: AstroAtlas, propuesta de interfaz en Figma).
+"""Textos y reglas de presentación de la app, en español e inglés (propuesta de interfaz de Figma; ver docs/INTERFAZ.md).
 
-Solo cambia cómo se MUESTRAN los resultados; el modelo, los datos y las cifras de validación no se tocan.
-Las cifras de confiabilidad salen de docs/PREREGISTRO_VALIDACION3.md (tres conjuntos de análogos juntos, descriptivo).
+Solo cambia cómo se MUESTRAN los resultados; el modelo, los datos y las cifras de validación no se tocan ni dependen del idioma.
+Los textos viven en `i18n.py`; aquí está la lógica (qué frase corresponde a cada situación). Todas las funciones reciben `lang`
+(«es» o «en»; español por defecto). Las cifras de confiabilidad salen de docs/PREREGISTRO_VALIDACION3.md (tres conjuntos de análogos
+juntos, descriptivo).
 """
 import pandas as pd
 
 from .config import DIMENSIONS, LANDINGS_CSV
+from .i18n import ATLAS_WHY_EN, CASOS_EN, CONFIANZA_EN, t
 
-CUERPO_ES = {"moon": "Luna", "mars": "Marte"}
-CUERPO_DE = {"moon": "la Luna", "mars": "Marte"}
+ASPECTOS = list(DIMENSIONS)  # topo, thermal, ice, geo
 
-# Aspecto -> (nombre claro, pregunta que responde)
-ASPECTOS = {
-    "topo": ("Relieve", "Qué tan plano o montañoso es"),
-    "thermal": ("Temperatura", "Calor de día y frío de noche"),
-    "ice": ("Hielo o agua", "Si hay hielo o agua en el suelo"),
-    "geo": ("Geología", "Si es roca volcánica (basalto)"),
-}
-
-# Importancia -> peso del modelo (sin tocar la escala del modelo: 0 a 1)
-IMPORTANCIA = {"Nada": 0.0, "Poco": 0.33, "Algo": 0.66, "Mucho": 1.0}
+# Importancia -> peso del modelo (sin tocar la escala del modelo: 0 a 1). Las claves no dependen del idioma.
+IMPORTANCIA = {"none": 0.0, "low": 0.33, "some": 0.66, "high": 1.0}
 
 # Confiabilidad por cuerpo: acierto = u medio (50 % = adivinar) con los tres conjuntos de análogos juntos
 CONFIABILIDAD = {
-    "moon": {"pct": 58, "lo": 55, "hi": 62, "n": 20, "nivel": "Confianza baja",
-             "texto": "Supera el azar por poco. Reconoce los lugares volcánicos y de impacto; falla con los fríos."},
-    "mars": {"pct": 60, "lo": 52, "hi": 67, "n": 40, "nivel": "Confianza baja",
-             "texto": "Reconoce bien los lugares secos y volcánicos. Falla con los lugares fríos y con hielo."},
-}
-
-LIMITES_CORTOS = {
-    "moon": ["Gravedad: 1/6 de la terrestre", "Sin atmósfera (vacío)", "Radiación sin protección", "Polvo abrasivo en el suelo"],
-    "mars": ["Gravedad: 38 % de la terrestre", "Atmósfera muy delgada", "Radiación alta", "Percloratos en el suelo"],
+    "moon": {"pct": 58, "lo": 55, "hi": 62, "n": 20},
+    "mars": {"pct": 60, "lo": 52, "hi": 67, "n": 40},
 }
 
 
-# Glosario de la app: (término, definición). Mismas ideas que el mini-glosario de RESUMEN.md.
-GLOSARIO = [
-    ("Análogo", "Lugar de la Tierra parecido a otro mundo que los científicos ya usan para ensayar (por ejemplo, Atacama o Lanzarote)."),
-    ("Candidato", "Zona de la Tierra que el método marca como parecida al sitio elegido. Es una hipótesis para revisar con expertos, no un hallazgo."),
-    ("Parecido", "Nota de 0 a 100 %: 100 % es idéntico en los aspectos medidos. No es la probabilidad de que el lugar sirva."),
-    ("Aspecto", "Cada cosa que se compara: relieve, temperatura, hielo o agua y geología. Si falta el dato de uno, no cuenta."),
-    ("Confianza", "Cuánto acierta el método al reconocer análogos conocidos. 50 % es adivinar; con la Luna y Marte queda en torno al 60 %."),
-    ("Azar (50 %)", "Lo que saldría si el método no supiera nada."),
-]
+def cuerpo(body: str, lang: str = "es") -> str:
+    return t(lang, f"cuerpo_{body}")
 
 
-def aviso_confiabilidad() -> str:
-    m, M = CONFIABILIDAD["moon"], CONFIABILIDAD["mars"]
-    return (f"El método acierta ≈ {m['pct']} % en la Luna y ≈ {M['pct']} % en Marte. Como referencia: 50 % sería adivinar. "
-            "Úsalo para encontrar lugares que valga la pena revisar con expertos.")
+def cuerpo_de(body: str, lang: str = "es") -> str:
+    return t(lang, f"cuerpo_de_{body}")
 
 
-def nivel_parecido(score: float) -> tuple[str, str]:
+def aspecto(dim: str, lang: str = "es") -> tuple[str, str]:
+    """(nombre claro, pregunta que responde) de un aspecto."""
+    return t(lang, f"aspecto_{dim}"), t(lang, f"ayuda_{dim}")
+
+
+def etiqueta_importancia(clave: str, lang: str = "es") -> str:
+    return t(lang, f"imp_{clave}")
+
+
+def confiabilidad(body: str, lang: str = "es") -> dict:
+    """Cifras de confiabilidad de un cuerpo con su etiqueta y su explicación en el idioma pedido."""
+    return {**CONFIABILIDAD[body], "nivel": t(lang, "conf_nivel"), "texto": t(lang, f"conf_{body}")}
+
+
+def limites_cortos(body: str, lang: str = "es") -> list[str]:
+    return t(lang, f"limites_{body}")
+
+
+def glosario(lang: str = "es") -> list[tuple[str, str]]:
+    return t(lang, "glosario_lista")
+
+
+def aviso_confiabilidad(lang: str = "es") -> str:
+    return t(lang, "aviso", luna=CONFIABILIDAD["moon"]["pct"], marte=CONFIABILIDAD["mars"]["pct"])
+
+
+def nivel_parecido(score: float, lang: str = "es") -> tuple[str, str]:
     """(etiqueta, color de st.badge) para un puntaje de 0 a 1."""
     if score >= 0.8:
-        return "Muy parecido", "green"
+        return t(lang, "nivel_alto"), "green"
     if score >= 0.5:
-        return "Parecido medio", "yellow"
-    return "Poco parecido", "red"
+        return t(lang, "nivel_medio"), "yellow"
+    return t(lang, "nivel_bajo"), "red"
 
 
-def pct(x: float) -> str:
-    return f"{round(100 * x)} %"
+def pct(x: float, lang: str = "es") -> str:
+    """Porcentaje: «82 %» en español (con espacio) y «82%» en inglés."""
+    return f"{round(100 * x)} %" if lang == "es" else f"{round(100 * x)}%"
+
+
+def coordenadas(lat: float, lon: float, lang: str = "es") -> str:
+    """«32.5° N, 37.5° E» (en español, oeste = «O»)."""
+    lon180 = ((lon + 180) % 360) - 180
+    ns = t(lang, "orient_n") if lat >= 0 else t(lang, "orient_s")
+    eo = t(lang, "orient_e") if lon180 >= 0 else t(lang, "orient_o")
+    return f"{abs(lat):.1f}° {ns}, {abs(lon180):.1f}° {eo}"
 
 
 def id_del_mapa(estado) -> str | None:
@@ -89,83 +102,85 @@ def seleccion_nueva(ultima: str | None, actual: str | None) -> str | None:
 
 
 def pesos_desde_importancia(niveles: dict[str, str]) -> dict[str, float]:
-    return {d: IMPORTANCIA[niveles.get(d, "Mucho")] for d in DIMENSIONS}
+    return {d: IMPORTANCIA[niveles.get(d, "high")] for d in DIMENSIONS}
 
 
-# Frases claras para los sitios que no son aterrizajes históricos (las notas de los CSV son técnicas)
-DESCRIPCIONES = {
-    "Jezero": "Cráter con un antiguo delta de río. Aquí está el rover Perseverance.",
-    "Oxia Planum": "Llanura con arcillas, sitio del rover europeo ExoMars.",
-    "Arcadia Planitia": "Llanura del norte de Marte con hielo cerca de la superficie.",
-    "Shackleton rim": "Borde de un cráter en el polo sur de la Luna, con zonas en sombra permanente.",
-    "Malapert massif": "Montaña cerca del polo sur de la Luna, con luz solar casi continua.",
-    "Mare Tranquillitatis pit": "Hoyo en el Mar de la Tranquilidad, posible entrada a un tubo de lava.",
-}
+# Sitios con una frase propia (las notas de los CSV son técnicas); el resto usa «Sitio de aterrizaje (año)»
+SITIOS_CON_FRASE = ("Jezero", "Oxia Planum", "Arcadia Planitia", "Shackleton rim", "Malapert massif", "Mare Tranquillitatis pit")
 
 
-def descripcion_sitio(site: str) -> str:
+def descripcion_sitio(site: str, lang: str = "es") -> str:
     """Una frase del sitio objetivo (texto claro propio o misión y año del CSV de aterrizajes)."""
-    if site in DESCRIPCIONES:
-        return DESCRIPCIONES[site]
+    if site in SITIOS_CON_FRASE:
+        return t(lang, f"desc_{site}")
     try:
         a = pd.read_csv(LANDINGS_CSV)
         r = a[a["mission"] == site]
         if not r.empty:
             y = r["year"].iloc[0]
-            return f"Sitio de aterrizaje ({int(y)})" if pd.notna(y) else "Sitio de aterrizaje o candidato"
+            return t(lang, "sitio_aterrizaje", year=int(y)) if pd.notna(y) else t(lang, "sitio_aterrizaje_gen")
     except (OSError, KeyError, ValueError):
         pass
     return ""
 
 
-def describir_terreno(row: pd.Series) -> str:
+def describir_terreno(row: pd.Series, lang: str = "es") -> str:
     """Frase corta del terreno de una celda de la Tierra, a partir de sus propias características."""
     b, s = row.get("geo__basalt_frac"), row.get("topo__slope_mean_deg")
     partes = []
     if pd.notna(b) and b >= 0.5:
-        partes.append("roca volcánica")
+        partes.append(t(lang, "terreno_volcanica"))
     elif pd.notna(b) and b >= 0.2:
-        partes.append("algo de roca volcánica")
+        partes.append(t(lang, "terreno_algo_volcanica"))
     if pd.notna(s):
-        partes.append("llano" if s < 2 else "ondulado" if s < 6 else "montañoso")
-    return ", ".join(partes) if partes else "terreno sin descripción"
+        partes.append(t(lang, "terreno_llano" if s < 2 else "terreno_ondulado" if s < 6 else "terreno_montanoso"))
+    return ", ".join(partes) if partes else t(lang, "terreno_sin")
 
 
-def explicar(dim: str, score: float | None, row: pd.Series, profile: pd.Series, body: str, site: str) -> str:
+def explicar(dim: str, score: float | None, row: pd.Series, profile: pd.Series, body: str, site: str, lang: str = "es") -> str:
     """Una frase que dice qué significa el parecido de un aspecto para esta celda."""
-    cuerpo = CUERPO_DE[body]
     if dim == "thermal" and score is None:
-        return ("No hay un mapa de temperatura de Marte que sirva para comparar." if body == "mars"
-                else "Falta el dato de temperatura para comparar este lugar.")
+        return t(lang, "ex_thermal_marte" if body == "mars" else "ex_thermal_falta")
     if score is None:
-        return "No se pudo comparar este aspecto."
+        return t(lang, "ex_sin_comparar")
     if dim == "topo":
         cs, ps = row.get("topo__slope_mean_deg"), profile.get("topo__slope_mean_deg")
         if pd.isna(cs) or pd.isna(ps) or ps <= 0 or score >= 0.8:
-            return f"El terreno tiene pendientes y rugosidad parecidas a {site}."
+            return t(lang, "ex_topo_igual", sitio=site)
         r = cs / ps
         if r > 1.25:
-            return f"El terreno es algo más rugoso que en {site}."
+            return t(lang, "ex_topo_rugoso", sitio=site)
         if r < 0.8:
-            return f"El terreno es algo más llano que en {site}."
-        return f"La pendiente media es parecida, pero la forma del relieve difiere de {site}."
+            return t(lang, "ex_topo_llano", sitio=site)
+        return t(lang, "ex_topo_forma", sitio=site)
     if dim == "thermal":
         ct, pt = row.get("thermal__t_max_k"), profile.get("thermal__t_max_k")
         if pd.notna(ct) and pd.notna(pt) and abs(ct - pt) >= 15:
-            return f"Hace más {'calor' if ct > pt else 'frío'} que en {site} en el mes más cálido."
-        return f"Temperaturas máximas y rango entre día y noche parecidos a {site}."
+            return t(lang, "ex_thermal_calor" if ct > pt else "ex_thermal_frio", sitio=site)
+        return t(lang, "ex_thermal_igual", sitio=site)
     if dim == "ice":
         nieve = row.get("ice__water_frac")
         if score >= 0.7 and pd.notna(nieve) and nieve < 0.1:
-            return "Ojo: coincide porque no hay nieve, no porque haya hielo bajo el suelo."
-        if score >= 0.7:
-            return "Coincide en cobertura de nieve, que es solo una pista del hielo bajo el suelo."
-        return "En la Tierra se mide con la nieve; aquí no coincide con el hielo del sitio."
+            return t(lang, "ex_ice_sin_nieve")
+        return t(lang, "ex_ice_nieve" if score >= 0.7 else "ex_ice_no")
     if dim == "geo":
         b = row.get("geo__basalt_frac")
         if pd.notna(b) and b >= 0.5:
-            return f"Es roca volcánica (basalto), como gran parte de {'Marte' if body == 'mars' else 'los mares lunares'}."
+            return t(lang, "ex_geo_si", de=t(lang, f"geo_de_{body}"))
         if pd.notna(b) and b >= 0.2:
-            return f"Tiene algo de roca volcánica (basalto), el tipo de roca de {cuerpo}."
-        return "Tiene poca roca volcánica (basalto)."
+            return t(lang, "ex_geo_algo", de=t(lang, f"geo_cuerpo_{body}"))
+        return t(lang, "ex_geo_poco")
     return ""
+
+
+# ---- textos de los archivos de resultados (están en español): en inglés se traducen si hay traducción exacta ----
+def traducir_caso(titulo: str, lang: str = "es") -> str:
+    return CASOS_EN.get(titulo, titulo) if lang == "en" else titulo
+
+
+def traducir_confianza(nivel: str, lang: str = "es") -> str:
+    return CONFIANZA_EN.get(nivel, nivel) if lang == "en" else nivel
+
+
+def traducir_why(texto: str, lang: str = "es") -> str:
+    return ATLAS_WHY_EN.get(texto, texto) if lang == "en" else texto
