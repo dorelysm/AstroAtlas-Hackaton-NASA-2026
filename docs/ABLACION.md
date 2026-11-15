@@ -2,6 +2,8 @@
 
 Pregunta: ¿cuáles de las cuatro dimensiones (topografía, térmica, hielo, geología) ayudan a que el modelo recupere los análogos terrestres conocidos? Código: `src/analogos/ablation.py` (`python -m analogos.ablation`); resultados completos en `data/results/ablation_*.csv` (no se versiona).
 
+> **Nota (14 nov 2026):** los resultados de este documento se calcularon con **15 sitios lunares** (Surveyor con las coordenadas antiguas de la NSSDCA). Después se actualizó la Luna con las tablas de LROC y pasó a **21 sitios** (6 nuevos: Luna 16, 17, 20, 21, 23 y Chang'e 3). **Estos resultados todavía no se han repetido con los 21.** Las cifras de Marte no cambian.
+
 ## Método
 - Para cada uno de los 29 objetivos (15 lunares, 14 marcianos) se puntúa la Tierra con: **todas** las dimensiones, **una sola** y **todas menos una**.
 - Métrica `u` = probabilidad de que un análogo conocido puntúe más que una celda típica de la malla (0.5 = azar). Los análogos se puntúan con las mismas ventanas de 50 km que los objetivos.

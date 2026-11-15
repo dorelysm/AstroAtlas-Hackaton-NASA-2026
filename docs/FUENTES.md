@@ -17,13 +17,15 @@ Registro de dónde sale cada dato del repositorio y qué tan fiable es. Actualiz
 
 ## Archivos y su origen
 
-### `docs/aterrizajes_conocidos.csv` (34 filas)
+### `docs/aterrizajes_conocidos.csv` (41 filas)
 Coordenadas de sitios de aterrizaje en la Luna y Marte. Origen por bloque:
 
 | Bloque | Fuente | Nivel |
 |---|---|---|
-| Apolo 11, 12, 14, 15, 16, 17 | NASA NSSDCA: https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html | Verificado |
-| Surveyor 1, 3, 5, 6, 7 | NASA NSSDCA: https://nssdc.gsfc.nasa.gov/planetary/lunar/surveyor.html | Verificado |
+| Apolo 11, 12, 14, 15, 16, 17 | NASA NSSDCA: https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html; **confirmados por LROC** (tabla de abajo): los seis coinciden a menos de 1e-4° (~3 m) | Verificado con dos fuentes |
+| **Tablas de LROC** (Coordinates of Lunar Anthropogenic Targets, equipo LROC de la Univ. Estatal de Arizona para la misión LRO de la NASA, 28 jul 2016; Wagner et al., *Icarus* 283, 92-103, doi:10.1016/j.icarus.2016.05.011): https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Robotic_Spacecraft.pdf y https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf | media de varias imágenes de la cámara NAC, sistema Mean Earth / polar axis, **incertidumbre de 0.3 a 13 m**, longitud este 0-360 | Verificado (se leyeron las tablas; el PDF se guardó fuera del repositorio) |
+| Surveyor 1, 3, 5, 6, 7 | **LROC 2016** (antes NSSDCA, que estaba desplazada de 1 a 4 km: Surveyor 1 a ~4 km y Surveyor 7 a 3.7 km) | Verificado (LROC) |
+| **Luna 16, 17, 20, 21, 23, 24 y Chang'e 3** (sitios nuevos, 14 nov 2026) | LROC 2016 (robóticos). Los **años** de estas misiones no vienen de la tabla: son conocimiento general | Verificado (coordenadas); años sin fuente |
 | Chang'e 6 | NASA Goddard: https://www.nasa.gov/centers-and-facilities/goddard/nasas-lro-spots-chinas-change-6-spacecraft-on-lunar-far-side | Verificado (aproximado: ~42° S, ~206° E) |
 | Chang'e 4 | LROC (Arizona State University): https://lroc.im-ldi.com/posts/1087 | Verificado (no es fuente de la agencia china) |
 | Viking 1 y 2, Pathfinder, Spirit, Opportunity, Phoenix, Curiosity | Mars Orbital Data Explorer (Universidad de Washington en San Luis): https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/Landing_Sites.htm | Verificado |
@@ -36,6 +38,9 @@ Coordenadas de sitios de aterrizaje en la Luna y Marte. Origen por bloque:
 | Mars Polar Lander, Beagle 2 | planetary.org (fuente secundaria) | NO VERIFICADO |
 
 Sin coordenadas por falta de fuente fiable: regiones de Artemis III, Mars 2, 3 y 6, Schiaparelli, Deep Space 2, NE Syrtis y Columbia Hills.
+
+**Duplicados que no se cuentan dos veces** (el filtro de `sites.py` fusiona los que están a menos de 15 km): Surveyor 3 con Apolo 12 (0.2 km; Apolo 12 aterrizó junto a la sonda), Luna 24 con Luna 23 (2.3 km), y los rovers Lunokhod 1 y 2 y Yutu con sus módulos (Luna 17, Luna 21 y Chang'e 3). Por eso el modelo usa 6 sitios lunares nuevos y no 9. Los sitios de impacto de sondas de la tabla de LROC (Ranger, GRAIL, LADEE, etapas S-IVB) **no son aterrizajes** y no se usan.
+**Todavía sin tabla de LROC:** Chang'e 4 (LROC, publicación aparte) y Chang'e 6 (NASA Goddard, aproximado) son posteriores a 2016.
 
 ### `docs/analogos_conocidos.csv` (10 filas) y `docs/sitios_objetivo.csv` (6 filas)
 Escritos de memoria al montar el esqueleto y **contrastados después con una cuarta búsqueda web** (agente Haiku, 14 nov 2026). Las columnas `coord_source`, `reason_source_url` y `status` dicen de dónde sale cada valor. Resultado:
@@ -134,7 +139,7 @@ Integrada con `dem.py` fusionado (acepta un DEM ya creado y conserva los reinten
 - Detalle menor: `planetary.py` usa un radio de Marte de 3389.5 km y `pds_dem.py` 3396 km (0.2 %, sin efecto relevante).
 
 ## Problemas conocidos en las fuentes
-- **Signo de longitud en NSSDC:** Apolo 12 y 14 tienen longitud negativa en una columna que dice "°E". Interpretamos que negativo = oeste y lo convertimos a 0–360 (336.58 y 342.53), pero la página no lo dice. La página de Apolo 12 usa "23.42 W", lo que lo apoya.
+- ~~Signo de longitud en NSSDC~~ **Resuelto (14 nov 2026):** la tabla de LROC da Apolo 12 en 336.5781° E y Apolo 14 en 342.52806° E, exactamente lo que se había convertido suponiendo que el negativo era oeste. La suposición era correcta.
 - **NSSDC Mars Mileage Guide:** las longitudes de Spirit y Opportunity parecen intercambiadas. No se usó.
 - **Viking 1 y Pathfinder:** tres fuentes dan valores distintos (por ejemplo Viking 1: 22.269° N / 312.049° E en ODE, 22.54° N / 48.23° O en la Mileage Guide). Se usó el Mars Orbital Data Explorer sin resolver cuál es el correcto.
 - **Chandrayaan-3:** ISRO da el sitio previsto, no el punto real de toma de contacto.
@@ -143,6 +148,6 @@ Integrada con `dem.py` fusionado (acepta un DEM ya creado y conserva los reinten
 ## Pendiente de verificar
 1. Abrir el catálogo maestro de la NSSDC y las páginas de HiRISE para Perseverance, Zhurong y los fallidos.
 2. Descargar los ZIP/KML del Gazetteer del USGS y ver si traen puntos de aterrizaje.
-3. Confirmar las coordenadas oficiales de SLIM, Chandrayaan-3 y Chang'e 3/5/6 con ISRO, JAXA y fuentes de la CNSA.
+3. Confirmar las coordenadas oficiales de SLIM, Chandrayaan-3 y Chang'e 5/6 con ISRO, JAXA y fuentes de la CNSA (Chang'e 3 ya está verificado con LROC).
 4. Sustituir las coordenadas de Wikipedia por fuentes primarias (USGS Gazetteer, NASA, GVP, GNIS) y verificar la analogía de Mauna Kea, Askja y Svalbard.
 5. Verificar el centro de Arcadia Planitia en el PDF de SWIM, y el de Oxia Planum en ESA.

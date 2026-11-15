@@ -4,6 +4,8 @@ Pregunta: ¿cada dimensión recupera los análogos conocidos **que lo son por es
 
 Código: `src/analogos/aspect.py` (`python -m analogos.aspect`). Etiquetas: `docs/aspectos_analogos.csv`. Resultados completos: `data/results/aspect_summary.*` (no se versiona).
 
+> **Nota (14 nov 2026):** los resultados de este documento se calcularon con **15 sitios lunares** (Surveyor con las coordenadas antiguas de la NSSDCA). Después se actualizó la Luna con las tablas de LROC y pasó a **21 sitios** (6 nuevos: Luna 16, 17, 20, 21, 23 y Chang'e 3). **Estos resultados todavía no se han repetido con los 21.** Las cifras de Marte no cambian.
+
 ## Cómo se hizo (y qué se fijó antes de medir)
 - **Etiquetas fijadas antes de medir.** Salen solo de lo que dicen las fuentes ya citadas en `docs/analogos_conocidos.csv`. Huella del archivo: **sha256 `ca45726975642cb2…`** (14 nov 2026, 22:38), registrada en los resultados. El análisis principal también se declaró antes: el nivel "fuente + nota".
 - **Tres niveles de evidencia por etiqueta:** *fuente* (la página citada nombra el aspecto: por ejemplo NASA dice que los Valles Secos son fríos y secos), *nota* (solo lo dice nuestra nota descriptiva) y *general* (conocimiento sin fuente abierta). Se evalúa con cada nivel acumulado para ver si el resultado depende de cuánto se confía en las etiquetas.
