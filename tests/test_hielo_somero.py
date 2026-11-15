@@ -16,3 +16,16 @@ def test_ice_targets_are_valid_mars_midlatitude_sites():
     assert t["lat"].abs().between(39, 70).all()
     assert (t["lon"] % 360).between(0, 360).all()
     assert t["coord_source"].str.contains("Dundas et al. 2021").all()
+
+
+def test_pf2_class_and_ice_sheet_rule():
+    import numpy as np
+
+    from analogos.frio import on_ice_sheet, pf2_class
+
+    t = pd.Series([260.0, 260.0, 280.0, np.nan])
+    s = pd.Series([0.5, 0.95, 0.1, 0.1])
+    c = pf2_class(t, s)
+    assert list(c.iloc[:3]) == [1.0, 0.0, 0.0] and np.isnan(c.iloc[3])
+    assert on_ice_sheet(-82.5, 167.5, float("nan")) and on_ice_sheet(75.0, -40.0, 0.95)
+    assert not on_ice_sheet(72.5, -102.5, 0.65)
