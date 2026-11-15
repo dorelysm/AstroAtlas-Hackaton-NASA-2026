@@ -11,6 +11,7 @@ import streamlit as st
 from analogos.config import DEMO_DIR, DIMENSIONS, RESULTS_DIR
 from analogos.features import load_features
 from analogos.i18n import IDIOMAS, t
+from analogos.imagenes import KM_VENTANA, credito, vista_cuerpo, vista_disponible, vista_tierra
 from analogos.lugares import etiqueta
 from analogos.presentacion import (CONFIABILIDAD, IMPORTANCIA, aspecto, aviso_confiabilidad, confiabilidad, coordenadas, cuerpo,
                                    cuerpo_de, describir_terreno, descripcion_sitio, etiqueta_importancia, explicar, glosario,
@@ -41,6 +42,26 @@ def pie():
     """Pie de página con la autoría, en el idioma elegido (también cuando la página se detiene por falta de datos o filtros)."""
     st.divider()
     st.caption(t(lang, "pie"))
+
+
+class SinImagen(Exception):
+    """El servicio de imágenes de la NASA no respondió (las excepciones no se guardan en la caché, así que se reintenta)."""
+
+
+@st.cache_data(ttl="7d", max_entries=300, show_spinner=False)
+def imagen_cuerpo(cuerpo_: str, lat: float, lon: float) -> bytes:
+    datos = vista_cuerpo(cuerpo_, lat, lon)
+    if datos is None:
+        raise SinImagen
+    return datos
+
+
+@st.cache_data(ttl="7d", max_entries=300, show_spinner=False)
+def imagen_tierra(lat: float, lon: float, capa: str) -> bytes:
+    datos = vista_tierra(lat, lon, capa=capa)
+    if datos is None:
+        raise SinImagen
+    return datos
 
 
 @st.cache_data(show_spinner=t("es", "cargando"))
@@ -215,6 +236,35 @@ with st.container(border=True):
     with der:
         st.markdown(f"**{t(lang, 'se_parece', sitio=site, n=fila['parecido'])}**")
         st.badge(t(lang, "calculado", n=len(usados), total=len(DIMENSIONS)), color="orange")
+    # ---- Comparación visual: el sitio de la Luna o de Marte frente al lugar de la Tierra (vistas desde órbita a la misma escala) ----
+    st.markdown(f"**{t(lang, 'comp_titulo', sitio=site, lugar=fila['lugar'])}**")
+    capa = st.segmented_control(t(lang, "comp_capa"), ["modis", "bluemarble"], default="modis", required=True, key="capa_tierra",
+                                format_func=lambda c: t(lang, f"comp_capa_{c}")) or "modis"
+    st.caption(t(lang, "comp_intro", km=int(KM_VENTANA)))
+    objetivo = (moon if body == "moon" else mars)
+    objetivo = objetivo[objetivo["site"] == site].iloc[0]
+    col_cuerpo, col_tierra = st.columns(2)
+    with col_cuerpo:
+        if not vista_disponible(body, float(objetivo["lat"])):
+            st.caption(t(lang, "comp_polar"))
+        else:
+            try:
+                with st.spinner(t(lang, "comp_cargando")):
+                    foto = imagen_cuerpo(body, round(float(objetivo["lat"]), 4), round(float(objetivo["lon"]), 4))
+                st.image(foto, caption=t(lang, "comp_pie_cuerpo", sitio=site, cuerpo=cuerpo(body, lang)),
+                         alt=t(lang, "comp_alt_cuerpo", sitio=site, cuerpo=cuerpo(body, lang)))
+                st.caption(t(lang, "comp_credito", credito=credito(body, lang=lang)))
+            except SinImagen:
+                st.caption(t(lang, "comp_error"))
+    with col_tierra:
+        try:
+            with st.spinner(t(lang, "comp_cargando")):
+                foto = imagen_tierra(round(float(f["lat"]), 4), round(float(f["lon"]), 4), capa)
+            st.image(foto, caption=t(lang, "comp_pie_tierra", lugar=fila["lugar"], pais=fila["pais"]),
+                     alt=t(lang, "comp_alt_tierra", lugar=fila["lugar"], pais=fila["pais"]))
+            st.caption(t(lang, "comp_credito", credito=credito("earth", capa, lang)))
+        except SinImagen:
+            st.caption(t(lang, "comp_error"))
     rejilla = st.grid(len(DIMENSIONS), min_column_width=125, gap="small")  # 4 tarjetas en escritorio, 2 en el móvil
     for d in DIMENSIONS:
         nombre, _ = aspecto(d, lang)

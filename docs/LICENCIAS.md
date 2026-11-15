@@ -45,3 +45,6 @@ Licencia **CC-BY 3.0** (indicada en el registro de PANGAEA): hay que citar a los
 
 ## Natural Earth (nombres de lugares y países)
 Dominio público (sin condiciones de atribución; se cita igualmente en los créditos de la app). Los límites son a escala 1:110m y no representan posiciones políticas.
+
+## Imágenes de la NASA en la app (GIBS y Trek)
+Las vistas desde órbita se descargan en vivo de los servicios abiertos de la NASA y se muestran **con el crédito de cada producto** (MODIS: NASA GIBS; Blue Marble: NASA Earth Observatory; Viking MDIM 2.1: NASA/JPL/USGS; LRO WAC: NASA/GSFC/ASU). **No se redistribuyen en el repositorio.** Según las pautas de uso de medios de la NASA, el material de la NASA puede usarse con fines informativos y educativos citando la fuente y sin sugerir que la agencia respalda el proyecto (la app lo dice en sus créditos). **Por comprobar** por el equipo: las condiciones exactas de cada producto en las páginas de GIBS y Trek.

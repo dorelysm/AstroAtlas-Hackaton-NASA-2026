@@ -94,6 +94,25 @@ TEXTOS: dict[str, dict] = {
                              "○ **Large white ring:** the chosen place."]},
     "tooltip_conocido": {"es": "Análogo que la ciencia ya usa (para comprobar)", "en": "Analog that science already uses (for validation)"},
     "tooltip_detalle": {"es": "{pais} · parecido {n} %", "en": "{pais} · {n}% match"},
+    # ---- comparación visual ----
+    "comp_titulo": {"es": "Comparación visual: {sitio} frente a {lugar}", "en": "Visual comparison: {sitio} vs {lugar}"},
+    "comp_intro": {"es": "Vistas desde órbita de {km} × {km} km centradas en cada lugar. Los sensores y los colores son distintos: sirven "
+                         "para comparar la forma del terreno, no el color.",
+                   "en": "Orbital views of {km} × {km} km centered on each place. The sensors and colors differ: use them to compare "
+                         "the shape of the terrain, not the color."},
+    "comp_capa": {"es": "Imagen de la Tierra", "en": "Image of Earth"},
+    "comp_capa_modis": {"es": "Un día (MODIS)", "en": "One day (MODIS)"},
+    "comp_capa_bluemarble": {"es": "Sin nubes (Blue Marble)", "en": "Cloud-free (Blue Marble)"},
+    "comp_cargando": {"es": "Descargando las imágenes de la NASA…", "en": "Downloading the NASA images…"},
+    "comp_pie_cuerpo": {"es": "{sitio} ({cuerpo})", "en": "{sitio} ({cuerpo})"},
+    "comp_pie_tierra": {"es": "{lugar}, {pais}", "en": "{lugar}, {pais}"},
+    "comp_alt_cuerpo": {"es": "Vista desde órbita de {sitio} ({cuerpo})", "en": "Orbital view of {sitio} ({cuerpo})"},
+    "comp_alt_tierra": {"es": "Vista desde órbita de {lugar}, {pais}", "en": "Orbital view of {lugar}, {pais}"},
+    "comp_polar": {"es": "No hay vista de este sitio: está demasiado cerca del polo para el mapa de la NASA que se usa.",
+                   "en": "There is no view of this site: it is too close to the pole for the NASA map used here."},
+    "comp_error": {"es": "No se pudo cargar la imagen de la NASA ahora mismo. Inténtalo de nuevo más tarde.",
+                   "en": "The NASA image could not be loaded right now. Please try again later."},
+    "comp_credito": {"es": "Imagen: {credito}.", "en": "Image: {credito}."},
     # ---- confiabilidad y tabla ----
     "conf_titulo": {"es": "¿Qué tan confiable es para {cuerpo}?", "en": "How reliable is it for {cuerpo}?"},
     "conf_nivel": {"es": "Confianza baja", "en": "Low confidence"},
@@ -250,6 +269,8 @@ TEXTOS: dict[str, dict] = {
                         "NASA GLDAS y MERRA-2, NASA SEDAC GRUMP (CIESIN), GLiM (Hartmann y Moosdorf 2012, CC BY 3.0), "
                         "capa de análogos del USGS (Hunter 2020), Pyroduct (Romio y Lobosco 2024, CC BY 4.0).\n"
                         "- **Nombres de lugares y países:** Natural Earth 1:110m (dominio público).\n"
+                        "- **Imágenes desde órbita:** NASA GIBS (MODIS, Blue Marble) y NASA Trek (Viking MDIM 2.1, LRO WAC), mostradas en vivo con su "
+                        "crédito. Este proyecto no está avalado por la NASA.\n"
                         "- Procedencia completa, licencias y límites: docs/FUENTES.md y docs/LICENCIAS.md. "
                         "Parte de la búsqueda de fuentes y del código se hizo con asistentes de IA y se revisó por el equipo."),
                  "en": ("- **Moon:** LRO LOLA, LRO Diviner, Lunar Prospector GRS, LROC (NASA/ASU), pits from LROC QuickMap (Losarcos and Dombard 2026, CC BY 4.0).\n"
@@ -258,6 +279,8 @@ TEXTOS: dict[str, dict] = {
                         "NASA GLDAS and MERRA-2, NASA SEDAC GRUMP (CIESIN), GLiM (Hartmann and Moosdorf 2012, CC BY 3.0), "
                         "USGS analog layer (Hunter 2020), Pyroduct (Romio and Lobosco 2024, CC BY 4.0).\n"
                         "- **Place and country names:** Natural Earth 1:110m (public domain).\n"
+                        "- **Orbital images:** NASA GIBS (MODIS, Blue Marble) and NASA Trek (Viking MDIM 2.1, LRO WAC), shown live with their "
+                        "credit. This project is not endorsed by NASA.\n"
                         "- Full provenance, licenses and limits: docs/FUENTES.md and docs/LICENCIAS.md (in Spanish). "
                         "Part of the source search and of the code was done with AI assistants and reviewed by the team.")},
 }

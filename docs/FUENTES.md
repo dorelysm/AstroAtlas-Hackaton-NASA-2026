@@ -207,3 +207,9 @@ Obu, J., Westermann, S., Kääb, A. y Bartsch, A. (2018), *Ground Temperature Ma
 Natural Earth 1:110m, capas `ne_110m_admin_0_countries` y `ne_110m_geography_regions_polys` (dominio público; https://www.naturalearthdata.com). Se simplifican en `src/analogos/data/lugares.json` (`python -m analogos.lugares --build`; los datos crudos quedan en `data/raw/naturalearth/`, no versionados).
 
 Los nombres de lugares y países de la app están también en inglés (`NAME_EN` de Natural Earth 1:110m).
+
+## Imágenes desde órbita de la comparación visual (15 nov 2026)
+- **Tierra:** NASA GIBS (Global Imagery Browse Services), servicio WMS `https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi`; capas `MODIS_Terra_CorrectedReflectance_TrueColor` (día 2023-07-15) y `BlueMarble_NextGeneration` (2004-07-01).
+- **Marte:** NASA Trek, `Mars_Viking_MDIM21_ClrMosaic_global_232m` (teselas WMTS `default028mm`, niveles 0 a 7).
+- **Luna:** NASA Trek, `LRO_WAC_Mosaic_Global_303ppd_v02` (teselas WMTS `default028mm`, niveles 0 a 8).
+Las imágenes se descargan en vivo (no se guardan en el repositorio) y se muestran con su crédito.

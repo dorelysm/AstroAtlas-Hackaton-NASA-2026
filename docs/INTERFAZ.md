@@ -59,3 +59,17 @@ La app está en **español e inglés**. El selector está **arriba del todo en l
 - **Pendiente:** el texto del archivo de resultados que no tenga traducción exacta se muestra en español (hoy están traducidos todos: 8 explicaciones del atlas y 7 casos de uso; una prueba lo comprueba, así que un texto nuevo sin traducir hará fallar los tests). Los textos propios de Streamlit («Show/hide columns», «Download as CSV»…) siguen en inglés en las dos versiones.
 
 **Pie de página:** al final de la página (y también cuando la página se detiene por falta de aspectos o de lugares) hay una línea con la autoría, en el idioma elegido: «Desarrollado por el equipo AstroAtlas para el Hackatón NASA Space Apps Challenge 2026.» / «Developed by the AstroAtlas team for the NASA Space Apps Challenge 2026 Hackathon.» (clave `pie` en `i18n.py`).
+
+## Comparación visual con imágenes de la NASA (15 nov 2026)
+En la ficha de cada lugar, bajo el nombre, hay una **comparación visual**: a la izquierda el sitio de la Luna o de Marte elegido y a la derecha el lugar de la Tierra, como **vistas desde órbita de 150 × 150 km** centradas en cada uno (mismo tamaño en kilómetros, así se compara la forma del terreno a simple vista). Debajo de cada imagen va su crédito y el título de la comparación dice cuáles se comparan.
+
+| Cuerpo | Fuente (servicio abierto de la NASA, sin clave) | Resolución |
+|---|---|---|
+| Tierra | **NASA GIBS**: MODIS Terra en color verdadero (un día de 2023) o Blue Marble Next Generation (sin nubes); se elige con el control «Imagen de la Tierra» | 250 m y 500 m por píxel |
+| Marte | **NASA Trek**: mosaico en color de Viking MDIM 2.1 | 232 m por píxel |
+| Luna | **NASA Trek**: mosaico de LRO WAC | ≈ 100 m por píxel |
+
+- **Cómo funciona** (`src/analogos/imagenes.py`): para la Tierra se pide a GIBS una imagen de la ventana (WMS); para la Luna y Marte se descargan las teselas de Trek que cubren la ventana (en paralelo, ~1,5 s), se unen y se recorta un cuadrado de 512 px. La ventana se ensancha con la latitud para que sea cuadrada en kilómetros. Las imágenes se guardan en la caché de la app una semana.
+- **Si falla la NASA:** la app muestra «No se pudo cargar la imagen de la NASA ahora mismo» en lugar de la imagen y todo lo demás sigue funcionando (comprobado con la red de la NASA cortada); las excepciones no se guardan en la caché, así que se reintenta.
+- **Límites:** a más de **84° de latitud** (los polos: Shackleton y Malapert en la Luna) el mapa de Trek se deforma demasiado y no se muestra la vista de ese sitio (sí la del lugar de la Tierra); el color y el sensor de cada cuerpo son distintos (Marte y Luna en mosaicos de orbitadores, la Tierra en color verdadero), así que sirven para comparar formas (cráteres, campos de lava, valles) y no colores; la imagen de MODIS es de un solo día y puede tener nubes (para eso está la opción Blue Marble, más borrosa); los 250–500 m por píxel de la Tierra son más gruesos que lo que se ve en las fotos de la NASA con rovers.
+- **No es una foto del terreno** (a nivel del suelo): para eso la NASA tiene la Biblioteca de imágenes y video (`images.nasa.gov`, con API abierta), que serviría para añadir una foto elegida a mano por sitio (queda como mejora).
