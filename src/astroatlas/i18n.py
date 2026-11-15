@@ -270,7 +270,7 @@ TEXTS: dict[str, dict] = {
                         "capa de análogos del USGS (Hunter 2020), Pyroduct (Romio y Lobosco 2024, CC BY 4.0).\n"
                         "- **Nombres de lugares y países:** Natural Earth 1:110m (dominio público).\n"
                         "- **Imágenes desde órbita:** NASA GIBS (MODIS, Blue Marble) y NASA Trek (Viking MDIM 2.1, LRO WAC), mostradas en vivo con su "
-                        "crédito. Este proyecto no está avalado por la NASA.\n"
+                        "crédito. Reconocemos el uso de imágenes de los servicios Global Imagery Browse Services (GIBS) de la NASA, parte del sistema ESDIS de la NASA. Este proyecto no está avalado por la NASA.\n"
                         "- Procedencia completa, licencias y límites: docs/reference/data-sources.md y docs/reference/licenses.md. "
                         "Parte de la búsqueda de fuentes y del código se hizo con asistentes de IA y se revisó por el equipo."),
                  "en": ("- **Moon:** LRO LOLA, LRO Diviner, Lunar Prospector GRS, LROC (NASA/ASU), pits from LROC QuickMap (Losarcos and Dombard 2026, CC BY 4.0).\n"
@@ -280,7 +280,7 @@ TEXTS: dict[str, dict] = {
                         "USGS analog layer (Hunter 2020), Pyroduct (Romio and Lobosco 2024, CC BY 4.0).\n"
                         "- **Place and country names:** Natural Earth 1:110m (public domain).\n"
                         "- **Orbital images:** NASA GIBS (MODIS, Blue Marble) and NASA Trek (Viking MDIM 2.1, LRO WAC), shown live with their "
-                        "credit. This project is not endorsed by NASA.\n"
+                        "credit. We acknowledge the use of imagery provided by services from NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). This project is not endorsed by NASA.\n"
                         "- Full provenance, licenses and limits: docs/reference/data-sources.md and docs/reference/licenses.md. "
                         "Part of the source search and of the code was done with AI assistants and reviewed by the team.")},
 }

@@ -163,7 +163,7 @@ The validation is also a map of what to do next. Everything below is documented,
 - **Mars temperature:** a comparable thermal product (for example from MRO MCS) to give Mars a fourth, thermal dimension.
 - **More and better analogs:** extend the frozen validation sets with primary-source coordinates (several still come from Wikipedia) so intervals tighten.
 - **Risk layer:** add radiation and security/access data, which the current field-risk indicators deliberately leave unassessed.
-- **Licences:** open the pages marked *to check* (Copernicus, SEDAC, NASA GIBS and Trek) and copy the exact attribution text.
+- **Licences:** Copernicus, SEDAC, MODIS (LST and snow), GIBS and the USGS cave catalogue are checked and cited in [licences](docs/reference/licenses.md); next, copy the PDS bundle DOIs and look for explicit Trek terms.
 - **Scope of the analogy:** Earth cannot reproduce reduced gravity, lunar vacuum, Mars' thin atmosphere or radiation; the profiles say so for every place.
 
 Parts of the literature search and code were produced with **AI assistants** and reviewed by the team.
