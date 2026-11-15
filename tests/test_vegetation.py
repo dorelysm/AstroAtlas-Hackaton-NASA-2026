@@ -56,3 +56,15 @@ def test_add_pit_context_counts_and_nearest():
     assert out["nearest_pit_name"].tolist()[:2] == ["A", "B"]
     assert out["nearest_pit_km"].iloc[2] > 1000
     assert add_pit_context(out, pits)["pits_within_50km"].tolist() == [1, 1, 0]   # idempotente
+
+
+def test_load_mars_caves_ignores_misordered_header(tmp_path):
+    from analogos.data.caves import MARS_COLUMNS, add_pit_context, load_mars_caves
+
+    f = tmp_path / "c.csv"
+    f.write_text("longitude:string,latitude:string,Label:string\nAPC001,240.4585,-0.94678,APC,1,25,32,\"APC, tiny\"\n"
+                 "CC0002,10.0,5.0,sky,2,,,x\n", encoding="utf-8")
+    c = load_mars_caves(f)
+    assert c["name"].tolist() == ["APC001", "CC0002"] and abs(c["lon"][0] - 240.4585) < 1e-9 and abs(c["lat"][0] + 0.94678) < 1e-9
+    out = add_pit_context(pd.DataFrame({"lat": [-0.9], "lon": [240.4]}), c, columns=MARS_COLUMNS)
+    assert out["caves_within_50km"].iloc[0] == 1 and out["nearest_cave_name"].iloc[0] == "APC001"
