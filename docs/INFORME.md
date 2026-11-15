@@ -40,6 +40,8 @@ Con un conjunto congelado de 23 análogos ([VALIDACION_AMPLIADA.md](VALIDACION_A
 
 **Inercia térmica (experimento preregistrado, no adoptado):** añadir una dimensión de inercia térmica (TES en Marte, proxy MODIS en la Tierra) **empeoró** el resultado de Marte (−0,081, IC −0,133 a −0,025): mejora los análogos fríos y empeora los áridos ([PREREGISTRO_INERCIA.md](PREREGISTRO_INERCIA.md)).
 
+**Emisividad infrarroja para el basalto (experimento preregistrado, descartado en la primera fase):** el índice de MODIS detecta arenales de cuarzo, no basalto (AUC 0,69; cobertura 64 %), igual que antes ASTER. La geología sigue siendo GLiM ([PREREGISTRO_EMISIVIDAD.md](PREREGISTRO_EMISIVIDAD.md)).
+
 ## 6a. Atlas por aspecto y procesos
 [ATLAS_ASPECTOS.md](ATLAS_ASPECTOS.md) evalúa cada dimensión por separado con una etiqueta de confianza que sale de los resultados medidos (ninguna llega a "alta"). [PROCESOS.md](PROCESOS.md) trata tres procesos (vulcanismo y tubos de lava, transporte eólico, hielo subsuperficial) como estudios de caso cualitativos: solo el volcánico conecta con nuestros resultados.
 

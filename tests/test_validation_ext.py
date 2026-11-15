@@ -57,3 +57,16 @@ def test_extra_dimension_restores_global_state():
         assert "inertia" in config.DIMENSIONS and FEATURE in config.FEATURES and "inertia" in ablation.DIMS
     assert list(config.DIMENSIONS) == dims and list(config.FEATURES) == feats
     assert config.DEFAULT_WEIGHTS == weights and ablation.DIMS == abl
+
+
+def test_emissivity_contrast_and_gates():
+    from analogos.emissivity import contrast_index, gates, litho_sites
+
+    assert np.isclose(contrast_index(0.90, 0.96, 0.98), -0.07)
+    l = litho_sites()
+    assert l["basalt"].sum() == 10 and (l["basalt"] == 0).sum() == 10 and l["name"].is_unique
+    l["c"] = np.where(l["basalt"] == 1, 0.0, -0.1)            # separación perfecta
+    small = pd.DataFrame({"name": list("abc"), "c": [-0.01, -0.2, -0.05]})
+    g = gates(l, np.array([0.0, 0.0, np.nan]), small)
+    assert g["auc"] == 1.0 and g["puerta2"] and g["pequenos_sobre_mediana"] == 2 and g["puerta3"]
+    assert g["puerta1"] is False

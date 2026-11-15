@@ -181,3 +181,6 @@ Ver [CUEVAS.md](CUEVAS.md). **Luna:** capa `Pit-locations` (278 pits) de Losarco
 
 ## Inercia térmica de Marte (15 nov 2026, experimento no adoptado)
 **MGS-TES, mapa de inercia térmica** (Putzig y Mellon 2007, *Icarus* 191, 68-94; PDS Geosciences `mgs-m-tes-5-timap-v1`, zip de 66,4 MB, unidades J·m⁻²·K⁻¹·s⁻¹ᐟ²). Se bajó a `data/raw/tes_ti/` y se extrajo solo el directorio `data/`; se conservan el mapa nocturno y su máscara, y se borraron el zip y los archivos diurnos. Código: `src/analogos/inertia.py`. Valores de comprobación: Gale 393, Jezero 295, Phoenix 88. **No entra al modelo**: el experimento preregistrado empeoró el resultado ([PREREGISTRO_INERCIA.md](PREREGISTRO_INERCIA.md)).
+
+## Emisividad MODIS como índice de basalto (15 nov 2026, probado y descartado)
+Se probó el contraste de emisividad de MOD11C3 (`C = E29 − (E31 + E32)/2`) como medida de basalto, con un protocolo preregistrado ([PREREGISTRO_EMISIVIDAD.md](PREREGISTRO_EMISIVIDAD.md)). **La Fase 1 falló** (cobertura 64 % de las celdas frente al 80 % exigido; AUC 0,69 frente a 0,80): el índice separa los arenales de cuarzo pero no el basalto de lo cubierto por vegetación o libre de cuarzo. Se bajó un mes (julio de 2019) y se borró. Código: `src/analogos/emissivity.py`. La geología sigue siendo GLiM.

@@ -34,7 +34,7 @@ pip install -e ".[data]"           # solo para regenerar datos: librerías geoes
 ```powershell
 python -m analogos.pipeline          # scores, validación, candidatos (candidates_viable.csv) y clusters en data/results/
 streamlit run app/streamlit_app.py   # mapa, ranking, pesos, filtro de viabilidad y ficha
-pytest                               # 147 tests
+pytest                               # 148 tests
 ```
 
 **Sin descargar nada:** si no existe `data/features/`, la app y el pipeline usan `demo_data/` (≈ 0,6 MB, valores derivados ya calculados). Con datos propios, estos tienen prioridad.
@@ -61,6 +61,7 @@ python -m analogos.fichas                # selección de candidatos para las fic
 python -m analogos.validation_ext --build   # características de los análogos nuevos (descarga MODIS)
 python -m analogos.validation_ext           # validación con 23 análogos (modelo congelado)
 python -m analogos.inertia                  # experimento de inercia térmica (no adoptado)
+python -m analogos.emissivity --phase1      # experimento de emisividad (fase 1, descartado)
 python -m analogos.stability                # estabilidad de las predicciones
 python -m analogos.atlas                # atlas por aspecto con confianza
 python -m analogos.usecases             # recomendaciones por caso de uso
