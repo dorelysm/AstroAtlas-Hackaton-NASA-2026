@@ -3,8 +3,8 @@
   - Standardised with the Earth's mean/standard deviation.
   - Distance per dimension = RMS of the z differences of its features (ignores NaN).
   - Topography (optional, recommended): its 16 variables are highly correlated (mean |r| ~0.74,
-    3 components explain ~90 % of the variance), so they would count double. `fit_topo_model` summarises them
-    into a few WHITENED principal components (variance 1 each) and the distance is measured there.
+    3 components explain ~90 % of the variance), so they would count double. `fit_topo_model` summarises
+    them into a few WHITENED principal components (variance 1 each) and the distance is measured there.
     It is equivalent to a Mahalanobis distance restricted to the principal subspace.
   - Score per dimension = exp(-distance)  -> 1 = identical, ~0 = very different.
   - Global score = weighted mean of the available dimensions.
@@ -88,12 +88,22 @@ def dimension_scores(cells: pd.DataFrame, profile: pd.Series, topo_model: TopoMo
     return pd.DataFrame(out, index=cells.index)
 
 
-def global_score(dim_scores: pd.DataFrame, weights: dict[str, float] | None = None) -> pd.Series:
+def global_score(dim_scores: pd.DataFrame, weights: dict[str, float] | None = None) -> pd.DataFrame:
+    """Calculates the global score and the weighted contribution of each dimension."""
     w = pd.Series({**DEFAULT_WEIGHTS, **(weights or {})})[dim_scores.columns]
     valid = dim_scores.notna()
-    num = (dim_scores.fillna(0) * w).sum(axis=1)
+    
+    # Weighted components
+    weighted_scores = dim_scores.fillna(0) * w
+    num = weighted_scores.sum(axis=1)
     den = (valid * w).sum(axis=1)
-    return (num / den.where(den > 0)).rename("score")
+    
+    score = (num / den.where(den > 0)).rename("score")
+    
+    # Calculate contribution: (Score * Weight) / Total Weighted Score
+    contributions = weighted_scores.div(num.replace(0, 1), axis=1).rename(prefix="contrib_")
+    
+    return pd.concat([score, contributions], axis=1)
 
 
 def score_cells(cells: pd.DataFrame, profile: pd.Series, weights: dict[str, float] | None = None,
@@ -101,12 +111,23 @@ def score_cells(cells: pd.DataFrame, profile: pd.Series, weights: dict[str, floa
     """Scores per dimension and global, in the order of `cells` (not sorted nor ranked)."""
     dims = dimension_scores(cells, profile, topo_model, ref)
     keep = [c for c in ("cell_id", "lat", "lon", "name") if c in cells.columns]
-    return pd.concat([cells[keep], dims, global_score(dims, weights)], axis=1)
+    results = global_score(dims, weights)
+    return pd.concat([cells[keep], dims, results], axis=1)
 
 
 def rank_cells(earth: pd.DataFrame, profile: pd.Series, weights: dict[str, float] | None = None,
-               topo_model: TopoModel | None = None) -> pd.DataFrame:
-    """Returns the cells with scores per dimension, global score and ranking (1 = best)."""
-    out = score_cells(earth, profile, weights, topo_model)
+               topo_model: TopoModel | None = None, bbox: tuple[float, float, float, float] | None = None) -> pd.DataFrame:
+    \"\"\"Returns the cells with scores per dimension, global score and ranking (1 = best).
+    
+    `bbox` is a tuple (min_lat, max_lat, min_lon, max_lon). If provided, only cells 
+    within this bounding box are considered for similarity calculation.
+    \"\"\"
+    df = earth
+    if bbox:
+        min_lat, max_lat, min_lon, max_lon = bbox
+        df = df[(df["lat"] >= min_lat) & (df["lat"] <= max_lat) & 
+                 (df["lon"] >= min_lon) & (df["lon"] <= max_lon)]
+    
+    out = score_cells(df, profile, weights, topo_model)
     out["rank"] = out["score"].rank(ascending=False, method="min")
     return out.sort_values("rank").reset_index(drop=True)

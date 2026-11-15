@@ -1,8 +1,8 @@
 """Loading and validation of the feature contract."""
 import pandas as pd
+from typing import List, Optional
 
 from .config import BODIES, FEATURES, FEATURES_DIR, REQUIRED_COLS
-
 
 def validate_features(df: pd.DataFrame, body: str) -> pd.DataFrame:
     """Checks that `df` complies with the contract. Raises ValueError if not."""
@@ -22,13 +22,30 @@ def validate_features(df: pd.DataFrame, body: str) -> pd.DataFrame:
         raise ValueError(f"[{body}] features not declared in config.DIMENSIONS: {unknown}")
     return df
 
-
-def load_features(body: str, directory=FEATURES_DIR) -> pd.DataFrame:
+def load_features(body: str, directory=FEATURES_DIR, columns: Optional[List[str]] = None) -> pd.DataFrame:
+    """
+    Loads features for a given body.
+    
+    Args:
+        body: The celestial body (earth, moon, mars).
+        directory: Path to the data directory.
+        columns: Optional list of columns to load. If None, all columns are loaded.
+    """
     if body not in BODIES:
         raise ValueError(f"body desconocido: {body}")
+    
     path = directory / f"{body}.parquet"
     if not path.exists():
         raise FileNotFoundError(
             f"No existe {path}. Generate test data with: python -m astroatlas.synthetic"
         )
-    return validate_features(pd.read_parquet(path), body)
+    
+    # Optimization: Load only required columns to save memory and IO
+    if columns:
+        # Ensure required columns are included in the selection
+        full_cols = list(dict.fromkeys(REQUIRED_COLS + columns))
+        df = pd.read_parquet(path, columns=full_cols)
+    else:
+        df = pd.read_parquet(path)
+        
+    return validate_features(df, body)
