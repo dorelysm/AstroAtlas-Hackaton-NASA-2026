@@ -44,6 +44,8 @@ Con un conjunto congelado de 23 análogos ([VALIDACION_AMPLIADA.md](VALIDACION_A
 
 **Topografía a varias escalas y calibración con la variabilidad del objetivo (dos experimentos preregistrados, ninguno adoptado):** el exponente de rugosidad no cambia nada medible (diferencias de ±0,01 con intervalos de ±0,05; [PREREGISTRO_MULTIESCALA.md](PREREGISTRO_MULTIESCALA.md)), y calibrar la distancia con la heterogeneidad del sitio empeora ligeramente el global (−0,016 en la Luna y −0,005 en Marte; [PREREGISTRO_VARIABILIDAD.md](PREREGISTRO_VARIABILIDAD.md)). Tampoco superan el azar en la prueba de cráteres con control de planitud.
 
+**Dos grupos de análogos, frío y cálido (experimento preregistrado, no adoptado):** con pesos propios para el grupo frío mejoran los cinco análogos fríos (+0,023, p = 0,031), pero siguen por debajo del azar (u = 0,310): el problema es la variable de hielo, no el promedio ([PREREGISTRO_GRUPOS.md](PREREGISTRO_GRUPOS.md)).
+
 ## 6a. Atlas por aspecto y procesos
 [ATLAS_ASPECTOS.md](ATLAS_ASPECTOS.md) evalúa cada dimensión por separado con una etiqueta de confianza que sale de los resultados medidos (ninguna llega a "alta"). [PROCESOS.md](PROCESOS.md) trata tres procesos (vulcanismo y tubos de lava, transporte eólico, hielo subsuperficial) como estudios de caso cualitativos: solo el volcánico conecta con nuestros resultados.
 

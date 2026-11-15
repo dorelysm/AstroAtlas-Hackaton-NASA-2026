@@ -111,3 +111,17 @@ def test_variability_target_spread_and_fallback():
     s = target_spread(w, m)
     assert s.loc["A", "calibrado"] and np.isclose(s.loc["A", "s1"], np.arange(9.0).std(ddof=1)) and s.loc["A", "s2"] == 0.0
     assert not s.loc["B", "calibrado"] and s.loc["B", "s1"] == 0.0     # solo 3 ventanas válidas de 9: sin calibrar
+
+
+def test_grupos_rules_and_exact_test():
+    from analogos.grupos import COLD_LAT, COLD_TMAX_K, cold_analogs, exact_sign_flip_p, split_targets
+
+    assert exact_sign_flip_p(np.array([0.1, 0.2, 0.3, 0.4, 0.5])) == 1 / 32          # los 5 positivos: p mínima
+    assert exact_sign_flip_p(np.array([-0.1, -0.2, -0.3])) == 1.0
+    sites = pd.DataFrame({"name": ["frio", "justo", "calido", "solo_luna"], "thermal__t_max_k": [280.0, COLD_TMAX_K, 320.0, 270.0]})
+    known = pd.DataFrame({"name": ["frio", "justo", "calido", "solo_luna"], "analog_of": ["mars", "mars", "moon+mars", "moon"]})
+    assert cold_analogs(sites, known) == ["frio"]                                   # 295 K no es frío (< estricto); la Luna se ignora
+    prof = pd.DataFrame(index=["polar", "borde", "tropical"])
+    lat = pd.Series({"polar": 68.0, "borde": COLD_LAT, "tropical": 5.0})
+    cold, warm = split_targets(prof, lat)
+    assert cold == ["polar", "borde"] and warm == ["tropical"]
