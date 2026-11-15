@@ -1,49 +1,45 @@
 # Resumen del proyecto
 
 **NASA Space Apps Challenge 2026 · reto "Permanent Moon Base Locations and Mars"**
-Estado a 14 de noviembre de 2026. Es un prototipo en desarrollo, no una entrega final.
+Estado a 15 de noviembre de 2026. Prototipo con datos reales; la validación sale **cerca del azar** y así debe presentarse.
 
 ## 1. El reto en una línea
-Usar datos abiertos de la Tierra, la Luna y Marte para **encontrar y caracterizar lugares de la Tierra que sirvan de análogo** de sitios de aterrizaje o de bases en la Luna y en Marte. Hay que explicar qué se parece, qué no y para qué serviría, y buscar más allá de los análogos ya conocidos (Atacama, Antártida, Islandia, Hawái). Detalles en [reto.md](reto.md).
+Usar datos abiertos de la Tierra, la Luna y Marte para **encontrar y caracterizar lugares de la Tierra que sirvan de análogo** de sitios de aterrizaje o de bases en la Luna y en Marte, explicando qué se parece, qué no y para qué serviría. Detalles en [reto.md](reto.md).
 
 ## 2. Nuestra idea
-Un **índice de similitud multidimensional**. Para cada sitio objetivo de la Luna o de Marte se calcula qué tan parecida es cada celda de la Tierra, **dimensión por dimensión**: terreno, térmica, agua/hielo y geología. Después:
+Un **índice de similitud multidimensional**. Para cada sitio objetivo (21 lunares y 14 marcianos) se calcula qué tan parecida es cada celda de la Tierra, **dimensión por dimensión**: topografía, térmica, agua/hielo y geología.
 
-1. Se **valida** el modelo con análogos que la NASA ya usa. Si salen bien rankeados, el modelo es creíble.
-2. Se buscan los **candidatos nuevos**: celdas con buen puntaje que estén lejos de cualquier análogo conocido.
-3. Cada candidato lleva una **ficha** con lo que se parece, lo que no, y los límites de la analogía (gravedad, vacío, radiación, atmósfera).
-
-El puntaje por dimensión es `exp(-distancia)` sobre variables estandarizadas, y el global es una media ponderada. Los pesos los elige el usuario con sliders en la app. La idea de partida es de Mauxi ([ideas.md](ideas.md)); el plan completo está en [PLAN.md](PLAN.md).
+- Puntaje por dimensión = `exp(-RMS de la distancia z)`; la topografía (16 variables) se comprime con PCA blanqueada. Puntaje global = media ponderada de las dimensiones disponibles (las vacías se ignoran). Los pesos se eligen en la app.
+- Se **valida** con análogos terrestres conocidos, que solo validan y nunca ajustan el modelo. Métrica: u = P(análogo > celda típica), 0,5 = azar, con bootstrap sobre los análogos.
+- Se buscan **candidatos nuevos** lejos de los análogos conocidos, con ficha (qué se parece, qué no, límites).
+- Cada celda lleva la marca **`viable`**: falso si hay un asentamiento de ≥ 1 000 hab. a menos de 50 km (NASA SEDAC GRUMP). Es una marca, no entra en el score ni en la validación.
 
 ## 3. Qué hay hecho
 
 | Parte | Estado |
 |---|---|
-| Esqueleto Python (`src/analogos/`): similitud, validación, clustering (PCA + HDBSCAN), fichas, pipeline | Hecho; 29 tests pasan |
-| App Streamlit: mapa, ranking, sliders de pesos, métricas, ficha | Hecha; cargó sin errores, **el mapa no se pudo comprobar visualmente** |
-| Contrato de datos ([docs/features.md](docs/features.md)) | Hecho: 16 variables de topografía y 5 más de otras dimensiones |
-| **Topografía de Luna y Marte** (pendiente, percentiles, rugosidad a 1, 2 y 5 km, TRI, TPI, curvaturas, orientación, parche llano) | **Datos reales** de 3 sitios lunares y 3 marcianos, leídos de los DEM del USGS (LOLA 118 m, MOLA 463 m). Elevaciones comprobadas contra puntos conocidos |
-| Termal de la Tierra (prototipo con POWER) y búsqueda en CMR | Funciona, pero es temperatura del **aire**, no de superficie |
-| Cliente de ODE (PDS Geosciences) para localizar productos de Luna y Marte | Funciona; solo devuelve enlaces, no valores |
-| Listas de datos: sitios objetivo, análogos conocidos, aterrizajes conocidos | Hechas; coordenadas verificadas en parte (ver sección 5) |
+| Datos reales de la **Luna** | Topografía (LOLA), térmica (Diviner), hielo (LP-GRS); 21 sitios con coordenadas de las tablas LROC |
+| Datos reales de **Marte** | Topografía (MOLA), hielo (Odyssey GRS), geología; **térmica vacía por decisión** (no hay un mapa comparable) |
+| Datos reales de la **Tierra** | Topografía Copernicus GLO-90, térmica MODIS LST, nieve MODIS, geología GLiM (CC-BY, excepción aprobada por el equipo), asentamientos GRUMP. ASTER GED probado y rechazado |
+| Pipeline y app | Features → scores → validación → resultados; app Streamlit con mapa, pesos y filtro de viabilidad; 125 tests |
+| Ablación por dimensión y validación por aspecto | Hechas, con etiquetas y protocolos fijados antes de medir (hash registrado) |
+| Capa de análogos del USGS | Cráteres y dunas frente a 200 controles aleatorios |
 
-## 4. Qué falta (y por qué los resultados aún no significan nada)
-- **La Tierra no tiene datos reales de topografía ni de geología.** `data/features/earth.parquet` es **sintético**, así que el AUC (~0.5) es el de un modelo aleatorio.
-- **Luna y Marte solo tienen topografía.** Faltan temperatura de superficie (Diviner, TES/THEMIS), agua/hielo (LEND, SHARAD, GRS) y minerales (M3, CRISM).
-- **Termal de la Tierra:** hay que sustituir POWER (aire) por MODIS LST (superficie). Exige login gratuito de Earthdata.
-- **`ice__water_frac`** de la Tierra es un proxy provisional de precipitación; no mide hielo en el suelo.
-- **Una sola ventana de 50 × 50 km por sitio.** El perfil de cada sitio es una fila.
-- **Faltan** la iluminación en los polos, los cráteres y los tubos de lava, que serían los que distinguen candidatos de base lunar.
-- Los umbrales de 5° y 15° para las fracciones de pendiente están por confirmar con una fuente.
+## 4. Resultados (todos negativos o débiles)
+- **Validación global:** 35 objetivos, AUC por sitios 0,58 y recall 0,17; AUC por celdas 0,50. Casi azar. Detalle en [VALIDACION.md](docs/VALIDACION.md) y [ABLACION.md](docs/ABLACION.md).
+- **Por aspecto** ([VALIDACION_ASPECTO.md](docs/VALIDACION_ASPECTO.md)): la geología va en la dirección correcta pero con 1 a 3 análogos por grupo; el hielo de Marte falla donde debía acertar (Valles Secos, −0,75) porque la nieve de la Tierra no mide sequedad; la geología de Marte se satura y no ayuda.
+- **Hielo, variable alternativa** ([PREREGISTRO_HIELO.md](docs/PREREGISTRO_HIELO.md)): la humedad del suelo (GLDAS) no mejora (Marte 0,493 → 0,469), se mantiene la nieve.
+- **Terreno llano** ([PREREGISTRO_LLANURA.md](docs/PREREGISTRO_LLANURA.md)): con control por pendiente, la señal de los cráteres en Marte desaparece (0,567 → 0,494). Era un efecto de planitud, no de forma de cráter.
+- **Análogos nuevos** ([BUSQUEDA_ANALOGOS.md](docs/BUSQUEDA_ANALOGOS.md)): la búsqueda no encontró ninguno evaluable para térmica ni hielo.
+- **Viabilidad:** 708 de 951 celdas viables. Cinco de los diez análogos conocidos quedarían inviables (Mauna Kea, Lanzarote, Río Tinto, Svalbard, Craters of the Moon), por eso la marca no se aplica a la validación.
 
-## 5. De dónde salen los datos (y cuánto fiarse)
-Todo está registrado en [docs/FUENTES.md](docs/FUENTES.md).
-
-- **Verificados contra una página abierta:** coordenadas de Apolo, Surveyor, Viking, Pathfinder, Spirit, Opportunity, Phoenix, Curiosity y otros, desde NSSDCA y el Mars Orbital Data Explorer ([docs/aterrizajes_conocidos.csv](docs/aterrizajes_conocidos.csv)).
-- **Orientativos:** las coordenadas de los análogos terrestres y de casi todos los sitios objetivo vienen de Wikipedia, que no cita fuente primaria. Hay que sustituirlas por fuentes oficiales antes de citarlas.
-- **No verificados:** Chandrayaan-3, SLIM, Zhurong, Oxia Planum y las regiones de Artemis III (NASA no publica sus coordenadas), entre otros. La analogía de Mauna Kea, Askja y Svalbard tampoco está comprobada.
-- La búsqueda la hicieron agentes de IA; antes de citar un dato en la entrega hay que abrir su `source_url`.
-- Las APIs de NASA y lo que se probó en vivo están en [docs/APIS.md](docs/APIS.md).
+## 5. Límites que hay que decir en la entrega
+- **Pocos análogos** (4 a 8 por cuerpo): los intervalos son anchos y ninguna dimensión puede quedar validada de forma concluyente.
+- **Semántica distinta entre cuerpos:** el hielo y la térmica de la Tierra no significan lo mismo que en la Luna o Marte; ningún lugar de la Tierra reproduce los cambios de temperatura diarios de Marte.
+- **Confusión con terreno llano y estable** (cratones), que ayuda a los análogos sin ser el aspecto buscado.
+- **Viabilidad:** GRUMP es de 1990-2010, le faltan pueblos pequeños (San Pedro de Atacama) y estaciones antárticas.
+- **Coordenadas:** las de los análogos y casi todos los sitios objetivo vienen de Wikipedia o de las tablas LROC; las analogías de Mauna Kea, Askja y Svalbard no están comprobadas. Todo en [docs/FUENTES.md](docs/FUENTES.md); abrir el `source_url` antes de citar.
+- **No presentar el ranking como predictivo:** lo defendible es el método, los preregistros y los resultados negativos.
 
 ## 6. Cómo ejecutarlo (Windows PowerShell)
 
@@ -51,32 +47,28 @@ Todo está registrado en [docs/FUENTES.md](docs/FUENTES.md).
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -e ".[app,dev]"
-pip install --only-binary=:all: rasterio     # para leer los DEM (Luna y Marte)
+pip install -e ".[data]"          # solo para regenerar datos; con Python 3.14 usar --only-binary=:all:
+# copia .env.example a .env con tus credenciales de Earthdata
 
-python -m analogos.synthetic        # datos sintéticos (Tierra y objetivos)
-python -m analogos.data.moon        # topografía real de la Luna
-python -m analogos.data.mars        # topografía real de Marte
-python -m analogos.pipeline         # scores, validación y clusters
+python -m analogos.pipeline         # scores, validación, candidatos y clusters
 streamlit run app/streamlit_app.py
-pytest
+pytest                              # 125 tests
 ```
 
-Nota: con Python 3.14 el `pip install` completo se atascó resolviendo dependencias; funcionó instalando las ruedas precompiladas (`--only-binary=:all:`).
+`data/` no se versiona. Los módulos para regenerar los datos están en el [README](README.md).
 
 ## 7. Mapa del repo
 
 | Ruta | Qué hay |
 |---|---|
-| `src/analogos/` | `topography.py` (pendiente y rugosidad), `similarity.py`, `validate.py`, `cluster.py`, `report.py`, `pipeline.py`, `synthetic.py` |
-| `src/analogos/data/` | `dem.py` (lectura remota de DEM), `moon.py`, `mars.py`, `earth.py` (POWER y CMR), `ode.py`, `http.py` |
+| `src/analogos/` | `similarity`, `validate`, `pipeline`, `ablation`, `aspect`, `aspect_usgs`, `topography`, `cluster`, `report` |
+| `src/analogos/data/` | descarga y features por fuente (Copernicus, MODIS, GLiM, LOLA, MOLA, ODE, GRUMP, USGS) |
 | `app/streamlit_app.py` | la aplicación |
-| `docs/` | contrato de datos, procedencia, APIs, CSV de sitios |
-| `data/` | no se versiona: `features/`, `results/` y `raw/cache/` |
+| `docs/` | contrato de datos, procedencia, APIs, ablación, validaciones, preregistros y CSV de sitios |
 | `PLAN.md` | arquitectura, equipo de 6 personas y cronograma |
 
-## 8. Siguientes pasos recomendados
-1. **Topografía de la Tierra** con un DEM global (Copernicus de 90 m, porque NASADEM no cubre los polos), con el mismo `window_features`. Es lo que desbloquea la primera comparación real.
-2. **Termal de superficie:** MODIS LST para la Tierra y Diviner para la Luna (necesita cuenta de Earthdata).
-3. **Validación con datos reales:** fijar la lista de análogos conocidos con fuentes oficiales y medir AUC y recall.
-4. Añadir **iluminación** para los sitios polares y **cráteres**.
-5. Escribir el informe y las fichas para la entrega.
+## 8. Siguientes pasos posibles
+1. **Más análogos con fuente:** leer bibliografía completa (no solo búsquedas) y fijar antes de medir qué objetivos son relevantes para cada aspecto (p. ej. térmica lunar solo en los polares).
+2. **Marte, térmica:** dejarla vacía y decirlo, o buscar otra fuente si el equipo la quiere.
+3. **Viabilidad:** complementar GRUMP con densidad de población (GPWv4) o luces nocturnas.
+4. **Entrega:** escribir el informe y las fichas centrados en el método y en los límites; comprobar visualmente el mapa de la app.
