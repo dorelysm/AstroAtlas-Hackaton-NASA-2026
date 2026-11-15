@@ -88,25 +88,55 @@ def dimension_scores(cells: pd.DataFrame, profile: pd.Series, topo_model: TopoMo
     return pd.DataFrame(out, index=cells.index)
 
 
-def global_score(dim_scores: pd.DataFrame, weights: dict[str, float] | None = None) -> pd.Series:
+MISSING_MODES = ("renormalize", "zero")
+
+
+def global_score(dim_scores: pd.DataFrame, weights: dict[str, float] | None = None,
+                 missing: str = "renormalize", expected: list[str] | None = None) -> pd.Series:
+    """Weighted mean of the per-dimension scores.
+
+    missing="renormalize" (default, the published model): each cell is averaged over the dimensions IT has data for,
+        so a cell with a gap is not penalised for it (and is compared with cells that were).
+    missing="zero" (experimental, docs/preregistrations/missing-dimensions.md): every dimension the target can be
+        compared on (`expected`, by default those with at least one score) counts for every cell, and a gap scores 0.
+        A cell with no score at all stays NaN.
+    """
+    if missing not in MISSING_MODES:
+        raise ValueError(f"missing must be one of {MISSING_MODES}, not {missing!r}")
     w = pd.Series({**DEFAULT_WEIGHTS, **(weights or {})})[dim_scores.columns]
+    if missing == "zero":
+        cols = [c for c in dim_scores.columns if (c in expected if expected is not None else dim_scores[c].notna().any())]
+        x, wx = dim_scores[cols], w[cols]
+        den = wx.sum()
+        if not cols or den <= 0:
+            return pd.Series(np.nan, index=dim_scores.index, name="score")
+        return ((x.fillna(0) * wx).sum(axis=1) / den).where(x.notna().any(axis=1)).rename("score")
     valid = dim_scores.notna()
     num = (dim_scores.fillna(0) * w).sum(axis=1)
     den = (valid * w).sum(axis=1)
     return (num / den.where(den > 0)).rename("score")
 
 
+def _profile_dims(profile: pd.Series) -> list[str]:
+    """Dimensions in which the target has at least one feature with data."""
+    return [d for d, feats in DIMENSIONS.items() if profile.reindex(feats).notna().any()]
+
+
 def score_cells(cells: pd.DataFrame, profile: pd.Series, weights: dict[str, float] | None = None,
-                topo_model: TopoModel | None = None, ref: pd.DataFrame | None = None) -> pd.DataFrame:
-    """Scores per dimension and global, in the order of `cells` (not sorted nor ranked)."""
+                topo_model: TopoModel | None = None, ref: pd.DataFrame | None = None,
+                missing: str = "renormalize") -> pd.DataFrame:
+    """Scores per dimension and global, in the order of `cells` (not sorted nor ranked).
+
+    `missing`: how a cell without data in a dimension is treated, see `global_score` (default: unchanged model)."""
     dims = dimension_scores(cells, profile, topo_model, ref)
     keep = [c for c in ("cell_id", "lat", "lon", "name") if c in cells.columns]
-    return pd.concat([cells[keep], dims, global_score(dims, weights)], axis=1)
+    expected = _profile_dims(profile) if missing == "zero" else None
+    return pd.concat([cells[keep], dims, global_score(dims, weights, missing, expected)], axis=1)
 
 
 def rank_cells(earth: pd.DataFrame, profile: pd.Series, weights: dict[str, float] | None = None,
-               topo_model: TopoModel | None = None) -> pd.DataFrame:
+               topo_model: TopoModel | None = None, missing: str = "renormalize") -> pd.DataFrame:
     """Returns the cells with scores per dimension, global score and ranking (1 = best)."""
-    out = score_cells(earth, profile, weights, topo_model)
+    out = score_cells(earth, profile, weights, topo_model, missing=missing)
     out["rank"] = out["score"].rank(ascending=False, method="min")
     return out.sort_values("rank").reset_index(drop=True)
