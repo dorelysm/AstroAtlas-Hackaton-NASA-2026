@@ -38,6 +38,8 @@ En vez de un solo ranking, seis perfiles de uso ([CASOS_DE_USO.md](CASOS_DE_USO.
 ## 5b. Validación ampliada y estabilidad
 Con un conjunto congelado de 23 análogos ([VALIDACION_AMPLIADA.md](VALIDACION_AMPLIADA.md), protocolo preregistrado): **Luna u = 0,595 (IC 0,545 a 0,644), supera el azar por poco; Marte u = 0,564 (IC 0,448 a 0,678), no se puede afirmar.** El modelo recupera los análogos áridos, volcánicos y de impacto y **falla con los fríos y de hielo**. La geología es el único aspecto con señal, y el hielo de Marte falla de forma consistente (−0,51). Las dos candidatas de Marte son **robustas** a pesos, PCA y muestra ([ESTABILIDAD.md](ESTABILIDAD.md)): Harrat ash-Shamah queda en el 5 % mejor en el 100 % de las réplicas y Haruj en el 79 %, aunque robustez no es validez.
 
+**Inercia térmica (experimento preregistrado, no adoptado):** añadir una dimensión de inercia térmica (TES en Marte, proxy MODIS en la Tierra) **empeoró** el resultado de Marte (−0,081, IC −0,133 a −0,025): mejora los análogos fríos y empeora los áridos ([PREREGISTRO_INERCIA.md](PREREGISTRO_INERCIA.md)).
+
 ## 6a. Atlas por aspecto y procesos
 [ATLAS_ASPECTOS.md](ATLAS_ASPECTOS.md) evalúa cada dimensión por separado con una etiqueta de confianza que sale de los resultados medidos (ninguna llega a "alta"). [PROCESOS.md](PROCESOS.md) trata tres procesos (vulcanismo y tubos de lava, transporte eólico, hielo subsuperficial) como estudios de caso cualitativos: solo el volcánico conecta con nuestros resultados.
 

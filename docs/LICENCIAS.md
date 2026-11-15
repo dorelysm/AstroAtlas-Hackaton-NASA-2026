@@ -12,6 +12,7 @@ dos servidores —SEDAC y Copernicus— rechazaron la conexión): hay que abrirl
 | Pits lunares | Losarcos y Dombard (2026), Zenodo 10.5281/zenodo.20516852 (de LROC QuickMap, Wagner y Robinson) | CC BY 4.0 | Comprobado (API de Zenodo) | Losarcos y Dombard (2026) y Wagner y Robinson (2014) |
 | Tubos de lava terrestres | Pyroduct Digital Catalog v1, Zenodo 10.5281/zenodo.14535886 | CC BY 4.0 | Comprobado (LICENSE.txt y README) | Romio, F. A. P. y Lobosco, G. (2024), doi:10.5281/zenodo.14535886 |
 | Cuevas de Marte | USGS Astrogeology, Mars Global Cave Candidate Catalog (Cushing; release PDS 2019) | Dominio público (USGS) | Por comprobar (se leyó el README y el XML, no el texto de licencia) | Cushing, G. E., Mars Global Cave Candidate Catalog, USGS/PDS (2019) |
+| Inercia térmica de Marte (experimento) | MGS-TES, Putzig y Mellon 2007; PDS Geosciences `mgs-m-tes-5-timap-v1` | Abierto (NASA PDS) | Por comprobar | Putzig, N. E. y Mellon, M. T. (2007), *Icarus* 191, 68-94, doi:10.1016/j.icarus.2007.05.013 |
 | Vegetación (marca) | NASA MODIS MOD13C2 v061 | Datos abiertos de NASA EOSDIS | Por comprobar | Citar el producto y su DOI (LP DAAC) |
 | Nieve | NASA MODIS MOD10CM | Datos abiertos de NASA EOSDIS | Por comprobar | Citar el producto y su DOI (NSIDC DAAC) |
 | Humedad del suelo (solo diagnóstico) | NASA GLDAS Noah 2.1 (GES DISC) | Abierto, exige aceptar la licencia GESDISC en Earthdata (hecho) | Comprobado (descarga funciona) | Rodell et al. (2004), *BAMS* 85, 381-394, y el DOI del producto |

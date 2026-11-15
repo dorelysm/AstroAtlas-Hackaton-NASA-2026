@@ -30,3 +30,30 @@ def test_stability_frequencies_are_valid(tmp_path):
     r = stability_run("mars", n_rep=4, features_dir=tmp_path)
     assert r["freq_top5"].between(0, 1).all() and r["mean_rank_pct"].between(0, 1).all()
     assert (r["freq_top5"] > 0).any()          # algunas celdas siempre llegan al 5 % superior
+
+
+def test_inertia_percentile_window_and_proxy():
+    from analogos import config
+    from analogos.inertia import earth_proxy, extra_dimension, percentile, window_median
+
+    ref = np.sort(np.array([10.0, 20, 30, 40]))
+    p = percentile(np.array([5.0, 25.0, 100.0, np.nan]), ref)
+    assert p[0] == 0.0 and p[1] == 0.5 and p[2] == 1.0 and np.isnan(p[3])
+    px = earth_proxy(np.array([2.0, 0.0, -1.0, np.nan]))
+    assert px[0] == 0.5 and np.isnan(px[1:]).all()
+    ti = np.full((3600, 7200), np.nan, dtype="float32")
+    ti[1800:1802, 3600:3602] = 300.0
+    assert window_median(ti, 0.0, 0.0) == 300.0               # longitud 0 y 360 son el mismo punto
+    assert window_median(ti, 0.0, 360.0) == 300.0
+    assert np.isnan(window_median(ti, 45.0, 90.0))
+
+
+def test_extra_dimension_restores_global_state():
+    from analogos import ablation, config
+    from analogos.inertia import FEATURE, extra_dimension
+
+    dims, feats, weights, abl = list(config.DIMENSIONS), list(config.FEATURES), dict(config.DEFAULT_WEIGHTS), list(ablation.DIMS)
+    with extra_dimension():
+        assert "inertia" in config.DIMENSIONS and FEATURE in config.FEATURES and "inertia" in ablation.DIMS
+    assert list(config.DIMENSIONS) == dims and list(config.FEATURES) == feats
+    assert config.DEFAULT_WEIGHTS == weights and ablation.DIMS == abl
