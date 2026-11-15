@@ -196,3 +196,6 @@ Razón de cada análogo (fuente abierta que lo nombra; coordenadas por verificar
 
 ## Objetivos de hielo somero (15 nov 2026; `docs/objetivos_hielo_dundas.csv`)
 Coordenadas de 8 sitios con hielo expuesto leídas del texto, figuras y Tabla 1 de Dundas et al. (2021), *Widespread Exposures of Extensive Clean Shallow Ice in the Mid-Latitudes of Mars*, JGR Planets 126, e2020JE006617 (copia abierta: [HAL hal-03186594](https://hal.science/hal-03186594)). El catálogo completo (data release USGS [10.5066/P9Y8FR1R](https://doi.org/10.5066/P9Y8FR1R), CC0) no se pudo descargar por la verificación anti-bots de ScienceBase y no se usa.
+
+## Tercer conjunto de análogos (15 nov 2026; `docs/analogos_set3.csv`)
+Catálogo experto: Preston, L., Grady, M. y Barber, S. (2012), *The Catalogue of Planetary Analogues* (CAFE TN2, The Open University para la ESA, contrato 4000104716/11/NL/AF), [PDF](https://freight.cargo.site/m/D1821053255089660420449933921929/The-Catalogue-of-Planetary-Analogues.pdf). De él solo se toman nombres, asignación a Luna/Marte (tabla «Directory») y coordenadas; el PDF queda en `data/raw/cafe/` (no versionado).

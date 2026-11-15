@@ -61,4 +61,4 @@ Diferencia pareada frente a A: E1 Marte −0,052 (−0,230 a +0,125) y Luna −0
 
 ## Siguiente paso que sí tiene sentido
 1. **(Hecho el 15 nov: ver [PREREGISTRO_HIELO_POLAR.md](PREREGISTRO_HIELO_POLAR.md); la variable de permafrost no se adopta, resultado no concluyente.)** **Conseguir dato de hielo para los polos de Marte** (p. ej. los mapas de neutrones epitérmicos del espectrómetro de Odyssey, del propio PDS) para Phoenix y Arcadia; solo entonces se puede probar una variable de permafrost terrestre (E3) frente a objetivos con hielo.
-2. **(Hecho el 15 nov: ver [PREREGISTRO_VALIDACION2.md](PREREGISTRO_VALIDACION2.md); la unión A o B no se adopta, +0,006 frente a A con IC −0,079 a +0,118 en 8 análogos independientes de Marte.)** Preregistrar la unión A o B y evaluarla con un conjunto de análogos independiente.
+2. **(Hecho el 15 nov: ver [PREREGISTRO_VALIDACION2.md](PREREGISTRO_VALIDACION2.md) y [PREREGISTRO_VALIDACION3.md](PREREGISTRO_VALIDACION3.md); la unión A o B no se adopta, +0,006 frente a A con IC −0,079 a +0,118 en 8 análogos independientes de Marte.)** Preregistrar la unión A o B y evaluarla con un conjunto de análogos independiente.

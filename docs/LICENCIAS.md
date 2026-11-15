@@ -36,3 +36,6 @@ dos servidores —SEDAC y Copernicus— rechazaron la conexión): hay que abrirl
 
 ## Dundas et al. 2021 (coordenadas de hielo somero)
 Del artículo (copia abierta en HAL) solo se toman **ocho pares de coordenadas** (hechos, no texto); la licencia exacta de la copia de HAL **por comprobar**. El data release del USGS (10.5066/P9Y8FR1R) es CC0 pero no se descargó. El PDF y su texto extraído quedan en `data/raw/swim/` (no versionado).
+
+## Catálogo CAFE de la ESA (Preston, Grady y Barber 2012)
+Solo se toman hechos (nombres, asignación a cuerpo y coordenadas), no texto. La licencia o condiciones de reutilización del PDF (alojado en un servidor de terceros) **están por comprobar**; el documento es un informe de la ESA y la Open University.

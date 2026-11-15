@@ -56,11 +56,11 @@ def tmean_set2() -> pd.Series:
     return pd.Series(annual_mean_k(day, night), index=pd.read_csv(CSV)["name"])
 
 
-def v2_union(body: str, earth_df, sites_all, known_all, topo) -> pd.DataFrame:
-    """V2: análogos del segundo conjunto evaluados con A, B (referencias = SOLO los 23 del primer conjunto) y la unión (máximo)."""
+def v2_union(body: str, earth_df, sites_all, known_all, topo, new_group: str = "set2") -> pd.DataFrame:
+    """V2: análogos del grupo `new_group` (por defecto el segundo conjunto) evaluados con A, B (referencias = SOLO los 23 del primer conjunto) y la unión (máximo)."""
     target = load_features(body, FEATURES_DIR)
     kb = known_for_body(known_all, body)
-    old, new = kb[kb["group"] != "set2"].reset_index(drop=True), kb[kb["group"] == "set2"].reset_index(drop=True)
+    old, new = kb[kb["group"] != new_group].reset_index(drop=True), kb[kb["group"] == new_group].reset_index(drop=True)
     if new.empty:
         return pd.DataFrame()
     s_old = sites_all.set_index("name").loc[list(old["name"])].reset_index()

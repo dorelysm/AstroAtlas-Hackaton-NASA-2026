@@ -40,3 +40,18 @@ def test_summarize_v2_reports_union_minus_pa():
     s = summarize_v2(res).set_index("medida")
     assert np.isclose(s.loc["u_union - P_A", "u_medio"], 0.1)
     assert np.isclose(s.loc["u_union", "u_medio"], 0.75)
+
+
+def test_set3_frozen_list_and_independence():
+    from analogos.validation3 import CSV as CSV3
+
+    assert _sha(CSV3) == "2f3d816540d1cbf5"
+    new = pd.read_csv(CSV3)
+    old = pd.concat([pd.read_csv(DOCS / f) for f in ("analogos_conocidos.csv", "analogos_ampliado.csv", "analogos_set2.csv")])
+    assert len(new) == 13
+    for r in new.itertuples():
+        assert haversine_km(r.lat, r.lon, old["lat"].to_numpy(), old["lon"].to_numpy()).min() >= 100
+    for i in range(len(new)):
+        for j in range(i + 1, len(new)):
+            assert haversine_km(new.lat[i], new.lon[i], new.lat[j], new.lon[j]) >= 100
+    assert set(new["analog_of"]) <= {"moon", "mars", "moon+mars"}

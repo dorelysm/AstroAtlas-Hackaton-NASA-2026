@@ -37,6 +37,8 @@ Para medir el acierto usamos una cifra sencilla: **«si tomo un lugar que sabemo
 **Lo que no hace bien:** los análogos **fríos y de hielo** (Valles Secos de la Antártida 4 %, Axel Heiberg 10 %, Svalbard 18 %). La razón principal es que **ninguno de nuestros sitios objetivo de Marte con dato representa un lugar con hielo somero**: los dos polares (Phoenix y Arcadia) no tienen dato de hielo, así que el método no puede reconocer ese tipo de análogo. Un segundo modelo, que compara directamente Tierra con Tierra (qué lugares se parecen a los análogos ya conocidos), **sí los reconoce (74 %)**, mientras que el principal los reconoce en un 19 %; y a la inversa con los áridos (67 % frente a 42 %). **Los dos modelos se complementan.** (La falta de dato de hielo en los polos de Marte ya se corrigió con neutrones de Odyssey: los análogos fríos mejoran un poco, pero no de forma concluyente.)
 **El único aspecto con señal clara es la geología** (si el terreno es volcánico), aunque descansa en pocos casos.
 
+**Tercera comprobación, con un catálogo de expertos (ESA).** Tomamos 13 lugares nuevos del *Catálogo de análogos planetarios* de la ESA con una regla mecánica, fijada antes de medir. En Marte el acierto fue **58 % (entre 42 % y 73 %)**: **no se puede afirmar** que supere el azar con ese conjunto. En la Luna, **57 % (entre 52 % y 61 %)**: pasa por poco. Con los tres conjuntos juntos (40 lugares en Marte, 20 en la Luna) el método acierta **alrededor del 60 %** (Marte 60 %, entre 52 % y 67 %; Luna 58 %, entre 55 % y 62 %): **discrimina algo mejor que el azar, pero no mucho**. Los lugares fríos, hidrotermales y con lagos (Svalbard, Yellowstone, Pavilion Lake) son los que peor puntúan.
+
 **Segunda comprobación, con lugares nuevos.** Para no depender de la misma lista, fijamos de antemano **otros 9 lugares** (Wudalianchi, el desierto del Namib, las dunas de Bruneau, el campo de la Mars Society en Utah, Fairbanks...) y los medimos sin tocar el método. En Marte (8 lugares) el acierto es **70 % (entre 56 % y 82 %)**: por encima del azar, y es la primera vez que lo confirmamos con lugares que no se usaron para nada más. Dos avisos: **5 de los 8 son desiertos, dunas o volcanes**, justo lo que el método reconoce bien, y **los dos lugares con hielo del suelo (Fairbanks 38 %, Tuktoyaktuk 45 %) son los peor puntuados**. Para la Luna solo había un lugar nuevo, así que no hay conclusión.
 
 > **Mensaje clave para las diapositivas:** «Construimos un método transparente, lo sometimos a pruebas con criterios fijados de antemano, y sabemos exactamente dónde funciona (terreno árido y volcánico) y dónde no (hielo y frío)».
@@ -74,7 +76,7 @@ Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxit
 | Combinar los dos modelos por consenso | Empeora |
 | Añadir hielo del suelo medido con neutrones en los polos de Marte, frente a «permafrost» en la Tierra | Con los 23 lugares mejora un poco a los fríos, pero no es concluyente; **con los 9 lugares nuevos empeora (−6 puntos)** en el puntaje global |
 | **Lo mismo, pero probado solo con los lugares fríos frente a 9 sitios de Marte donde se ve hielo expuesto** (de un artículo del USGS) | **Sí mejora: los lugares fríos pasan de 40 % a 75 %** (entre 67 % y 83 %). Es la única idea que cumple su criterio, pero **solo para los lugares fríos**: el puntaje global empeora y parte del efecto es por construcción. **Al buscar candidatas con ella salen capas de hielo (Antártida, Groenlandia), no permafrost; una regla para quitarlas mejora la prueba (78 %) pero no pasa el control de credibilidad de las candidatas, así que no se usa para proponer lugares** |
-| Combinar los dos modelos como «vale si lo dice cualquiera de los dos» | Con los lugares nuevos no mejora al principal (+0,6 puntos, el margen incluye el cero) |
+| Combinar los dos modelos como «vale si lo dice cualquiera de los dos» | Con 20 lugares nuevos (dos conjuntos) no mejora al principal (+0,6 y +1,1 puntos en Marte, el margen incluye el cero) y **en la Luna empeora (−12 puntos)** |
 
 También **corregimos errores propios a la vista** (por ejemplo, descubrimos que una «señal» del relieve en Marte se debía solo a que los cráteres están en zonas llanas, y que las primeras candidatas eran selvas). Esta transparencia es un punto fuerte frente a un jurado.
 
@@ -88,7 +90,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 - ✅ Sí: «Método transparente y reproducible», «sabemos dónde falla», «candidatas concretas con sus límites», «geología como aspecto más fiable».
 
 ## 9. Limitaciones, dichas con claridad
-- **Pocos análogos para comprobar** (23 + 9 nuevos, y solo 1 nuevo para la Luna): los márgenes son anchos.
+- **Pocos análogos para comprobar** (23 + 22 nuevos de dos conjuntos más): los márgenes son anchos.
 - **El hielo y el frío son el punto débil:** Phoenix y Arcadia no tenían dato de hielo; ya conseguimos un índice con neutrones de la sonda Odyssey (Phoenix sale claramente rico en hielo), pero ese índice solo reconoce 4 de 8 sitios donde se ve hielo expuesto. Con 8 sitios más tomados de un artículo del USGS, la variable de permafrost mejora a los lugares fríos (40 % → 75 %) pero **no da candidatas creíbles** y no se usa en el puntaje global.
 - **Marte no tiene dato de temperatura** en nuestro modelo (no hay un mapa comparable).
 - **Las coordenadas de varios análogos vienen de Wikipedia o de memoria** y no están verificadas en fuente primaria; hay que revisarlas a mano.
@@ -108,7 +110,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 - **23** análogos de validación (10 originales + 13 nuevos) · **9** ideas probadas, todas documentadas.
 - **60 %** de acierto en la Luna, **56 %** en Marte (50 % = azar).
 - **100 %** de estabilidad de Harrat ash-Shamah, **79 %** de Haruj.
-- **162** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
+- **163** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
 
 ## 12. Mini-glosario
 - **Análogo:** lugar de la Tierra parecido a otro mundo, usado para ensayar.
