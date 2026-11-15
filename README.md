@@ -102,6 +102,45 @@ Reproduce the results: `python -m astroatlas.pipeline` (scores, validation, cand
 - 📚 [Data provenance](docs/reference/data-sources.md) · [Licences](docs/reference/licenses.md)
 - 🖥️ [Interface, accessibility and deployment](docs/app/interface.md)
 
+## Data sources
+
+All model inputs are open data. Full provenance, URLs, confidence levels and licences: [data-sources](docs/reference/data-sources.md) · [licences](docs/reference/licenses.md).
+
+### NASA
+
+| Data | Mission / product | Used for |
+|---|---|---|
+| Moon topography | LRO **LOLA** LDEM (PDS Geosciences) | Slope, roughness, relief |
+| Moon temperature | LRO **Diviner** Global Cumulative Products | Maximum temperature and daily range |
+| Moon polar ice | LRO **Diviner** Polar Resource Product | Stable-ice fraction (poles only) |
+| Moon composition | **Lunar Prospector** GRS | FeO → basalt proxy |
+| Mars topography | MGS **MOLA** MEGDR (PDS Geosciences) | Slope, roughness, relief |
+| Mars water / iron | **Mars Odyssey** GRS elemental maps | Ice/water fraction, basalt proxy |
+| Mars polar hydrogen | **Mars Odyssey** GRS neutron data | Ice-rich classes, polar targets |
+| Mars thermal inertia | **MGS TES** thermal-inertia maps | Tested experiment (not adopted) |
+| Earth temperature | **MODIS** Terra LST (MOD11C3) | Surface temperature |
+| Earth snow cover | **MODIS** Terra (MOD10CM, NSIDC) | Ice/water proxy |
+| Earth vegetation | **MODIS** Terra NDVI (MOD13C2) | Vegetation flag |
+| Earth dust and wind | **MERRA-2** (GES DISC) | Descriptive context |
+| Earth soil moisture | **GLDAS** Noah (GES DISC) | Diagnostic (tested, not adopted) |
+| Population | **SEDAC** GRUMP v1 | Settlement-proximity flag |
+| Orbital imagery | **GIBS** (MODIS, Blue Marble) and **Trek** (Viking MDIM 2.1, LRO WAC) | Visual comparison in the app |
+| Landing coordinates | LROC tables (LRO), Mars Orbital Data Explorer | Target sites |
+
+### ESA and other agencies and organisations
+
+| Data | Source | Used for |
+|---|---|---|
+| Earth topography | **ESA / European Commission** Copernicus DEM GLO-90 | Earth slope, roughness, relief |
+| Analog catalogue | **ESA** *Catalogue of Planetary Analogues* (CAFE project) | Third validation set (13 sites) |
+| Permafrost map | **ESA GlobPermafrost** (Obu et al. 2018) | Cold use case |
+| Analog sites, craters, caves | **USGS** Astrogeology (analog layer, Mars cave catalogue) | Aspect validation, context |
+| Earth lithology | **GLiM** (Hartmann & Moosdorf 2012) | Basalt fraction |
+| Lunar pits, lava tubes | Zenodo catalogues (LROC-based pits; Pyroduct) | Context |
+| Place names | Natural Earth | Place and country names |
+
+CNSA, ISRO and JAXA missions (Chang'e, Chandrayaan, SLIM) appear only as landing-site coordinates, taken from NASA/LROC and secondary sources, not as data products.
+
 ## Honest limitations
 
 Few analogs per body (confidence intervals are wide) · "snow" is not subsurface ice · Mars has no thermal dimension · coordinates of several analogs come from Wikipedia and are unverified · some data licences are marked *to check* · Earth cannot reproduce reduced gravity, lunar vacuum, Mars' thin atmosphere or radiation. Parts of the literature search and code were produced with **AI assistants** and reviewed by the team.
