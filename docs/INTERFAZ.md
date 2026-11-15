@@ -23,3 +23,22 @@ Son constantes de `presentacion.py` (`CONFIABILIDAD`) tomadas de la validación 
 - **Colores:** se sacaron de la maqueta (muestreando la imagen) y están en `.streamlit/config.toml`: fondo `#0E1117`, barra lateral `#161A23`, superficies `#1B2030`, borde `#242A3B`, acento naranja `#FF8C42`, ámbar `#FBBF24` (parecido medio, confianza baja), verde `#34D399` (muy parecido) y azul `#4C8DF6` (análogos conocidos y límites). Se usó el tema oscuro nativo de Streamlit, sin CSS propio.
 - **Lo que Streamlit no permite sin CSS:** las tarjetas de la maqueta tienen relleno `#1B2030` y aquí son solo un recuadro con borde; las barras de progreso son todas del color de acento (naranja) en vez de ámbar o verde según el nivel; y en la maqueta los controles de la barra lateral salen rojos porque son los de Streamlit por defecto, mientras que aquí son naranjas para ir con el acento. Cambiar a rojo es una línea (`primaryColor = "#FF4B4B"`).
 - El filtro «Solo lugares nuevos» y los de pueblos y vegetación se mantienen; «Lugares a mostrar» pasó a «Opciones avanzadas».
+
+## Usabilidad y accesibilidad (15 nov 2026)
+Se evaluó la app en producción (estructura accesible, contraste, teclado, móvil de 375 px y flujo de uso) con comprobaciones automáticas en el navegador; **no se probó con un lector de pantalla real ni con usuarios**. Ajustes aplicados:
+
+| Ajuste | Cómo quedó |
+|---|---|
+| Idioma de la página | Streamlit marca `lang="en"`; un script mínimo de `st.html` lo cambia a `es`. Sin JavaScript la app funciona igual, pero con la voz en inglés |
+| Títulos | Solo `H1` (AstroAtlas) y `H2` (sección del mapa y nombre del lugar). Los números de la ficha ya no son títulos (`st.metric`) y la barra lateral no usa títulos |
+| Iconos como texto | Los pasos se numeran «1 · 2 · 3» en texto (antes se leía «counter_1») |
+| Selector de sitio | Está en la página, no en la barra lateral (en el móvil la barra empieza cerrada); un texto avisa de dónde ajustar los aspectos y filtros |
+| Bordes | `borderColor #667085` y `showWidgetBorder` para que campos y recuadros se distingan (≥ 3:1 frente al fondo). Cambia el aspecto frente a la maqueta |
+| Elegir un lugar | Además del desplegable «Ver la ficha de», se puede **elegir una fila de «Los más parecidos»** (comprobado en el navegador) o **hacer clic en un punto naranja del mapa** (la lógica está probada con pruebas automáticas; **el clic real sobre el mapa no se pudo comprobar en el navegador de pruebas**, donde ni el cursor sobre el mapa mostraba el nombre: conviene probarlo a mano) |
+| Ayudas ocultas en «?» | Los criterios de los filtros y las cifras de confiabilidad son texto visible, sin iconos de ayuda |
+| Control de importancia | Botones «Nada / Poco / Algo / Mucho» (`st.segmented_control`) en lugar de cuatro deslizadores; la etiqueta dice «¿cuánto importa?» |
+| Carga | Los pasos lentos muestran un mensaje («Cargando los datos de la Tierra, la Luna y Marte…») |
+| Rueda del ratón sobre el mapa | Sin zoom con la rueda (hay botones + y −), así la rueda sigue desplazando la página |
+| Títulos de desplegables | Sin rutas de archivo en el título (salían a 10,5–12 px); la referencia a `docs/...` va dentro |
+
+**Pendiente (prioridad baja) y límites:** la leyenda del mapa distingue solo por color (naranja y azul); falta un glosario de «análogo», «candidato» y «parecido»; los controles de Streamlit (casillas de 13 px, botones de 16–28 px) son menores de 44 px y no se controlan sin CSS; los textos propios de Streamlit («Show/hide columns», «Download as CSV», «Main menu», «Skip to main content») siguen en inglés y no se pueden traducir por configuración.

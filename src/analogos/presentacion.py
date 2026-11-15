@@ -19,7 +19,7 @@ ASPECTOS = {
 }
 
 # Importancia -> peso del modelo (sin tocar la escala del modelo: 0 a 1)
-IMPORTANCIA = {"No importa": 0.0, "Importa poco": 0.33, "Importa algo": 0.66, "Importa mucho": 1.0}
+IMPORTANCIA = {"Nada": 0.0, "Poco": 0.33, "Algo": 0.66, "Mucho": 1.0}
 
 # Confiabilidad por cuerpo: acierto = u medio (50 % = adivinar) con los tres conjuntos de análogos juntos
 CONFIABILIDAD = {
@@ -54,8 +54,31 @@ def pct(x: float) -> str:
     return f"{round(100 * x)} %"
 
 
+def id_del_mapa(estado) -> str | None:
+    """Celda elegida al hacer clic en un punto naranja del mapa (capa `candidatos`); None si no hay selección."""
+    try:
+        objs = estado["selection"]["objects"].get("candidatos") or []
+    except (KeyError, TypeError, AttributeError):
+        return None
+    return str(objs[0].get("cell_id")) if objs else None
+
+
+def id_de_la_tabla(estado, tabla: pd.DataFrame) -> str | None:
+    """Celda de la fila elegida en una tabla con columna `cell_id`; None si no hay selección."""
+    try:
+        filas = estado["selection"]["rows"]
+    except (KeyError, TypeError, AttributeError):
+        return None
+    return str(tabla.iloc[filas[0]]["cell_id"]) if filas else None
+
+
+def seleccion_nueva(ultima: str | None, actual: str | None) -> str | None:
+    """La selección del mapa o de la tabla solo cuenta una vez: devuelve `actual` si es distinta de la última aplicada."""
+    return actual if actual and actual != ultima else None
+
+
 def pesos_desde_importancia(niveles: dict[str, str]) -> dict[str, float]:
-    return {d: IMPORTANCIA[niveles.get(d, "Importa mucho")] for d in DIMENSIONS}
+    return {d: IMPORTANCIA[niveles.get(d, "Mucho")] for d in DIMENSIONS}
 
 
 # Frases claras para los sitios que no son aterrizajes históricos (las notas de los CSV son técnicas)

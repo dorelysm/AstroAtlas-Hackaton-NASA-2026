@@ -5,7 +5,8 @@ import pytest
 from analogos.config import DIMENSIONS
 from analogos.lugares import etiqueta
 from analogos.presentacion import (CONFIABILIDAD, IMPORTANCIA, aviso_confiabilidad, describir_terreno, descripcion_sitio, explicar,
-                                   nivel_parecido, pct, pesos_desde_importancia)
+                                   nivel_parecido, pct, pesos_desde_importancia, seleccion_nueva,
+                                   id_de_la_tabla, id_del_mapa)
 
 
 def test_lugares_curados_y_paises():
@@ -22,9 +23,9 @@ def test_lugares_longitud_0_360_y_sin_nombre():
 
 
 def test_importancia_y_pesos():
-    w = pesos_desde_importancia({"topo": "No importa", "ice": "Importa poco"})
-    assert w["topo"] == 0.0 and w["ice"] == IMPORTANCIA["Importa poco"]
-    assert w["thermal"] == 1.0 and set(w) == set(DIMENSIONS)  # lo que falta vale «Importa mucho»
+    w = pesos_desde_importancia({"topo": "Nada", "ice": "Poco"})
+    assert w["topo"] == 0.0 and w["ice"] == IMPORTANCIA["Poco"]
+    assert w["thermal"] == 1.0 and set(w) == set(DIMENSIONS)  # lo que falta vale «Mucho»
 
 
 @pytest.mark.parametrize("score,etiqueta_esperada", [(0.95, "Muy parecido"), (0.53, "Parecido medio"), (0.2, "Poco parecido")])
@@ -52,3 +53,20 @@ def test_descripcion_de_sitio_y_terreno():
     assert "Perseverance" in descripcion_sitio("Jezero")
     assert descripcion_sitio("Apollo 11 LM").startswith("Sitio de aterrizaje")
     assert describir_terreno(pd.Series({"geo__basalt_frac": 0.8, "topo__slope_mean_deg": 1.0})) == "roca volcánica, llano"
+
+
+def test_seleccion_nueva_solo_cuenta_una_vez():
+    assert seleccion_nueva(None, "earth_1_2") == "earth_1_2"
+    assert seleccion_nueva("earth_1_2", "earth_1_2") is None   # la misma selección no vuelve a pisar la ficha
+    assert seleccion_nueva("earth_1_2", "earth_3_4") == "earth_3_4"
+    assert seleccion_nueva("earth_1_2", None) is None
+
+
+def test_ids_de_seleccion_del_mapa_y_la_tabla():
+    estado_mapa = {"selection": {"objects": {"candidatos": [{"cell_id": "earth_24_43", "lat": 27.5}]}, "indices": {"candidatos": [3]}}}
+    assert id_del_mapa(estado_mapa) == "earth_24_43"
+    assert id_del_mapa({"selection": {"objects": {"conocidos": [{"name": "Atacama"}]}}}) is None   # solo cuentan los puntos naranjas
+    assert id_del_mapa({"selection": {"objects": {}}}) is None and id_del_mapa(None) is None
+    tabla = pd.DataFrame({"cell_id": ["a", "b", "c"]})
+    assert id_de_la_tabla({"selection": {"rows": [1]}}, tabla) == "b"
+    assert id_de_la_tabla({"selection": {"rows": []}}, tabla) is None and id_de_la_tabla(None, tabla) is None
