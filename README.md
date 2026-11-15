@@ -68,6 +68,14 @@ Directly built on the challenge text: open NASA Earth/Moon/Mars data (LOLA, MOLA
 3. **Open a place profile:** match per aspect with a one-line explanation, side-by-side NASA orbital views, and *what Earth cannot imitate*.
 4. **Go deeper:** aspect atlas, use-case profiles (mobility, cold operations, ice, basaltic terrain, lava tubes), technical details and credits.
 
+| Choose a site and read the reliability notice | Map of similar places and closest matches |
+|---|---|
+| ![App overview](docs/images/app-top.png) | ![Map and matches](docs/images/app-map.png) |
+
+![Place profile with NASA orbital comparison: Jezero (Mars) vs Harrat ash-Shamah (Earth)](docs/images/app-profile.png)
+
+*Jezero (Mars, NASA Viking MDIM 2.1 mosaic) next to Harrat ash-Shamah (Earth, MODIS), both at 150 × 150 km. Imagery: NASA GIBS and NASA Trek.*
+
 ## Quick start
 
 ```bash

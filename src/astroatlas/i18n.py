@@ -61,7 +61,7 @@ TEXTS: dict[str, dict] = {
     "f_pueblos_ayuda": {"es": "Pueblos de 1 000 habitantes o más a menos de 50 km (NASA SEDAC GRUMP). No cambia la nota; la lista es "
                               "incompleta para pueblos pequeños (docs/reference/data-sources.md).",
                         "en": "Towns of 1,000 inhabitants or more within 50 km (NASA SEDAC GRUMP). It does not change the score; the "
-                              "list is incomplete for small towns (docs/reference/data-sources.md, in Spanish)."},
+                              "list is incomplete for small towns (docs/reference/data-sources.md)."},
     "sin_poblacion": {"es": "Sin datos de población: ejecuta `python -m astroatlas.data.settlements`.",
                       "en": "No population data: run `python -m astroatlas.data.settlements`."},
     "f_veg": {"es": "Ocultar lugares con vegetación", "en": "Hide places with vegetation"},
@@ -223,21 +223,21 @@ TEXTS: dict[str, dict] = {
     "tec_nota": {"es": "AUC: 0,5 = azar. Es la medida de este sitio contra los análogos del cuerpo. Muy ruidosas: hay pocos análogos por "
                        "tipo y faltan dimensiones (docs/validation/validation.md y docs/report.md).",
                  "en": "AUC: 0.5 = chance. This is the measure for this site against the body's analogs. Very noisy: there are few "
-                       "analogs per type and some dimensions are missing (docs/validation/validation.md and docs/report.md, in Spanish)."},
+                       "analogs per type and some dimensions are missing (docs/validation/validation.md and docs/report.md)."},
     "tec_tabla_alt": {"es": "Tabla técnica de los lugares más parecidos a {sitio}", "en": "Technical table of the places most similar to {sitio}"},
     "tec_hielo_nota": {"es": "«Hielo o agua» en la Tierra es la cobertura de nieve: coincide por ausencia de nieve, no por hielo subsuperficial "
                              "ni sequedad (docs/validation/per-aspect-validation.md).",
                        "en": "“Ice or water” on Earth is snow cover: it matches because there is no snow, not because of subsurface ice "
-                             "or dryness (docs/validation/per-aspect-validation.md, in Spanish)."},
+                             "or dryness (docs/validation/per-aspect-validation.md)."},
     "tec_limites": {"es": "Límites de la analogía (lo que la Tierra no reproduce)", "en": "Limits of the analogy (what Earth does not reproduce)"},
     "cand_titulo": {"es": "Candidatos destacados", "en": "Featured candidates"},
     "cand_regla": {"es": "Regla de selección y valoración honesta en docs/results/candidate-profiles.md.",
-                   "en": "Selection rule and honest assessment in docs/results/candidate-profiles.md (in Spanish)."},
+                   "en": "Selection rule and honest assessment in docs/results/candidate-profiles.md."},
     "cand_alt": {"es": "Candidatos destacados con sus datos de contexto", "en": "Featured candidates with their context data"},
     "cand_nota": {"es": "Las candidatas lunares salen solo por topografía y se consideran pobres.",
                   "en": "The lunar candidates come out from terrain alone and are considered weak."},
     "atlas_titulo": {"es": "Atlas por aspecto: qué se parece dónde", "en": "Atlas by aspect: what resembles what, and where"},
-    "atlas_mas": {"es": "Más detalles en docs/results/aspect-atlas.md.", "en": "More details in docs/results/aspect-atlas.md (in Spanish)."},
+    "atlas_mas": {"es": "Más detalles en docs/results/aspect-atlas.md.", "en": "More details in docs/results/aspect-atlas.md."},
     "atlas_cuerpo": {"es": "Cuerpo", "en": "Body"},
     "atlas_aspecto": {"es": "Aspecto", "en": "Aspect"},
     "atlas_hielo": {"es": "Hielo / agua", "en": "Ice / water"},
@@ -250,7 +250,7 @@ TEXTS: dict[str, dict] = {
                    "en": "Each aspect is evaluated separately. No aspect reaches high confidence: there are too few analogs to validate them."},
     "atlas_nota_tooltip": {"es": "{cell_id}\nnota: {score}", "en": "{cell_id}\nscore: {score}"},
     "casos_titulo": {"es": "Recomendaciones por caso de uso", "en": "Recommendations by use case"},
-    "casos_mas": {"es": "Más detalles en docs/results/use-cases.md.", "en": "More details in docs/results/use-cases.md (in Spanish)."},
+    "casos_mas": {"es": "Más detalles en docs/results/use-cases.md.", "en": "More details in docs/results/use-cases.md."},
     "casos_label": {"es": "Caso de uso", "en": "Use case"},
     "casos_alt": {"es": "Regiones recomendadas para este caso de uso", "en": "Regions recommended for this use case"},
     "casos_nota": {"es": "Solo el caso de terreno basáltico de Marte da una recomendación defendible; en frío y hielo el puntaje alto o bajo "
@@ -281,7 +281,7 @@ TEXTS: dict[str, dict] = {
                         "- **Place and country names:** Natural Earth 1:110m (public domain).\n"
                         "- **Orbital images:** NASA GIBS (MODIS, Blue Marble) and NASA Trek (Viking MDIM 2.1, LRO WAC), shown live with their "
                         "credit. This project is not endorsed by NASA.\n"
-                        "- Full provenance, licenses and limits: docs/reference/data-sources.md and docs/reference/licenses.md (in Spanish). "
+                        "- Full provenance, licenses and limits: docs/reference/data-sources.md and docs/reference/licenses.md. "
                         "Part of the source search and of the code was done with AI assistants and reviewed by the team.")},
 }
 
