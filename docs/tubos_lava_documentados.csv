@@ -1,0 +1,95 @@
+code,name,country,area
+IT.SIC.00,Si CT 1037 Grotta della Catanese I,IT,"Sicily, Mt. Etna"
+IT.SIC.01,Si CT 1230 Grotta Corsaro,IT,"Sicily, Mt. Etna"
+IT.SIC.02,Si CT 1005 Grotta degli Archi,IT,"Sicily, Mt. Etna"
+IT.SIC.03,Si CT 1024 Grotta del Burrò,IT,"Sicily, Mt. Etna"
+IT.SIC.04,Si CT 1232 Grotta del Diavolo,IT,"Sicily, Mt. Etna"
+IT.SIC.05,Si CT 1026 Grotta del Gelo,IT,"Sicily, Mt. Etna"
+IT.SIC.06,Si CT 1235 Grotta Marasca,IT,"Sicily, Mt. Etna"
+IT.SIC.07,Si CT 1004 Grotta dei Tre Livelli,IT,"Sicily, Mt. Etna"
+IT.SIC.08,Si CT 1019 Grotta dei Lamponi,IT,"Sicily, Mt. Etna"
+IT.SIC.09,Si CT 1007 Grotta di Monte Intraleo,IT,"Sicily, Mt. Etna"
+IT.SIC.10,Si CT 1016 Grotta Micio Conti,IT,"Sicily, Mt. Etna"
+IT.SIC.11,Si CT 1157 Grotta dei Tedeschi,IT,"Sicily, Mt. Etna"
+IT.SIC.12,Si CT 1015 Grotta Immacolatella I,IT,"Sicily, Mt. Etna"
+IT.SIC.13,Si CT 1233 Grotta KTM,IT,"Sicily, Mt. Etna"
+IT.SIC.14,Si CT 1008 Grotta Nuovalucello I,IT,"Sicily, Mt. Etna"
+IT.SIC.15,Si CT 1237 Grotta del Salto della Giumenta,IT,"Sicily, Mt. Etna"
+IT.SIC.16,Si CT 1032 Grotta del Santo,IT,"Sicily, Mt. Etna"
+IT.CMP.00,Grotta lavica negli efflussi vesuviani del 1858,IT,"Campania, Mt. Vesuvius"
+ES.LNZ.00,La Corona Lava Tube System,ES,Lanzarote
+ES.LNZ.01,La Cueva de Los Naturalistas o de Las Palomas,ES,Lanzarote
+ES.LPA.00,Cueva de Barros,ES,La Palma
+ES.LPA.01,Cueva Honda de Gallegos,ES,La Palma
+ES.LPA.02,Cueva de la Mamona,ES,La Palma
+ES.LPA.03,Cueva de la Sabina,ES,La Palma
+ES.LPA.04,Cueva de la Virgen Fatima,ES,La Palma
+US.ORE.00,Lava River Cave,US,Oregon
+US.ORE.01,Pictograph Cave (Arnold Lava Tube System),US,Oregon
+US.ORE.02,Wind Cave (Arnold Lava Tube System),US,Oregon
+US.ORE.03,Boyd Cave,US,Oregon
+US.ORE.04,Skeleton Cave,US,Oregon
+US.ORE.05,Wilson & Barlow Caves (Horse Lava Tube System),US,Oregon
+US.HAW.00,Hammer Cave,US,Hawaii
+US.HAW.01,Hana Gardenland Cave,US,Hawaii
+US.HAW.02,Kuamo'O Point Sea Caves,US,Hawaii
+US.HAW.03,Lonely Bat Cave,US,Hawaii
+US.HAW.04,Maluhia Cave,US,Hawaii
+US.HAW.05,Upper Oozing Red Puka,US,Hawaii
+US.HAW.06,Pole 127x Cave,US,Hawaii
+US.HAW.07,Pole 149 Cave,US,Hawaii
+US.HAW.08,Red Dirt Caves,US,Hawaii
+US.HAW.09,So Nice Cave,US,Hawaii
+US.HAW.10,Sweet Sunday Cave,US,Hawaii
+US.HAW.11,Terraced Cave,US,Hawaii
+US.HAW.12,Three Color Cave,US,Hawaii
+US.HAW.13,Thunder Dome Pit,US,Hawaii
+US.HAW.14,Tom's Hole,US,Hawaii
+US.HAW.15,Tusk Cave,US,Hawaii
+US.HAW.16,Upper Mouflon Cave,US,Hawaii
+US.HAW.17,Thruston Lava Tube,US,Hawaii
+US.HAW.18,Kazumura I,US,Hawaii
+US.HAW.19,Kazumura II,US,Hawaii
+US.HAW.20,Lua Nunu Makai Cave,US,Hawaii
+US.HAW.21,Lua Nunu O Kamakalepo,US,Hawaii
+US.NMX.00,Junction Cave,US,New Mexico
+US.NMX.01,Cave 29,US,New Mexico
+JO.HAS.00,Al-Fahda Cave,JO,Harrat Al-Shaam
+JO.HAS.01,Al-Badia Cave,JO,Harrat Al-Shaam
+JO.HAS.02,Abu Al-Kursi Cave,JO,Harrat Al-Shaam
+JO.HAS.03,Al-Howa Cave,JO,Harrat Al-Shaam
+JO.HAS.04,Hashemite University Cave,JO,Harrat Al-Shaam
+JO.HAS.05,Diabé Cave,JO,Harrat Al-Shaam
+JO.HAS.06,Al-Ameed Cave,JO,Harrat Al-Shaam
+JO.HAS.07,Al-Hayya Cave,JO,Harrat Al-Shaam
+SA.HBQ.00,Ghar Al Hibashi,SA,Harrat Buqum
+SA.HIT.01,Khaf Al Shuwaymis,SA,Harrat Ithnayn
+JP.HNS.00,Zinza Fuketsu No.1,JP,Honshū Island
+AU.QLD.00,Barkers Cave (v1),AU,Queensland
+AU.QLD.01,Barkers Cave (v2),AU,Queensland
+AU.QLD.02,Darcy Cave,AU,Queensland
+AU.VIC.03,Church Cave,AU,Victoria
+AU.VIC.04,Porndon Arch Cave,AU,Victoria
+AU.VIC.05,Tunnel Cave,AU,Victoria
+PT.AZR.00,Algar da Batalha,PT,Azores
+PT.AZR.01,Gruta da Beira,PT,Azores
+PT.AZR.02,Gruta das Anelares,PT,Azores
+PT.AZR.03,Gruta do Cabeço do Canto,PT,Azores
+PT.AZR.04,Gruta do Esqueleto,PT,Azores
+PT.AZR.05,Gruta do Leão,PT,Azores
+PT.AZR.06,Gruta do Pico da Cruz,PT,Azores
+PT.AZR.07,Gruta do Soldão,PT,Azores
+PT.AZR.08,Gruta dos Balcões,PT,Azores
+PT.AZR.09,Gruta Branca Opala,PT,Azores
+PT.AZR.10,Gruta da Achada,PT,Azores
+PT.AZR.11,Gruta da Giesta,PT,Azores
+PT.AZR.12,Gruta da Madre de Deus,PT,Azores
+PT.AZR.13,Gruta da Quinta Irene I,PT,Azores
+PT.AZR.14,Gruta do Caldeira,PT,Azores
+PT.AZR.15,Gruta do Coelho,PT,Azores
+PT.AZR.16,Furna da Recta da Cruz,PT,Azores
+PT.AZR.17,Gruta do Bom Jesus,PT,Azores
+PT.AZR.18,Gruta do Carvão,PT,Azores
+PT.AZR.19,Gruta do Enforcado,PT,Azores
+"Note: when info regarding the survey instruents aren't available, it is considered that the survey was done using the traditional instruments: compass, inclinometer and a distance meter/ tape meter.
+The laser distance meter, known as DistoX, was introduced in the 2007/2008 and since then often used in place of the tape meter.",,,

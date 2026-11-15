@@ -22,6 +22,7 @@ Aparece en el top 10 de **13 de los 14 objetivos de Marte** (puntaje medio 0.76)
 | Hielo/agua | 0.90 | nieve media 0 | **Artefacto**: coincide solo por ausencia de nieve; no mide sequedad ni hielo subsuperficial |
 | Térmica | sin dato | T máx. mensual 325 K, rango diurno 20 K | Marte no tiene térmica en el modelo |
 
+- **Cuevas (contexto):** el catálogo Pyroduct documenta **8 tubos de lava en Harrat Al-Shaam (Jordania)**, la misma región volcánica; no hay coordenadas para confirmar que estén dentro de la celda ([CUEVAS.md](CUEVAS.md)).
 - **Polvo y viento (solo contexto, MERRA-2 2019):** polvo en superficie 88 µg/m³ (alto), viento medio a 10 m 2.5 m/s. En Marte el polvo y las tormentas son un factor operativo clave, pero el modelo no los compara.
 - **Vegetación:** NDVI máx. 0.12 (suelo casi desnudo). **Población:** el asentamiento de ≥ 1 000 hab. más cercano (As-Suwayda') está a 90 km. Análogo conocido más cercano: Río Tinto, a 4 012 km.
 - **Qué podría aportar:** probar rovers y navegación sobre campo de lava con rocas sueltas y suelo desértico; práctica de muestreo geológico en terreno basáltico.
@@ -38,6 +39,7 @@ Aparece en **9 de 14** objetivos de Marte (puntaje medio 0.69).
 | Hielo/agua | 0.90 | nieve media 0 | **Artefacto** (igual que arriba) |
 | Térmica | sin dato | T máx. 328 K, rango diurno 24 K | Sin comparar |
 
+- **Cuevas (contexto):** Haruj no está cubierto por el catálogo de tubos de lava (no implica que no tenga).
 - **Polvo y viento (solo contexto, MERRA-2 2019):** polvo en superficie 187 µg/m³ (muy alto; es el Sahara), viento medio 2.4 m/s.
 - **Vegetación:** NDVI máx. 0.09. **Población:** el asentamiento de ≥ 1 000 hab. más cercano (Waddan) está a 229 km, el más aislado de las dos. Análogo conocido más cercano: Río Tinto, a 2 512 km.
 - **Qué podría aportar:** desierto hiperárido con campo volcánico extenso y aislado; un lugar para ensayos de autonomía donde las comunicaciones y el apoyo logístico son parte de la prueba.

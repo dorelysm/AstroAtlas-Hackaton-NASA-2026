@@ -44,3 +44,15 @@ def test_nearest_index_circular_longitude():
     lons = np.array([-180.0, -179.375, 179.375])
     assert nearest_index(lons, np.array([179.9]), period=360.0)[0] == 0   # 179.9 está más cerca de -180 que de 179.375 circularmente
     assert nearest_index(np.array([0.0, 10.0]), np.array([4.0, 6.0])).tolist() == [0, 1]
+
+
+def test_add_pit_context_counts_and_nearest():
+    from analogos.data.caves import add_pit_context
+
+    pits = pd.DataFrame({"name": ["A", "B"], "lat": [0.0, 10.0], "lon": [0.0, 359.9]})
+    df = pd.DataFrame({"lat": [0.1, 10.0, -50.0], "lon": [0.0, 0.1, 100.0]})
+    out = add_pit_context(df, pits)
+    assert out["pits_within_50km"].tolist() == [1, 1, 0]            # el 2º cruza el meridiano 0/360: B está a ~22 km
+    assert out["nearest_pit_name"].tolist()[:2] == ["A", "B"]
+    assert out["nearest_pit_km"].iloc[2] > 1000
+    assert add_pit_context(out, pits)["pits_within_50km"].tolist() == [1, 1, 0]   # idempotente

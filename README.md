@@ -5,7 +5,7 @@ Ranking de lugares de la Tierra por similitud multidimensional con sitios de la 
 
 **Empieza por el [resumen del proyecto](RESUMEN.md).**
 
-Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [plan de la Tierra](docs/PLAN_TIERRA.md) · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md) · **[informe](docs/INFORME.md)** · **[fichas de candidatos](docs/FICHAS_CANDIDATOS.md)** · [licencias](docs/LICENCIAS.md) · [coordenadas verificadas](docs/VERIFICACION_COORDENADAS.md) · [dimensiones no modeladas](docs/DIMENSIONES_NO_MODELADAS.md)
+Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [plan de la Tierra](docs/PLAN_TIERRA.md) · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md) · **[informe](docs/INFORME.md)** · **[fichas de candidatos](docs/FICHAS_CANDIDATOS.md)** · [licencias](docs/LICENCIAS.md) · [coordenadas verificadas](docs/VERIFICACION_COORDENADAS.md) · [dimensiones no modeladas](docs/DIMENSIONES_NO_MODELADAS.md) · [cuevas y tubos de lava](docs/CUEVAS.md)
 
 ## Cómo funciona
 
@@ -34,7 +34,7 @@ pip install -e ".[data]"           # solo para regenerar datos: librerías geoes
 ```powershell
 python -m analogos.pipeline          # scores, validación, candidatos (candidates_viable.csv) y clusters en data/results/
 streamlit run app/streamlit_app.py   # mapa, ranking, pesos, filtro de viabilidad y ficha
-pytest                               # 131 tests
+pytest                               # 132 tests
 ```
 
 **Sin descargar nada:** si no existe `data/features/`, la app y el pipeline usan `demo_data/` (≈ 0,6 MB, valores derivados ya calculados). Con datos propios, estos tienen prioridad.
@@ -56,6 +56,7 @@ python -m analogos.data.usgs_analogs     # capa de análogos del USGS
 python -m analogos.data.settlements      # viabilidad por población (GRUMP)
 python -m analogos.data.earth_vegetation # marca de vegetación (MODIS NDVI)
 python -m analogos.data.earth_dust_wind  # polvo y viento, solo contexto (MERRA-2)
+python -m analogos.data.caves            # pits lunares como contexto (Zenodo, CC BY 4.0)
 python -m analogos.fichas                # selección de candidatos para las fichas
 python -m analogos.ablation              # ablación por dimensión
 python -m analogos.aspect                # validación por aspecto

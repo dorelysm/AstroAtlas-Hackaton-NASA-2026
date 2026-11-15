@@ -11,7 +11,7 @@ El reto sugiere varias dimensiones. Estado de cada una:
 | **Biología / habitabilidad** | **Marca de contexto** | `vegetated` (NDVI MODIS): oculta selvas y bosques. No mide extremófilos ni biofirmas |
 | Asentamientos / logística | Marca de contexto | `viable` (GRUMP). No mide accesibilidad ni seguridad |
 | **Polvo, viento y erosión** | **Solo contexto descriptivo** | `dust_surface_ugm3`, `dust_column_mgm2` y `wind10m_ms` (MERRA-2, 2019, rejilla 0.5° × 0.625°) en `earth*.parquet` y en las fichas. **No hay contraparte** en Marte (haría falta la opacidad de polvo de MCS/TES) ni en la Luna, así que no se puntúa similitud |
-| **Cuevas y tubos de lava** | **No cubierta** | No hay un catálogo global abierto de tubos de lava terrestres ni un mapa de cuevas comparable con los candidatos de pozos lunares/marcianos |
+| **Cuevas y tubos de lava** | **Solo contexto** | Pits lunares (LROC, 278) integrados en `moon.parquet`; tubos terrestres de Pyroduct solo por región (sin coordenadas); catálogo de Marte (USGS) pendiente de descarga manual. Ver [CUEVAS.md](CUEVAS.md) |
 | **Iluminación polar** | **No cubierta** | LOLA publica mapas de iluminación para la Luna, pero la Tierra no tiene un equivalente comparable (la noche polar terrestre depende de la inclinación del eje, no del relieve) |
 | Procesos (no solo lugares) | No cubierta | El método compara lugares, no procesos |
 
