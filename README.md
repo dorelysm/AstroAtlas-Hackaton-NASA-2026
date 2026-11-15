@@ -106,6 +106,10 @@ Reproduce the results: `python -m astroatlas.pipeline` (scores, validation, cand
 
 Few analogs per body (confidence intervals are wide) · "snow" is not subsurface ice · Mars has no thermal dimension · coordinates of several analogs come from Wikipedia and are unverified · some data licences are marked *to check* · Earth cannot reproduce reduced gravity, lunar vacuum, Mars' thin atmosphere or radiation. Parts of the literature search and code were produced with **AI assistants** and reviewed by the team.
 
+## License
+
+Code: [MIT](LICENSE). Documentation and derived results: [CC BY 4.0](docs/LICENSE.md). Third-party data keep their own licences ([details](docs/reference/licenses.md)).
+
 ## Credits
 
 Developed by the **AstroAtlas team** for the **NASA Space Apps Challenge 2026**. Data and imagery: NASA (PDS, MODIS, MERRA-2, SEDAC, GIBS, Trek), ESA (Copernicus DEM, CAFE catalogue), USGS, GLiM (Hartmann & Moosdorf 2012), Obu et al. (2018), Natural Earth, Zenodo catalogues. This project is not endorsed by NASA.
