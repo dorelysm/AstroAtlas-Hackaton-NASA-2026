@@ -1,82 +1,123 @@
-# Resumen del proyecto
+# Resumen del proyecto (versión para no técnicos)
 
-**NASA Space Apps Challenge 2026 · reto "Permanent Moon Base Locations and Mars"**
-Estado a 15 de noviembre de 2026. Prototipo con datos reales; la validación sale **cerca del azar** y así debe presentarse.
+**NASA Space Apps Challenge 2026 · reto «Permanent Moon Base Locations and Mars»**
+Estado a 15 de noviembre de 2026. Este documento está pensado para que el equipo saque de aquí las ideas para las diapositivas y la descripción del proyecto. Cada cifra tiene su fuente en `docs/` (los enlaces están al final).
 
-## 1. El reto en una línea
-Usar datos abiertos de la Tierra, la Luna y Marte para **encontrar y caracterizar lugares de la Tierra que sirvan de análogo** de sitios de aterrizaje o de bases en la Luna y en Marte, explicando qué se parece, qué no y para qué serviría. Detalles en [reto.md](reto.md).
+**App en línea (se puede abrir y probar): https://app-production-6cc653bd.up.railway.app**
+Código: https://github.com/dorelysm/AstroAtlas-Hackaton-NASA-2026
 
-## 2. Nuestra idea
-Un **índice de similitud multidimensional**. Para cada sitio objetivo (21 lunares y 14 marcianos) se calcula qué tan parecida es cada celda de la Tierra, **dimensión por dimensión**: topografía, térmica, agua/hielo y geología.
+---
 
-- Puntaje por dimensión = `exp(-RMS de la distancia z)`; la topografía (16 variables) se comprime con PCA blanqueada. Puntaje global = media ponderada de las dimensiones disponibles (las vacías se ignoran). Los pesos se eligen en la app.
-- Se **valida** con análogos terrestres conocidos, que solo validan y nunca ajustan el modelo. Métrica: u = P(análogo > celda típica), 0,5 = azar, con bootstrap sobre los análogos.
-- Se buscan **candidatos nuevos** lejos de los análogos conocidos, con ficha (qué se parece, qué no, límites).
-- Cada celda lleva la marca **`viable`**: falso si hay un asentamiento de ≥ 1 000 hab. a menos de 50 km (NASA SEDAC GRUMP). Es una marca, no entra en el score ni en la validación.
+## 1. En una frase
+Construimos un **buscador de lugares de la Tierra que se parecen a lugares de la Luna y de Marte**, y lo evaluamos con honestidad contra lugares que los científicos ya usan para entrenar. El resultado es un **método reproducible y unas pistas concretas**, no una lista de sitios garantizados.
 
-## 3. Qué hay hecho
+## 2. Qué pedía el reto
+Usar datos abiertos de la NASA y de otras agencias para **encontrar y explicar lugares de la Tierra que sirvan de análogo** (un «ensayo general») de bases o sitios de aterrizaje en la Luna y en Marte: qué se parece, qué no, y para qué serviría. El reto insiste en **no limitarse a los sitios ya famosos** (Atacama, Antártida, Islandia, Hawái) y en explicar **dónde falla la analogía**.
 
-| Parte | Estado |
+## 3. Qué hicimos, explicado sin tecnicismos
+1. **Elegimos 35 sitios objetivo:** 21 en la Luna (los de las misiones Apolo, Luna, Surveyor y Chang'e, más dos del polo sur) y 14 en Marte (Jezero, Gale, Oxia Planum, Phoenix...).
+2. **Dividimos la Tierra en 951 zonas** de unos 500 km y medimos en cada una cuatro cosas, con los mismos datos que se usan en Luna y Marte:
+   - **Relieve** (qué tan llano, rugoso o inclinado es el terreno).
+   - **Temperatura** de la superficie.
+   - **Hielo o agua.**
+   - **Geología** (si hay roca volcánica, el basalto, que es lo que cubre Marte y los mares lunares).
+3. **Calculamos el parecido** de cada zona de la Tierra con cada sitio de la Luna o de Marte, aspecto por aspecto, y lo combinamos en una nota de 0 a 1.
+4. **Comprobamos si funciona:** vimos si el método reconoce a 23 lugares de la Tierra que los científicos ya usan como análogos (Atacama, Lanzarote, Pinacate, Meteor Crater...). **Esa lista la fijamos antes de medir, para no hacernos trampa.**
+5. **Añadimos filtros de realismo:** una zona se marca si hay un pueblo cerca (≥ 1 000 habitantes a menos de 50 km) o si tiene vegetación, porque un análogo con selva no sirve para Marte. Estos filtros no cambian la nota, solo se muestran.
+
+## 4. ¿Funciona? La respuesta honesta
+Para medir el acierto usamos una cifra sencilla: **«si tomo un lugar que sabemos que es un buen análogo, ¿con qué frecuencia puntúa más alto que una zona cualquiera de la Tierra?»** Si fuera al azar, sería el 50 %.
+
+| | Resultado | Cómo leerlo |
+|---|---|---|
+| **Luna** | **60 %** (entre 55 % y 64 %) | Supera el azar, pero por poco |
+| **Marte** | **56 %** (entre 45 % y 68 %) | **No se puede afirmar que funcione**: el margen incluye el azar |
+
+**Lo que sí hace bien:** reconoce los análogos **áridos, volcánicos y de impacto** (Lanzarote 96 %, Pinacate 79 %, Atacama 65 %, el cráter de Ries 75 %...).
+**Lo que no hace bien:** los análogos **fríos y de hielo** (Valles Secos de la Antártida 4 %, Axel Heiberg 10 %, Svalbard 18 %). La razón principal es que **la «nieve» de la Tierra no mide lo mismo que el hielo bajo el suelo de Marte**, y no tenemos todavía un dato terrestre equivalente.
+**El único aspecto con señal clara es la geología** (si el terreno es volcánico), aunque descansa en pocos casos.
+
+> **Mensaje clave para las diapositivas:** «Construimos un método transparente, lo sometimos a pruebas con criterios fijados de antemano, y sabemos exactamente dónde funciona (terreno árido y volcánico) y dónde no (hielo y frío)».
+
+## 5. Los lugares que propone el método
+Aplicando los filtros (sin pueblos cercanos, sin vegetación, lejos de los análogos famosos) salen **dos candidatos para Marte**:
+
+| Candidato | Dónde | Por qué | Qué hay de nuevo |
+|---|---|---|---|
+| **Harrat ash-Shamah** | Sur de Siria y norte de Jordania (32,5° N, 37,5° E) | Meseta de roca volcánica (basalto), como gran parte de Marte | Ya se usó como análogo de **hoyos y cuevas planetarios**; hay **8 tubos de lava documentados** en la parte jordana |
+| **Haruj** | Libia central (27,5° N, 17,5° E) | Campo volcánico enorme (~45 000 km², unos 150 volcanes), en pleno desierto | **No encontramos ningún estudio que lo use como análogo** de Marte o de la Luna: es el menos estudiado |
+
+**Fuerza del resultado:** al probar el método miles de veces cambiando los parámetros, Harrat ash-Shamah queda entre los mejores **el 100 % de las veces** y Haruj el 79 %. **Pero ser estable no significa ser correcto.**
+**Límites que hay que decir:** ambos tienen problemas de acceso y seguridad; el parecido de relieve es solo moderado; y no sabemos si los tubos de lava están dentro de la zona exacta.
+**Para la Luna** el método no encuentra candidatos creíbles: las zonas que salen (Antártida) solo se parecen por ser llanas.
+
+## 6. Qué más ofrece el proyecto
+- **Atlas por aspecto:** en vez de una sola nota, muestra qué lugares se parecen **en relieve, en geología, en temperatura o en hielo por separado**, con una etiqueta de **confianza** que sale de los resultados medidos (ninguno llega a «alta»). El reto pide justamente esto: un lugar puede ser un gran análogo geológico y uno malo en temperatura.
+- **Recomendaciones por caso de uso:** probar el movimiento de un rover, operar en frío, buscar terreno volcánico... Solo el caso volcánico de Marte da una recomendación defendible.
+- **Contexto de procesos:** cuevas y tubos de lava, polvo y viento, y hielo bajo el suelo, con lo que dice la literatura científica y qué parte cubrimos nosotros.
+- **Una app web** donde se elige un sitio de la Luna o de Marte y se ve el mapa de zonas parecidas, con una ficha que dice **qué se parece, qué no y los límites de la analogía** (gravedad, atmósfera, radiación).
+
+## 7. Por qué la forma de trabajar también es un resultado
+Casi todo lo que probamos lo **preregistramos**: escribimos el criterio de éxito **antes** de mirar los números y lo dejamos registrado. Así probamos **seis ideas para mejorar el método** y las seis salieron mal o sin efecto:
+
+| Idea | Resultado |
 |---|---|
-| Datos reales de la **Luna** | Topografía (LOLA), térmica (Diviner), hielo (LP-GRS); 21 sitios con coordenadas de las tablas LROC |
-| Datos reales de **Marte** | Topografía (MOLA), hielo (Odyssey GRS), geología; **térmica vacía por decisión** (no hay un mapa comparable) |
-| Datos reales de la **Tierra** | Topografía Copernicus GLO-90, térmica MODIS LST, nieve MODIS, geología GLiM (CC-BY, excepción aprobada por el equipo), asentamientos GRUMP. ASTER GED probado y rechazado |
-| Pipeline y app | Features → scores → validación → resultados; app Streamlit con mapa, pesos y filtro de viabilidad; 125 tests |
-| Ablación por dimensión y validación por aspecto | Hechas, con etiquetas y protocolos fijados antes de medir (hash registrado) |
-| Marcas de contexto | `viable` (población) y `vegetated` (NDVI MODIS); no entran al score |
-| Informe | [docs/INFORME.md](docs/INFORME.md): el relato del proyecto con sus resultados negativos |
-| Polvo y viento | Solo contexto descriptivo (MERRA-2) en las fichas; sin contraparte en Marte no se puntúan |
-| Paquete reducido `demo_data/` | La app corre sin descargar nada |
-| Fichas de candidatos | 2 de Marte (campos basálticos de Harrat ash-Shamah y Haruj) y 2 de la Luna (Antártida, valoradas como pobres): [FICHAS_CANDIDATOS.md](docs/FICHAS_CANDIDATOS.md) |
-| Capa de análogos del USGS | Cráteres y dunas frente a 200 controles aleatorios |
+| Cambiar la variable de hielo por humedad del suelo | No mejora |
+| Añadir la inercia térmica (qué tan rápido cambia de temperatura el suelo) | Empeora |
+| Usar la emisividad infrarroja para detectar basalto | No funciona (detecta arena de cuarzo, no basalto) |
+| Describir la rugosidad a varias escalas | Sin efecto |
+| Ajustar la tolerancia según lo variable que sea cada sitio | Empeora un poco |
+| Separar análogos fríos y cálidos | Mejora los fríos, pero siguen por debajo del azar |
 
-## 4. Resultados (todos negativos o débiles)
-- **Validación global:** 35 objetivos, AUC por sitios 0,58 y recall 0,17; AUC por celdas 0,50. Casi azar. Detalle en [VALIDACION.md](docs/VALIDACION.md) y [ABLACION.md](docs/ABLACION.md).
-- **Por aspecto** ([VALIDACION_ASPECTO.md](docs/VALIDACION_ASPECTO.md)): la geología va en la dirección correcta pero con 1 a 3 análogos por grupo; el hielo de Marte falla donde debía acertar (Valles Secos, −0,75) porque la nieve de la Tierra no mide sequedad; la geología de Marte se satura y no ayuda.
-- **Hielo, variable alternativa** ([PREREGISTRO_HIELO.md](docs/PREREGISTRO_HIELO.md)): la humedad del suelo (GLDAS) no mejora (Marte 0,493 → 0,469), se mantiene la nieve.
-- **Terreno llano** ([PREREGISTRO_LLANURA.md](docs/PREREGISTRO_LLANURA.md)): con control por pendiente, la señal de los cráteres en Marte desaparece (0,567 → 0,494). Era un efecto de planitud, no de forma de cráter.
-- **Análogos nuevos** ([BUSQUEDA_ANALOGOS.md](docs/BUSQUEDA_ANALOGOS.md)): la búsqueda no encontró ninguno evaluable para térmica ni hielo.
-- **Viabilidad:** 708 de 951 celdas viables. Cinco de los diez análogos conocidos quedarían inviables (Mauna Kea, Lanzarote, Río Tinto, Svalbard, Craters of the Moon), por eso la marca no se aplica a la validación.
+También **corregimos errores propios a la vista** (por ejemplo, descubrimos que una «señal» del relieve en Marte se debía solo a que los cráteres están en zonas llanas, y que las primeras candidatas eran selvas). Esta transparencia es un punto fuerte frente a un jurado.
 
-## 5. Límites que hay que decir en la entrega
-- **Candidatos:** son hipótesis; las dos de la Luna salen solo por topografía (el resto sin dato) y no son buenos análogos. El filtro de vegetación se añadió tras ver que las primeras candidatas de Marte eran selvas.
-- **Verificación de coordenadas parcial:** ver [VERIFICACION_COORDENADAS.md](docs/VERIFICACION_COORDENADAS.md) (p. ej. Oxia Planum difiere ~19 km del valor del IAU). Licencias por comprobar: [LICENCIAS.md](docs/LICENCIAS.md).
-- **Sin cubrir:** iluminación polar; polvo, viento y cuevas solo como contexto ([CUEVAS.md](docs/CUEVAS.md): pits lunares y 1 062 candidatas de Marte integrados, pero ningún objetivo está cerca de una cueva) ([DIMENSIONES_NO_MODELADAS.md](docs/DIMENSIONES_NO_MODELADAS.md)).
-- **Pocos análogos** (4 a 8 por cuerpo): los intervalos son anchos y ninguna dimensión puede quedar validada de forma concluyente.
-- **Semántica distinta entre cuerpos:** el hielo y la térmica de la Tierra no significan lo mismo que en la Luna o Marte; ningún lugar de la Tierra reproduce los cambios de temperatura diarios de Marte.
-- **Confusión con terreno llano y estable** (cratones), que ayuda a los análogos sin ser el aspecto buscado.
-- **Viabilidad:** GRUMP es de 1990-2010, le faltan pueblos pequeños (San Pedro de Atacama) y estaciones antárticas.
-- **Coordenadas:** las de los análogos y casi todos los sitios objetivo vienen de Wikipedia o de las tablas LROC; las analogías de Mauna Kea, Askja y Svalbard no están comprobadas. Todo en [docs/FUENTES.md](docs/FUENTES.md); abrir el `source_url` antes de citar.
-- **No presentar el ranking como predictivo:** lo defendible es el método, los preregistros y los resultados negativos.
+> **Mensaje clave:** «No solo buscamos qué funciona: medimos qué no funciona y lo dejamos documentado».
 
-## 6. Cómo ejecutarlo (Windows PowerShell)
+## 8. Qué NO conviene afirmar
+- ❌ «Encontramos los mejores lugares de la Tierra para entrenar para Marte.» → Son **hipótesis** para revisar con expertos.
+- ❌ «El método predice análogos.» → Con Marte no se distingue del azar; con la Luna, por poco.
+- ❌ «Haruj es un análogo desconocido.» → Solo decimos que **en nuestra búsqueda no apareció** un estudio; no prueba que no exista.
+- ❌ «El método encuentra análogos de cuevas o tubos de lava.» → **No**: el modelo no ve los tubos. Solo aportamos contexto (hay 8 tubos documentados en la región de Harrat ash-Shamah, y ningún dato en Haruj, que no está cubierto por el catálogo).
+- ✅ Sí: «Método transparente y reproducible», «sabemos dónde falla», «candidatas concretas con sus límites», «geología como aspecto más fiable».
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -e ".[app,dev]"
-pip install -e ".[data]"          # solo para regenerar datos; con Python 3.14 usar --only-binary=:all:
-# copia .env.example a .env con tus credenciales de Earthdata
+## 9. Limitaciones, dichas con claridad
+- **Pocos análogos para comprobar** (23): los márgenes son anchos.
+- **El hielo y el frío son el punto débil:** no hay un dato terrestre equivalente al hielo de Marte.
+- **Marte no tiene dato de temperatura** en nuestro modelo (no hay un mapa comparable).
+- **Las coordenadas de varios análogos vienen de Wikipedia o de memoria** y no están verificadas en fuente primaria; hay que revisarlas a mano.
+- **Algunas licencias de datos están «por comprobar»** (Copernicus, SEDAC, MODIS, PDS): hay que abrir sus páginas y copiar la atribución exacta.
+- **La Tierra no reproduce** la gravedad reducida, el vacío lunar, la atmósfera tenue de Marte ni su radiación.
+- Parte de la búsqueda de fuentes y del código se hizo con **asistentes de IA** y lo revisó el equipo. Conviene declararlo si el concurso lo pide.
 
-python -m analogos.pipeline         # scores, validación, candidatos y clusters
-streamlit run app/streamlit_app.py
-pytest                              # 152 tests
-```
+## 10. De dónde salen los datos (para la diapositiva de fuentes)
+- **NASA:** altimetría láser de la Luna (LOLA) y de Marte (MOLA), temperatura lunar (Diviner), composición (Lunar Prospector y Mars Odyssey), temperatura, nieve y vegetación de la Tierra (MODIS), población (SEDAC), polvo y viento (MERRA-2), humedad del suelo (GLDAS).
+- **ESA:** relieve de la Tierra (Copernicus DEM).
+- **USGS:** capa de sitios análogos y catálogo de cuevas de Marte.
+- **Otros abiertos:** mapa de rocas de la Tierra (GLiM, CC BY), pits lunares (LROC, vía Zenodo, CC BY), catálogo de tubos de lava (Pyroduct, CC BY).
+- Procedencia completa: `docs/FUENTES.md`. Licencias: `docs/LICENCIAS.md`.
 
-`data/` no se versiona. Los módulos para regenerar los datos están en el [README](README.md).
+## 11. Cifras para tener a mano
+- **35** sitios objetivo (21 Luna, 14 Marte) · **951** zonas de la Tierra · **4** aspectos medidos.
+- **23** análogos de validación (10 originales + 13 nuevos) · **6** ideas probadas, todas documentadas.
+- **60 %** de acierto en la Luna, **56 %** en Marte (50 % = azar).
+- **100 %** de estabilidad de Harrat ash-Shamah, **79 %** de Haruj.
+- **152** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
 
-## 7. Mapa del repo
+## 12. Mini-glosario
+- **Análogo:** lugar de la Tierra parecido a otro mundo, usado para ensayar.
+- **Basalto:** roca volcánica oscura que cubre buena parte de Marte y de los «mares» lunares.
+- **Tubo de lava:** cueva que deja la lava al enfriarse; podría proteger a futuros astronautas.
+- **Preregistro:** escribir el criterio de éxito antes de ver los resultados, para no ajustarlo a posteriori.
+- **«Azar» (50 %):** lo que saldría si el método no supiera nada.
 
-| Ruta | Qué hay |
+## 13. Dónde profundizar
+| Quiero saber... | Leer |
 |---|---|
-| `src/analogos/` | `similarity`, `validate`, `pipeline`, `ablation`, `aspect`, `aspect_usgs`, `topography`, `cluster`, `report` |
-| `src/analogos/data/` | descarga y features por fuente (Copernicus, MODIS, GLiM, LOLA, MOLA, ODE, GRUMP, USGS) |
-| `app/streamlit_app.py` | la aplicación |
-| `docs/` | contrato de datos, procedencia, APIs, ablación, validaciones, preregistros y CSV de sitios |
-| `PLAN.md` | arquitectura, equipo de 6 personas y cronograma |
-
-## 8. Siguientes pasos posibles
-1. **Más análogos con fuente:** leer bibliografía completa (no solo búsquedas) y fijar antes de medir qué objetivos son relevantes para cada aspecto (p. ej. térmica lunar solo en los polares).
-2. **Marte, térmica:** dejarla vacía y decirlo, o buscar otra fuente si el equipo la quiere.
-3. **Viabilidad:** complementar GRUMP con densidad de población (GPWv4) o luces nocturnas.
-4. **Entrega:** escribir el informe y las fichas centrados en el método y en los límites; comprobar visualmente el mapa de la app.
+| El informe completo | `docs/INFORME.md` |
+| Cómo de bien funciona | `docs/VALIDACION_AMPLIADA.md` |
+| Los dos candidatos | `docs/FICHAS_CANDIDATOS.md` |
+| Qué se parece en cada aspecto | `docs/ATLAS_ASPECTOS.md` |
+| Para qué sirve cada lugar | `docs/CASOS_DE_USO.md` |
+| Procesos (cuevas, polvo, hielo) | `docs/PROCESOS.md` y `docs/CUEVAS.md` |
+| Lo que no funcionó | `docs/PREREGISTRO_*.md` |
+| Cómo correrlo | `README.md` y `docs/DESPLIEGUE.md` |
