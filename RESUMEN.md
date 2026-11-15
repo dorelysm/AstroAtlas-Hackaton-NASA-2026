@@ -1,4 +1,4 @@
-# Resumen del proyecto (versión para no técnicos)
+# Resumen del proyecto
 
 **NASA Space Apps Challenge 2026 · reto «Permanent Moon Base Locations and Mars»**
 Estado a 15 de noviembre de 2026. Este documento está pensado para que el equipo saque de aquí las ideas para las diapositivas y la descripción del proyecto. Cada cifra tiene su fuente en `docs/` (los enlaces están al final).
