@@ -216,7 +216,7 @@ ranked = ranked.merge(earth[["cell_id", "geo__basalt_frac"]], on="cell_id", how=
 view = ranked[ranked["viable"].fillna(True).astype(bool)] if (has_viability and hide_populated) else ranked
 if has_veg and hide_vegetated:
     view = view[~view["vegetated"].fillna(False).astype(bool)]
-if set(sel_regions) != set(REGIONS):
+if sel_regions and set(sel_regions) != set(REGIONS):   # an empty selection means "all regions" (never a dead end)
     view = view[view["region"].isin(sel_regions)]
 if only_volcanic:
     view = view[view["geo__basalt_frac"].fillna(0) >= 0.5]

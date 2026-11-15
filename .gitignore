@@ -8,3 +8,4 @@ data/*
 !data/.gitkeep
 .claude/
 .ipynb_checkpoints/
+build/

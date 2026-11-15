@@ -58,3 +58,11 @@ def test_risk_map_colour_and_sensitivity_run():
     at.segmented_control(key="map_color").set_value("risk").run()
     assert not at.exception
     assert any("risk" in c.value.lower() for c in at.caption)      # the risk legend replaces the similarity legend
+
+
+def test_empty_region_selection_means_all_regions():
+    at = _run()
+    everything = len(_profile(at).options)
+    at.multiselect(key="regions").set_value([]).run()
+    assert not at.exception and not at.warning
+    assert len(_profile(at).options) == everything

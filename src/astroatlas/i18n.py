@@ -394,8 +394,8 @@ TEXTS.update({
 # ---- region filter and featured mission case ----
 TEXTS.update({
     "f_region": {"es": "Regiones a mostrar", "en": "Regions to show"},
-    "f_region_ayuda": {"es": "Acota la lista y el mapa a regiones del mundo (límites aproximados). No cambia el puntaje.",
-                       "en": "Narrows the list and map to world regions (approximate boundaries). It does not change the score."},
+    "f_region_ayuda": {"es": "Acota la lista y el mapa a regiones del mundo (límites aproximados); sin selección se muestran todas. No cambia el puntaje.",
+                       "en": "Narrows the list and map to world regions (approximate boundaries); with nothing selected, all are shown. It does not change the score."},
     "f_volc": {"es": "Solo terreno volcánico (basalto)", "en": "Volcanic terrain only (basalt)"},
     "f_volc_ayuda": {"es": "Muestra lugares donde la mitad o más de la roca de la ventana es basalto (GLiM). No cambia el puntaje.",
                      "en": "Shows places where half or more of the window's rock is basalt (GLiM). It does not change the score."},
