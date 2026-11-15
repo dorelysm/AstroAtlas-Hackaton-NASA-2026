@@ -26,7 +26,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from ..config import FEATURES_DIR, RAW_DIR
+from ..config import FEATURES_WRITE_DIR, RAW_DIR
 from .earth_water import window_indices
 
 GLIM_URL = "https://epic.awi.de/id/eprint/31092/1/hartmann-moosdorf_2012.zip"
@@ -117,7 +117,7 @@ def main() -> None:
     a = ap.parse_args()
     grid, names, lats, lons = load_glim()
     for name in ("earth.parquet", "earth_sites.parquet"):
-        p = FEATURES_DIR / name
+        p = FEATURES_WRITE_DIR / name
         if p.exists():
             t = pd.read_parquet(p)
             apply_to_earth(t, geology_features(t, grid, names, lats, lons, a.half_km)).to_parquet(p, index=False)

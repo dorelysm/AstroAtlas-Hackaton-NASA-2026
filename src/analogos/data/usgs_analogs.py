@@ -14,7 +14,7 @@ docs/VALIDACION_ASPECTO.md (protocolo fijado antes de calcular ningún score).
 import numpy as np
 import pandas as pd
 
-from ..config import FEATURES, FEATURES_DIR, RAW_DIR
+from ..config import FEATURES, FEATURES_WRITE_DIR, RAW_DIR
 from ..validate import haversine_km
 from . import earth, earth_geology
 
@@ -99,9 +99,9 @@ def build(workers: int = 8, n_control: int = N_CONTROL, candidates_factor: int =
 
 
 def main() -> None:
-    FEATURES_DIR.mkdir(parents=True, exist_ok=True)
+    FEATURES_WRITE_DIR.mkdir(parents=True, exist_ok=True)
     out = build()
-    out.to_parquet(FEATURES_DIR / "earth_usgs.parquet", index=False)
+    out.to_parquet(FEATURES_WRITE_DIR / "earth_usgs.parquet", index=False)
     print(out["group"].value_counts().to_dict(), "| con topografía:", int(out["topo__slope_mean_deg"].notna().sum()))
 
 

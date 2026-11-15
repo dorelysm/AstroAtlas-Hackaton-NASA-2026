@@ -1,0 +1,5 @@
+cell_id,lat,lon,body,n_targets,targets,score_mean,ndvi_max,dist_settlement_km,settlement,nearest_known,nearest_known_km,slope_mean_deg,relief_m,t_max_k,t_range_k,basalt_frac,snow_mean
+earth_2_70,-77.5,172.5,moon,7,"Apollo 12 LM, Apollo 14 LM, Chang'e 4, Luna 17, Luna 23, Mare Tranquillitatis pit, Surveyor 6",0.51,,3440.8,Bluff,Dry Valleys (Antartida),252.37,0.06,41.08,,,,
+earth_1_0,-82.5,-177.5,moon,7,"Apollo 12 LM, Apollo 14 LM, Chang'e 4, Luna 17, Luna 23, Mare Tranquillitatis pit, Surveyor 6",0.51,,4021.44,Bluff,Dry Valleys (Antartida),674.22,0.04,21.44,,,,
+earth_24_43,32.5,37.5,mars,13,"Curiosity (MSL Gale), Eberswalde (candidato MSL), Holden (candidato MSL), InSight, Jezero, Mars Pathfinder, Mawrth Vallis (candidato MSL), Opportunity (MER-B), Oxia Planum, Phoenix, Spirit (MER-A), Viking 1, Viking 2",0.76,0.12,90.21,As-Suwayda',Rio Tinto,4011.95,0.74,242.14,325.25,20.13,1.0,0.0
+earth_23_39,27.5,17.5,mars,9,"Curiosity (MSL Gale), Eberswalde (candidato MSL), Holden (candidato MSL), InSight, Jezero, Mars Pathfinder, Mawrth Vallis (candidato MSL), Opportunity (MER-B), Oxia Planum",0.69,0.09,228.55,Waddan,Rio Tinto,2512.01,0.59,367.94,327.91,23.79,1.0,0.0

@@ -3,7 +3,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
-FEATURES_DIR = DATA / "features"
+DEMO_DIR = ROOT / "demo_data"  # copia reducida y versionada de las features para que la app corra sin regenerar nada
+# Si no hay datos propios (data/ no se versiona) se usan los de demo_data/. Los datos propios tienen prioridad.
+FEATURES_WRITE_DIR = DATA / "features"  # donde ESCRIBEN los módulos de datos; nunca demo_data/
+FEATURES_DIR = DATA / "features" if (DATA / "features" / "earth.parquet").exists() else DEMO_DIR / "features"
 RESULTS_DIR = DATA / "results"
 RAW_DIR = DATA / "raw"
 PROCESSED_DIR = DATA / "processed"

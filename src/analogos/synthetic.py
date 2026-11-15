@@ -7,7 +7,7 @@ No tienen valor científico. Reemplázalos con los datos reales de cada cuerpo.
 import numpy as np
 import pandas as pd
 
-from .config import FEATURES_DIR, SITES_CSV
+from .config import FEATURES_WRITE_DIR, SITES_CSV
 from .grid import make_grid
 
 _RNG_SEED = 42
@@ -63,11 +63,11 @@ def synthetic_target(body: str, sites: pd.DataFrame, cells_per_site: int = 25, s
 
 def main() -> None:
     sites = pd.read_csv(SITES_CSV)
-    FEATURES_DIR.mkdir(parents=True, exist_ok=True)
-    synthetic_earth().to_parquet(FEATURES_DIR / "earth.parquet", index=False)
+    FEATURES_WRITE_DIR.mkdir(parents=True, exist_ok=True)
+    synthetic_earth().to_parquet(FEATURES_WRITE_DIR / "earth.parquet", index=False)
     for body in ("moon", "mars"):
-        synthetic_target(body, sites).to_parquet(FEATURES_DIR / f"{body}.parquet", index=False)
-    print(f"Datos sintéticos escritos en {FEATURES_DIR}")
+        synthetic_target(body, sites).to_parquet(FEATURES_WRITE_DIR / f"{body}.parquet", index=False)
+    print(f"Datos sintéticos escritos en {FEATURES_WRITE_DIR}")
 
 
 if __name__ == "__main__":

@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree
 
-from ..config import FEATURES_DIR, RAW_DIR
+from ..config import FEATURES_WRITE_DIR, RAW_DIR
 from . import edl
 from .earth_geology import safe_extract
 
@@ -101,7 +101,7 @@ def main() -> None:
     s = load_settlements()
     print(f"{len(s)} asentamientos; con >= {MIN_POP} habitantes: {int((s['pop'] >= MIN_POP).sum())}; sin población: {int(s['pop'].isna().sum())}")
     for name in ("earth.parquet", "earth_sites.parquet", "earth_usgs.parquet"):
-        p = FEATURES_DIR / name
+        p = FEATURES_WRITE_DIR / name
         if not p.exists():
             continue
         d = add_viability(pd.read_parquet(p), s)

@@ -37,7 +37,8 @@ def summarize(metrics: dict) -> dict:
     return out
 
 
-VIABILITY_COLS = ["viable", "dist_settlement_km", "settlement_name", "settlement_pop", "dist_any_settlement_km"]
+VIABILITY_COLS = ["viable", "dist_settlement_km", "settlement_name", "settlement_pop", "dist_any_settlement_km",
+                  "veg_ndvi_max", "vegetated"]  # marcas de contexto: no entran al score ni a la validación
 
 
 def attach_viability(df: pd.DataFrame, earth: pd.DataFrame) -> pd.DataFrame:
@@ -58,7 +59,7 @@ def run(top_n: int = 500, weights: dict[str, float] | None = None, compress_topo
     topo_model = fit_topo_model(earth) if compress_topo else None
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    all_scores, metrics, cands, cands_viable = [], {}, [], []
+    all_scores, metrics, cands, cands_viable, cands_short = [], {}, [], [], []
     for body in ("moon", "mars"):
         profiles = site_profiles(load_features(body, features_dir))
         known_b = known_for_body(known, body) if by_body else known
@@ -76,10 +77,13 @@ def run(top_n: int = 500, weights: dict[str, float] | None = None, compress_topo
             all_scores.append(ranked_v.head(top_n).assign(site=site, body=body))
             cands.append(novel_candidates(ranked_v, known_b).assign(site=site, body=body))
             cands_viable.append(novel_candidates(ranked_v, known_b, viable_only=True).assign(site=site, body=body))
+            cands_short.append(novel_candidates(ranked_v, known_b, viable_only=True, unvegetated_only=True)
+                               .assign(site=site, body=body))
 
     pd.concat(all_scores).to_parquet(results_dir / "scores.parquet", index=False)
     pd.concat(cands).to_csv(results_dir / "candidates.csv", index=False)  # con la columna `viable`
     pd.concat(cands_viable).to_csv(results_dir / "candidates_viable.csv", index=False)  # solo los viables
+    pd.concat(cands_short).to_csv(results_dir / "candidates_shortlist.csv", index=False)  # viables y sin vegetación
     cluster_cells(earth).to_parquet(results_dir / "clusters.parquet", index=False)
     (results_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, ensure_ascii=False))
     summary = {"config": {"compress_topo": compress_topo, "by_body": by_body, "n_boot": n_boot,

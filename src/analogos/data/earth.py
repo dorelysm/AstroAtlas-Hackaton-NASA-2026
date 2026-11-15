@@ -16,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 import pandas as pd
 
-from ..config import FEATURES, FEATURES_DIR, KNOWN_CSV
+from ..config import FEATURES, FEATURES_WRITE_DIR, KNOWN_CSV
 from ..grid import make_grid
 from .copernicus import CopernicusDem
 from .dem import site_topography
@@ -170,14 +170,14 @@ if __name__ == "__main__":
     ap.add_argument("--no-power", action="store_true")
     ap.add_argument("--no-sites", action="store_true", help="no calcular los análogos conocidos")
     a = ap.parse_args()
-    FEATURES_DIR.mkdir(parents=True, exist_ok=True)
+    FEATURES_WRITE_DIR.mkdir(parents=True, exist_ok=True)
 
     out = build_features(a.step, a.workers, topo=not a.no_topo, power=not a.no_power)
-    out.to_parquet(FEATURES_DIR / "earth.parquet", index=False)
+    out.to_parquet(FEATURES_WRITE_DIR / "earth.parquet", index=False)
     print(f"earth.parquet: {len(out)} celdas (malla {a.step}°)")
 
     if not a.no_sites:  # análogos conocidos: SOLO para comparar/validar, no se mezclan con la malla
         sites = build_features(cells=known_analog_cells(), workers=a.workers, topo=not a.no_topo,
                                power=not a.no_power, min_valid=0.0)
-        sites.to_parquet(FEATURES_DIR / "earth_sites.parquet", index=False)
+        sites.to_parquet(FEATURES_WRITE_DIR / "earth_sites.parquet", index=False)
         print(f"earth_sites.parquet: {len(sites)} análogos conocidos")

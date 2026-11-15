@@ -111,13 +111,16 @@ def evaluate_sites(cell_scores, site_scores: pd.Series, top_pct: float = 5) -> d
 
 
 def novel_candidates(ranked: pd.DataFrame, known: pd.DataFrame, min_km: float = 500, n: int = 10,
-                     viable_only: bool = False) -> pd.DataFrame:
+                     viable_only: bool = False, unvegetated_only: bool = False) -> pd.DataFrame:
     """Top-n celdas a más de `min_km` de cualquier análogo conocido.
 
     viable_only: descarta las celdas marcadas como inviables por cercanía a población (columna `viable`, ver
-    data/settlements.py). Solo es para buscar candidatos nuevos; la VALIDACIÓN no se filtra."""
+    data/settlements.py). unvegetated_only: descarta las celdas con vegetación (columna `vegetated`, NDVI máximo >= 0.2, ver
+    data/earth_vegetation.py); sin dato no se descarta. Solo es para buscar candidatos nuevos; la VALIDACIÓN no se filtra."""
     ranked = ranked.dropna(subset=["score"])
     if viable_only and "viable" in ranked:
         ranked = ranked[ranked["viable"].fillna(True).astype(bool)]
+    if unvegetated_only and "vegetated" in ranked:
+        ranked = ranked[~ranked["vegetated"].fillna(False).astype(bool)]
     far = dist_to_known_km(ranked, known).min(axis=1) > min_km
     return ranked[far].head(n).reset_index(drop=True)

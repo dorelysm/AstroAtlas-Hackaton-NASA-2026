@@ -5,13 +5,14 @@ Ranking de lugares de la Tierra por similitud multidimensional con sitios de la 
 
 **Empieza por el [resumen del proyecto](RESUMEN.md).**
 
-Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [plan de la Tierra](docs/PLAN_TIERRA.md) · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md)
+Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [plan de la Tierra](docs/PLAN_TIERRA.md) · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md) · **[fichas de candidatos](docs/FICHAS_CANDIDATOS.md)** · [licencias](docs/LICENCIAS.md) · [coordenadas verificadas](docs/VERIFICACION_COORDENADAS.md) · [dimensiones no modeladas](docs/DIMENSIONES_NO_MODELADAS.md)
 
 ## Cómo funciona
 
 - **Score por dimensión** = exp(−distancia z cuadrática media) entre el perfil del sitio lunar/marciano y cada celda de la Tierra (la topografía se comprime con PCA blanqueada). **Score global** = media ponderada de las dimensiones disponibles.
 - **Datos reales** (ventana de 50 km, base común de 500 m): Luna (LOLA, Diviner, LP-GRS), Marte (MOLA, Odyssey GRS; térmica vacía por decisión), Tierra (Copernicus GLO-90, MODIS LST y nieve, GLiM litología). Detalle y licencias en [docs/FUENTES.md](docs/FUENTES.md).
 - **Validación**: los análogos conocidos solo validan, nunca ajustan el modelo. Métricas: AUC y recall con bootstrap sobre los análogos.
+- **Marcas de contexto** (no entran al score ni a la validación): `viable` (≥ 1 000 hab. a < 50 km, SEDAC GRUMP) y `vegetated` (NDVI máx. ≥ 0,2, MODIS MOD13C2). Evitan, por ejemplo, proponer selvas como análogos de Marte.
 - **Viabilidad**: cada celda de la Tierra lleva la marca `viable` (falso si hay un asentamiento de ≥ 1 000 hab. a < 50 km, NASA SEDAC GRUMP). Es una marca, no entra en el score ni en la validación.
 
 ## Estado de los resultados
@@ -33,8 +34,10 @@ pip install -e ".[data]"           # solo para regenerar datos: librerías geoes
 ```powershell
 python -m analogos.pipeline          # scores, validación, candidatos (candidates_viable.csv) y clusters en data/results/
 streamlit run app/streamlit_app.py   # mapa, ranking, pesos, filtro de viabilidad y ficha
-pytest                               # 125 tests
+pytest                               # 130 tests
 ```
+
+**Sin descargar nada:** si no existe `data/features/`, la app y el pipeline usan `demo_data/` (≈ 0,6 MB, valores derivados ya calculados). Con datos propios, estos tienen prioridad.
 
 `data/` no se versiona: hay que generar las features con los módulos de abajo (o `python -m analogos.synthetic` para datos de prueba sin valor científico).
 
@@ -51,6 +54,8 @@ python -m analogos.data.earth_thermal    # temperatura MODIS LST
 python -m analogos.data.earth_geology    # GLiM
 python -m analogos.data.usgs_analogs     # capa de análogos del USGS
 python -m analogos.data.settlements      # viabilidad por población (GRUMP)
+python -m analogos.data.earth_vegetation # marca de vegetación (MODIS NDVI)
+python -m analogos.fichas                # selección de candidatos para las fichas
 python -m analogos.ablation              # ablación por dimensión
 python -m analogos.aspect                # validación por aspecto
 ```

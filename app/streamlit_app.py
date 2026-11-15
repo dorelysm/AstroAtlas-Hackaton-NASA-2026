@@ -40,6 +40,10 @@ with st.sidebar:
                                       "Lista incompleta para pueblos pequeños; ver docs/FUENTES.md.")
     if not has_viability:
         st.caption("Sin datos de viabilidad: ejecuta `python -m analogos.data.settlements`.")
+    has_veg = "vegetated" in earth.columns
+    hide_vegetated = st.checkbox("Ocultar puntos con vegetación (NDVI máx. ≥ 0.2)", value=has_veg, disabled=not has_veg,
+                                 help="Marca de vegetación (NASA MODIS MOD13C2, 2019). El modelo no tiene dimensión de biología: "
+                                      "sin este filtro salen selvas como 'parecidas a Marte'. No cambia el score ni la validación.")
 
 if sum(weights.values()) == 0:
     st.warning("Pon al menos un peso mayor que 0.")
@@ -55,8 +59,12 @@ known_body = known_for_body(known, body)  # solo los análogos que sirven para e
 ranked = rank_cells(earth, profiles[(body, site)], weights, topo_model_for(earth))
 if has_viability:  # solo información: el orden y el score no cambian
     ranked = ranked.merge(earth[["cell_id", "viable", "dist_settlement_km", "settlement_name"]], on="cell_id", how="left")
+if has_veg:
+    ranked = ranked.merge(earth[["cell_id", "veg_ndvi_max", "vegetated"]], on="cell_id", how="left")
 # el filtro de viabilidad solo afecta a lo que se MUESTRA; la validación (más abajo) usa `ranked` completo
 view = ranked[ranked["viable"].fillna(True).astype(bool)] if (has_viability and hide_populated) else ranked
+if has_veg and hide_vegetated:
+    view = view[~view["vegetated"].fillna(False).astype(bool)]
 shown = novel_candidates(view, known_body, n=top_n) if only_novel else view.head(top_n)
 
 col_map, col_info = st.columns([3, 2])
@@ -77,7 +85,7 @@ with col_info:
     c1.metric("AUC vs conocidos", f"{m['auc']:.2f}")
     c2.metric(f"Recall@{m['top_pct']:.0f}%", f"{m['recall_at_top_pct']:.2f}")
     st.caption("Muy ruidosas: hay pocos análogos por tipo y faltan dimensiones (ver docs/VALIDACION.md).")
-    extra = [c for c in ("viable", "dist_settlement_km", "settlement_name") if c in shown.columns]
+    extra = [c for c in ("viable", "dist_settlement_km", "settlement_name", "veg_ndvi_max") if c in shown.columns]
     st.dataframe(shown[["rank", "cell_id", "lat", "lon", "score", *DIMENSIONS, *extra]].round(3), height=250)
     pick = st.selectbox("Ficha de la celda", shown["cell_id"])
     st.json(ficha(shown[shown["cell_id"] == pick].iloc[0], site, body))

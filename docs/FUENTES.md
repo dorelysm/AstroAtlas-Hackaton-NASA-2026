@@ -121,7 +121,7 @@ Malla de 5° (955 celdas de tierra firme; `earth_sites` = los 10 análogos conoc
 
 **Agua (océano, lagos y mares interiores):** Copernicus rellena el agua con una cota constante (0 m en el mar), y sin filtro esas celdas salían como "llanuras perfectas". Se descartan las celdas con **relieve local < 1 m a cualquier altitud** (14 nov, segunda versión; la primera exigía además elevación ~0 y dejaba pasar lagos como el Michigan o el Caspio). Con la malla de 5° el terreno llano real más plano (hielo antártico, humedales, llanuras) tiene relieve >= 4 m, así que hay margen. Quedan 951 celdas. Puede quitar alguna isla pequeña (p. ej. la de las islas Feroe, casi todo mar en la ventana de 50 km).
 
-**Pendiente:** GLDAS (humedad del suelo y agua en nieve) está implementado en `earth_water.py` (`--gldas`) pero **sin probar con datos reales**: requiere aceptar en el perfil de Earthdata la licencia "NASA GESDISC DATA ARCHIVE" (error `EulaNotAccepted`).
+**GLDAS (15 nov 2026):** licencia GESDISC aprobada, descarga y reducción probadas con datos reales (12 meses de 2019, 300 MB descargados y borrados). `ice_soil_moisture_m3m3` y `ice_swe_kg_m2` están en `earth*.parquet` como **diagnóstico**; la comparación preregistrada (`docs/PREREGISTRO_HIELO.md`) mostró que no mejora a la nieve, así que no entran al modelo.
 
 ### Viabilidad por cercanía a centros poblados (solo Tierra; 14 nov 2026)
 **Regla decidida por el equipo:** un punto es **inviable** si hay un asentamiento de **1 000 habitantes o más a menos de 50 km**. Es una **marca** (columna `viable`), no parte del score: no cambia el ranking, la ablación ni la validación con análogos conocidos. Se puede ocultar en la app (casilla activada por defecto) y en `data/results/candidates_viable.csv`.
@@ -168,3 +168,7 @@ Integrada con `dem.py` fusionado (acepta un DEM ya creado y conserva los reinten
 3. Confirmar las coordenadas oficiales de SLIM, Chandrayaan-3 y Chang'e 5/6 con ISRO, JAXA y fuentes de la CNSA (Chang'e 3 ya está verificado con LROC).
 4. Sustituir las coordenadas de Wikipedia por fuentes primarias (USGS Gazetteer, NASA, GVP, GNIS) y verificar la analogía de Mauna Kea, Askja y Svalbard.
 5. Verificar el centro de Arcadia Planitia en el PDF de SWIM, y el de Oxia Planum en ESA.
+
+
+## Marca de vegetación (15 nov 2026)
+Producto NASA **MODIS MOD13C2 v061** (NDVI mensual, rejilla CMG de 0.05°, LP DAAC), 12 meses de 2019 (1 242 MB descargados y borrados tras reducirlos). Código: `src/analogos/data/earth_vegetation.py`. Por celda de 50 km: `veg_ndvi_mean`, `veg_ndvi_max` y `vegetated` (NDVI máximo anual ≥ 0.2; sin dato no se marca). Es una **marca de contexto**, igual que `viable`: no entra al score ni a la validación. Motivo: el modelo no tiene dimensión de biología, y sin ella salían selvas como candidatas "parecidas a Marte". Con el umbral de 0.2: 551 de 951 celdas con vegetación; de los 10 análogos conocidos, 4 (Mauna Kea, Río Tinto, Svalbard, Craters of the Moon). El umbral lo fijé yo (matorral ralo en adelante) y no está calibrado con una fuente.

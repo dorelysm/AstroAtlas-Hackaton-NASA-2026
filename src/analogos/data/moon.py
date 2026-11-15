@@ -7,7 +7,7 @@ thermal__*, ice__* y geo__*: productos del NASA PDS, ver planetary.py y docs/FUE
 """
 import pandas as pd
 
-from ..config import FEATURES_DIR
+from ..config import FEATURES_WRITE_DIR
 from .dem import build_target_features
 from .planetary import add_properties
 from .pds_dem import lola_dem
@@ -45,10 +45,10 @@ def merge_site_rows(existing: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
 
 def update_sites(names: list[str]) -> pd.DataFrame:
     """Recalcula solo `names` y los fusiona en data/features/moon.parquet (y moon.csv). Devuelve la tabla completa."""
-    path = FEATURES_DIR / "moon.parquet"
+    path = FEATURES_WRITE_DIR / "moon.parquet"
     out = merge_site_rows(pd.read_parquet(path), build_features(only=names))
     out.to_parquet(path, index=False)
-    out.to_csv(FEATURES_DIR / "moon.csv", index=False)
+    out.to_csv(FEATURES_WRITE_DIR / "moon.csv", index=False)
     return out
 
 
@@ -58,12 +58,12 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", nargs="+", help="actualizar solo estos sitios (nombres entre comillas) en vez de recalcular todo")
     a = ap.parse_args()
-    FEATURES_DIR.mkdir(parents=True, exist_ok=True)
+    FEATURES_WRITE_DIR.mkdir(parents=True, exist_ok=True)
     if a.only:
         out = update_sites(a.only)
     else:
         out = build_features()
-        out.to_parquet(FEATURES_DIR / "moon.parquet", index=False)
+        out.to_parquet(FEATURES_WRITE_DIR / "moon.parquet", index=False)
     cols = ["site", "topo__slope_mean_deg", "thermal__t_max_k", "thermal__t_range_k", "ice__water_frac",
             "geo__basalt_frac"]
     print(out[cols].round(3).to_string())

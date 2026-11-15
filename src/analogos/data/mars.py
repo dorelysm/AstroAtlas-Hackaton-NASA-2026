@@ -7,7 +7,7 @@ thermal__*, ice__* y geo__*: productos del NASA PDS, ver planetary.py y docs/FUE
 """
 import pandas as pd
 
-from ..config import FEATURES_DIR
+from ..config import FEATURES_WRITE_DIR
 from .dem import build_target_features
 from .planetary import add_properties
 from .pds_dem import mola_dem
@@ -31,9 +31,9 @@ def build_features(include_unverified: bool = False, half_km: float = 25.0) -> p
 
 
 if __name__ == "__main__":
-    FEATURES_DIR.mkdir(parents=True, exist_ok=True)
+    FEATURES_WRITE_DIR.mkdir(parents=True, exist_ok=True)
     out = build_features()
-    out.to_parquet(FEATURES_DIR / "mars.parquet", index=False)
+    out.to_parquet(FEATURES_WRITE_DIR / "mars.parquet", index=False)
     cols = ["site", "topo__slope_mean_deg", "thermal__t_max_k", "thermal__t_range_k", "ice__water_frac",
             "geo__basalt_frac"]
     print(out[cols].round(3).to_string())

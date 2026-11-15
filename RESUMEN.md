@@ -23,6 +23,9 @@ Un **índice de similitud multidimensional**. Para cada sitio objetivo (21 lunar
 | Datos reales de la **Tierra** | Topografía Copernicus GLO-90, térmica MODIS LST, nieve MODIS, geología GLiM (CC-BY, excepción aprobada por el equipo), asentamientos GRUMP. ASTER GED probado y rechazado |
 | Pipeline y app | Features → scores → validación → resultados; app Streamlit con mapa, pesos y filtro de viabilidad; 125 tests |
 | Ablación por dimensión y validación por aspecto | Hechas, con etiquetas y protocolos fijados antes de medir (hash registrado) |
+| Marcas de contexto | `viable` (población) y `vegetated` (NDVI MODIS); no entran al score |
+| Paquete reducido `demo_data/` | La app corre sin descargar nada |
+| Fichas de candidatos | 2 de Marte (campos basálticos de Harrat ash-Shamah y Haruj) y 2 de la Luna (Antártida, valoradas como pobres): [FICHAS_CANDIDATOS.md](docs/FICHAS_CANDIDATOS.md) |
 | Capa de análogos del USGS | Cráteres y dunas frente a 200 controles aleatorios |
 
 ## 4. Resultados (todos negativos o débiles)
@@ -34,6 +37,9 @@ Un **índice de similitud multidimensional**. Para cada sitio objetivo (21 lunar
 - **Viabilidad:** 708 de 951 celdas viables. Cinco de los diez análogos conocidos quedarían inviables (Mauna Kea, Lanzarote, Río Tinto, Svalbard, Craters of the Moon), por eso la marca no se aplica a la validación.
 
 ## 5. Límites que hay que decir en la entrega
+- **Candidatos:** son hipótesis; las dos de la Luna salen solo por topografía (el resto sin dato) y no son buenos análogos. El filtro de vegetación se añadió tras ver que las primeras candidatas de Marte eran selvas.
+- **Verificación de coordenadas parcial:** ver [VERIFICACION_COORDENADAS.md](docs/VERIFICACION_COORDENADAS.md) (p. ej. Oxia Planum difiere ~19 km del valor del IAU). Licencias por comprobar: [LICENCIAS.md](docs/LICENCIAS.md).
+- **Sin cubrir:** polvo/viento, cuevas, iluminación polar ([DIMENSIONES_NO_MODELADAS.md](docs/DIMENSIONES_NO_MODELADAS.md)).
 - **Pocos análogos** (4 a 8 por cuerpo): los intervalos son anchos y ninguna dimensión puede quedar validada de forma concluyente.
 - **Semántica distinta entre cuerpos:** el hielo y la térmica de la Tierra no significan lo mismo que en la Luna o Marte; ningún lugar de la Tierra reproduce los cambios de temperatura diarios de Marte.
 - **Confusión con terreno llano y estable** (cratones), que ayuda a los análogos sin ser el aspecto buscado.
@@ -52,7 +58,7 @@ pip install -e ".[data]"          # solo para regenerar datos; con Python 3.14 u
 
 python -m analogos.pipeline         # scores, validación, candidatos y clusters
 streamlit run app/streamlit_app.py
-pytest                              # 125 tests
+pytest                              # 130 tests
 ```
 
 `data/` no se versiona. Los módulos para regenerar los datos están en el [README](README.md).

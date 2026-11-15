@@ -25,7 +25,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from ..config import FEATURES_DIR, RAW_DIR
+from ..config import FEATURES_WRITE_DIR, RAW_DIR
 from ..validate import haversine_km
 from . import edl
 
@@ -198,7 +198,7 @@ def main() -> None:
     ap.add_argument("--year", type=int, default=2019)
     ap.add_argument("--gldas", action="store_true", help="añadir humedad del suelo y SWE (GLDAS)")
     a = ap.parse_args()
-    paths = [p for p in (FEATURES_DIR / "earth.parquet", FEATURES_DIR / "earth_sites.parquet") if p.exists()]
+    paths = [p for p in (FEATURES_WRITE_DIR / "earth.parquet", FEATURES_WRITE_DIR / "earth_sites.parquet") if p.exists()]
     tables = [pd.read_parquet(p) for p in paths]
     both = pd.concat([t[["lat", "lon"]] for t in tables], ignore_index=True)  # una sola reducción para todo
     print(f"{len(both)} celdas ({', '.join(p.name for p in paths)}); año {a.year}")

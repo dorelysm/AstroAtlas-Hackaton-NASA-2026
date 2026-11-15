@@ -19,7 +19,7 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from ..config import FEATURES_DIR
+from ..config import FEATURES_WRITE_DIR
 from .earth_water import cell_windows, monthly_reduced, snow_grid, window_means
 
 LST_SHORT = "MOD11C3"
@@ -88,7 +88,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--year", type=int, default=2019)
     a = ap.parse_args()
-    paths = [p for p in (FEATURES_DIR / "earth.parquet", FEATURES_DIR / "earth_sites.parquet") if p.exists()]
+    paths = [p for p in (FEATURES_WRITE_DIR / "earth.parquet", FEATURES_WRITE_DIR / "earth_sites.parquet") if p.exists()]
     tables = [pd.read_parquet(p) for p in paths]
     both = pd.concat([t[["lat", "lon"]] for t in tables], ignore_index=True)
     print(f"{len(both)} celdas ({', '.join(p.name for p in paths)}); año {a.year}")
