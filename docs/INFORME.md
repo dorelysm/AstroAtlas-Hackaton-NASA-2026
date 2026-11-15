@@ -33,6 +33,9 @@ Aplicando las marcas de población y vegetación y alejándonos de los análogos
 ## 6. Casos de uso
 En vez de un solo ranking, seis perfiles de uso ([CASOS_DE_USO.md](CASOS_DE_USO.md)): solo el terreno basáltico de Marte da una recomendación defendible (las candidatas de las fichas); movilidad da parecidos moderados y los casos de frío y hielo muestran los límites de la Tierra como análogo.
 
+## 6a. Atlas por aspecto y procesos
+[ATLAS_ASPECTOS.md](ATLAS_ASPECTOS.md) evalúa cada dimensión por separado con una etiqueta de confianza que sale de los resultados medidos (ninguna llega a "alta"). [PROCESOS.md](PROCESOS.md) trata tres procesos (vulcanismo y tubos de lava, transporte eólico, hielo subsuperficial) como estudios de caso cualitativos: solo el volcánico conecta con nuestros resultados.
+
 ## 6b. Lo que aprendimos
 - **Falta dimensión de contexto, no ajuste fino:** sin vegetación, las primeras candidatas de Marte eran selvas.
 - **Las variables no significan lo mismo entre cuerpos:** nieve ≠ hielo subsuperficial; la temperatura mensual terrestre no reproduce los extremos diarios de Marte.

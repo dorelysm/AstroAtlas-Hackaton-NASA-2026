@@ -132,6 +132,34 @@ with st.expander("Candidatos destacados (ver docs/FICHAS_CANDIDATOS.md)"):
         st.caption("Regla de selección y valoración honesta (las candidatas lunares salen solo por topografía y se consideran pobres) "
                    "en `docs/FICHAS_CANDIDATOS.md`.")
 
+with st.expander("Atlas por aspecto: qué se parece dónde (ver docs/ATLAS_ASPECTOS.md)"):
+    def _res(name):
+        p = RESULTS_DIR / name
+        return p if p.exists() else DEMO_DIR / "results" / name
+
+    if _res("atlas_regiones.csv").exists() and _res("atlas_celdas.csv").exists():
+        reg, cel = pd.read_csv(_res("atlas_regiones.csv")), pd.read_csv(_res("atlas_celdas.csv"))
+        ca, cb = st.columns(2)
+        body_a = ca.selectbox("Cuerpo", ["mars", "moon"], format_func=lambda b: {"mars": "Marte", "moon": "Luna"}[b], key="atlas_body")
+        asp = cb.selectbox("Aspecto", ["geo", "topo", "thermal", "ice"], key="atlas_aspect",
+                           format_func=lambda a: {"geo": "Geología", "topo": "Topografía", "thermal": "Térmica", "ice": "Hielo / agua"}[a])
+        g = reg[(reg["body"] == body_a) & (reg["aspect"] == asp)]
+        conf = g["confidence"].iloc[0]
+        msg = f"**Confianza: {conf}.** {g['why'].iloc[0]}"
+        (st.warning if conf in ("baja", "muy baja", "sin datos") else st.info)(msg)
+        top = g[g["rank"] > 0]
+        if top.empty:
+            st.caption("No hay ninguna región que recomendar para este aspecto.")
+        else:
+            st.dataframe(top[["rank", "cell_id", "lat", "lon", "score", "n_targets", "nearest_known", "nearest_known_km"]].round(2),
+                         hide_index=True)
+            pts = cel[(cel["body"] == body_a) & (cel["aspect"] == asp)]
+            st.pydeck_chart(pdk.Deck(layers=[pdk.Layer("ScatterplotLayer", pts, get_position="[lon, lat]", get_radius=110000,
+                                                       get_fill_color="[255, 140 - score * 100, 0, 60 + score * 180]", pickable=True)],
+                                     initial_view_state=pdk.ViewState(latitude=20, longitude=0, zoom=0.6),
+                                     tooltip={"text": "{cell_id}\nscore: {score}"}))
+        st.caption("Cada aspecto se evalúa por separado. Ningún aspecto llega a confianza alta: hay muy pocos análogos para validarlos.")
+
 with st.expander("Recomendaciones por caso de uso (ver docs/CASOS_DE_USO.md)"):
     uc_csv = RESULTS_DIR / "usecases.csv"
     if not uc_csv.exists():

@@ -5,7 +5,7 @@ Ranking de lugares de la Tierra por similitud multidimensional con sitios de la 
 
 **App en línea: https://app-production-6cc653bd.up.railway.app** · **Empieza por el [resumen del proyecto](RESUMEN.md).**
 
-Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [plan de la Tierra](docs/PLAN_TIERRA.md) · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md) · **[informe](docs/INFORME.md)** · **[fichas de candidatos](docs/FICHAS_CANDIDATOS.md)** · [licencias](docs/LICENCIAS.md) · [coordenadas verificadas](docs/VERIFICACION_COORDENADAS.md) · [dimensiones no modeladas](docs/DIMENSIONES_NO_MODELADAS.md) · [cuevas y tubos de lava](docs/CUEVAS.md) · [despliegue en Railway](docs/DESPLIEGUE.md) · [casos de uso](docs/CASOS_DE_USO.md)
+Documentos: [reto](reto.md) · [ideas](ideas.md) · [recursos](recursos.md) · **[plan](PLAN.md)** · [plan de la Tierra](docs/PLAN_TIERRA.md) · [features](docs/features.md) · [procedencia de los datos](docs/FUENTES.md) · [APIs de NASA](docs/APIS.md) · [ablación por dimensión](docs/ABLACION.md) · [validación](docs/VALIDACION.md) · [validación por aspecto](docs/VALIDACION_ASPECTO.md) · **[informe](docs/INFORME.md)** · **[fichas de candidatos](docs/FICHAS_CANDIDATOS.md)** · [licencias](docs/LICENCIAS.md) · [coordenadas verificadas](docs/VERIFICACION_COORDENADAS.md) · [dimensiones no modeladas](docs/DIMENSIONES_NO_MODELADAS.md) · [cuevas y tubos de lava](docs/CUEVAS.md) · [despliegue en Railway](docs/DESPLIEGUE.md) · [casos de uso](docs/CASOS_DE_USO.md) · [atlas por aspecto](docs/ATLAS_ASPECTOS.md) · [procesos](docs/PROCESOS.md)
 
 ## Cómo funciona
 
@@ -34,7 +34,7 @@ pip install -e ".[data]"           # solo para regenerar datos: librerías geoes
 ```powershell
 python -m analogos.pipeline          # scores, validación, candidatos (candidates_viable.csv) y clusters en data/results/
 streamlit run app/streamlit_app.py   # mapa, ranking, pesos, filtro de viabilidad y ficha
-pytest                               # 137 tests
+pytest                               # 142 tests
 ```
 
 **Sin descargar nada:** si no existe `data/features/`, la app y el pipeline usan `demo_data/` (≈ 0,6 MB, valores derivados ya calculados). Con datos propios, estos tienen prioridad.
@@ -58,6 +58,7 @@ python -m analogos.data.earth_vegetation # marca de vegetación (MODIS NDVI)
 python -m analogos.data.earth_dust_wind  # polvo y viento, solo contexto (MERRA-2)
 python -m analogos.data.caves            # pits lunares como contexto (Zenodo, CC BY 4.0)
 python -m analogos.fichas                # selección de candidatos para las fichas
+python -m analogos.atlas                # atlas por aspecto con confianza
 python -m analogos.usecases             # recomendaciones por caso de uso
 python -m analogos.zoom --name harrat --lat 29 36 --lon 34 42   # zoom topográfico a 0.25° sobre una región
 python -m analogos.ablation              # ablación por dimensión
