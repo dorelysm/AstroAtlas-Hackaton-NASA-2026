@@ -10,6 +10,7 @@ Fuente: https://registry.opendata.aws/copernicus-dem/  (bucket copernicus-dem-90
 """
 import math
 import threading
+import time
 import urllib.error
 import urllib.request
 
@@ -42,11 +43,28 @@ def tile_url(name: str) -> str:
     return f"{BASE_URL}/{name}/{name}.tif"
 
 
+def _retry(fn, tries: int = 4):
+    """Reintenta con espera creciente ante cortes de red (ConnectionReset, DNS, lecturas truncadas)."""
+    for attempt in range(tries):
+        try:
+            return fn()
+        except urllib.error.HTTPError as e:
+            if e.code < 500 or attempt == tries - 1:  # 403/404 los decide quien llama; 5xx se reintenta
+                raise
+        except (urllib.error.URLError, OSError, TimeoutError):
+            if attempt == tries - 1:
+                raise
+        time.sleep(3 * (attempt + 1))
+
+
 def _exists(url: str) -> bool:
-    """HEAD: False solo si es 404 (océano). Cualquier otro error de red se propaga."""
-    try:
+    """HEAD: False solo si es 404/403 (océano). Los cortes de red se reintentan y luego se propagan."""
+    def head():
         urllib.request.urlopen(urllib.request.Request(url, method="HEAD"), timeout=30).close()
         return True
+
+    try:
+        return _retry(head)
     except urllib.error.HTTPError as e:
         if e.code in (403, 404):  # el bucket responde 403 para claves inexistentes
             return False
@@ -74,6 +92,11 @@ class CopernicusDem:
         url = tile_url(name)
         if not _exists(url):
             return None
+        return _retry(lambda: self._read_open_tile(url))
+
+    @staticmethod
+    def _read_open_tile(url: str):
+        # RasterioIOError hereda de OSError: _retry la reintenta
         with rasterio.Env(**GDAL_OPTS), rasterio.open("/vsicurl/" + url) as ds:
             b = ds.bounds
             lat_c = (b.top + b.bottom) / 2

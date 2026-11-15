@@ -86,3 +86,13 @@ def test_known_analog_cells_have_contract_columns():
     cells = earth.known_analog_cells()
     assert {"cell_id", "body", "lat", "lon", "name"} <= set(cells.columns)
     assert cells["cell_id"].is_unique and len(cells) >= 10
+
+
+def test_flat_ocean_cells_are_detected_but_flat_land_is_kept():
+    import pandas as pd
+
+    df = pd.DataFrame({
+        "topo__relief_m": [0.0, 0.3, 4.0, 0.0, 500.0],
+        "elev_mean_m": [0.0, 0.5, 1.0, 55.0, 0.0],  # mar, mar, polder holandés, plataforma de hielo, costa montañosa
+    })
+    assert list(earth.is_flat_ocean(df)) == [True, True, False, False, False]

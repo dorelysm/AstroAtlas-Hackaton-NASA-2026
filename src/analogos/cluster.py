@@ -13,7 +13,8 @@ from .config import FEATURES
 def cluster_cells(earth: pd.DataFrame, n_components: int = 3, min_cluster_size: int = 20) -> pd.DataFrame:
     """Devuelve cell_id, pc1.., cluster (-1 = ruido). Los NaN se imputan con la mediana
     SOLO para este paso (no se guardan)."""
-    X = earth[FEATURES].fillna(earth[FEATURES].median())
+    cols = [c for c in FEATURES if earth[c].notna().any()]  # una feature sin ningún dato (p. ej. geo en la Tierra) no se usa
+    X = earth[cols].fillna(earth[cols].median())
     X = StandardScaler().fit_transform(X)
     pcs = PCA(n_components=min(n_components, X.shape[1])).fit_transform(X)
     labels = HDBSCAN(min_cluster_size=min_cluster_size, copy=True).fit_predict(pcs)
@@ -28,6 +29,7 @@ def umap_embedding(earth: pd.DataFrame, **kwargs) -> pd.DataFrame:
         import umap
     except ImportError as e:  # pragma: no cover
         raise ImportError("Instala UMAP con: pip install -e .[ml]") from e
-    X = StandardScaler().fit_transform(earth[FEATURES].fillna(earth[FEATURES].median()))
+    cols = [c for c in FEATURES if earth[c].notna().any()]
+    X = StandardScaler().fit_transform(earth[cols].fillna(earth[cols].median()))
     emb = umap.UMAP(**kwargs).fit_transform(X)
     return pd.DataFrame(emb, columns=["umap1", "umap2"], index=earth.index)

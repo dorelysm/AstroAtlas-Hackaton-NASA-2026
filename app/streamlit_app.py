@@ -6,8 +6,8 @@ import streamlit as st
 from analogos.config import DIMENSIONS
 from analogos.features import load_features
 from analogos.report import ficha
-from analogos.similarity import rank_cells, site_profiles
-from analogos.validate import evaluate, load_known, novel_candidates
+from analogos.similarity import fit_topo_model, rank_cells, site_profiles
+from analogos.validate import evaluate, known_for_body, load_known, novel_candidates
 
 st.set_page_config(page_title="Análogos terrestres", layout="wide")
 st.title("Análogos terrestres para la Luna y Marte")
@@ -38,8 +38,15 @@ if sum(weights.values()) == 0:
     st.warning("Pon al menos un peso mayor que 0.")
     st.stop()
 
-ranked = rank_cells(earth, profiles[(body, site)], weights)
-shown = novel_candidates(ranked, known, n=top_n) if only_novel else ranked.head(top_n)
+@st.cache_data
+def topo_model_for(_earth):
+    """PCA blanqueada de la topografía (ver similarity.py); se ajusta una sola vez."""
+    return fit_topo_model(_earth)
+
+
+known_body = known_for_body(known, body)  # solo los análogos que sirven para este cuerpo
+ranked = rank_cells(earth, profiles[(body, site)], weights, topo_model_for(earth))
+shown = novel_candidates(ranked, known_body, n=top_n) if only_novel else ranked.head(top_n)
 
 col_map, col_info = st.columns([3, 2])
 with col_map:
@@ -54,11 +61,11 @@ with col_map:
     st.caption("Naranja: celdas candidatas. Azul: análogos conocidos (validación).")
 
 with col_info:
-    m = evaluate(ranked, known)
+    m = evaluate(ranked, known_body)
     c1, c2 = st.columns(2)
     c1.metric("AUC vs conocidos", f"{m['auc']:.2f}")
     c2.metric(f"Recall@{m['top_pct']:.0f}%", f"{m['recall_at_top_pct']:.2f}")
-    st.caption("Con datos sintéticos estas métricas no significan nada.")
+    st.caption("Muy ruidosas: hay pocos análogos por tipo y faltan dimensiones (ver docs/VALIDACION.md).")
     st.dataframe(shown[["rank", "cell_id", "lat", "lon", "score", *DIMENSIONS]].round(3), height=250)
     pick = st.selectbox("Ficha de la celda", shown["cell_id"])
     st.json(ficha(shown[shown["cell_id"] == pick].iloc[0], site, body))

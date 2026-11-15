@@ -66,3 +66,12 @@ def test_validation_and_novel_candidates(earth):
     assert 0 <= m["auc"] <= 1 and m["n_known_covered"] > 0
     nov = novel_candidates(ranked, known, min_km=1000, n=5)
     assert len(nov) == 5
+
+
+def test_cluster_ignores_features_without_any_data(earth):
+    from analogos.cluster import cluster_cells
+
+    e = earth.copy()
+    e["geo__basalt_frac"] = np.nan  # como la Tierra real: aún sin litología
+    out = cluster_cells(e, min_cluster_size=5)
+    assert len(out) == len(e) and "cluster" in out

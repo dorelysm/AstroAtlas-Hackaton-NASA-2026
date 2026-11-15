@@ -89,9 +89,23 @@ def build_topography(cells: pd.DataFrame, half_km: float = 25.0, baseline_m: flo
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         results = list(ex.map(one, cells.itertuples()))
+    if failures:  # segunda pasada, con menos hilos, solo de las celdas que fallaron (las teselas ya leídas están en caché)
+        print(f"{len(failures)} celdas fallaron; reintentando con 2 hilos...")
+        retry_ids = {cid for cid, _ in failures}
+        failures.clear()
+        todo = [(i, row) for i, row in enumerate(cells.itertuples()) if row.cell_id in retry_ids]
+        with ThreadPoolExecutor(max_workers=2) as ex:
+            for (i, _), res in zip(todo, ex.map(lambda t: one(t[1]), todo)):
+                results[i] = res
     if failures:
         print(f"AVISO: {len(failures)} celdas sin topografía por error, p. ej. {failures[0]}")
     return pd.DataFrame(results, index=cells.index)
+
+
+def is_flat_ocean(df: pd.DataFrame) -> pd.Series:
+    """Celdas cuya ventana es mar: Copernicus rellena el océano de las teselas costeras con 0 m, y sin este
+    filtro salen como 'llanuras perfectas'. Criterio: relieve local < 1 m y elevación media ~0 (|z| < 2 m)."""
+    return (df["topo__relief_m"] < 1.0) & (df["elev_mean_m"].abs() < 2.0)
 
 
 def build_features(step_deg: float = 5.0, workers: int = 8, topo: bool = True, power: bool = True,
@@ -104,7 +118,7 @@ def build_features(step_deg: float = 5.0, workers: int = 8, topo: bool = True, p
     df = make_grid(step_deg, "earth") if cells is None else cells.copy()
     if topo:
         df = pd.concat([df, build_topography(df, workers=workers)], axis=1)
-        df = df[df["valid_frac"].fillna(0) >= min_valid]
+        df = df[(df["valid_frac"].fillna(0) >= min_valid) & ~is_flat_ocean(df)]
     if power:
         df = add_power(df, workers=min(workers, 4))  # POWER limita con 429: pocas conexiones
     for col in FEATURES:  # dimensiones aún sin extraer quedan como NaN

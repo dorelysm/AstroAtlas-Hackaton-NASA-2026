@@ -5,6 +5,7 @@ Requiere rasterio (`pip install -e ".[data]"`). Los GeoTIFF remotos se leen por 
 filas, así que cada fila de la ventana cuesta una lectura de un ancho completo.
 """
 import math
+import time
 
 import numpy as np
 import pandas as pd
@@ -79,15 +80,43 @@ def site_topography(dem, lat: float, lon_east: float, half_km: float = 25.0, bas
     return window_features(dem.elevation(lat_g, lon_g), spacing, baseline_m, lat=lat)
 
 
-def build_target_features(body: str, dem_url: str, sites: pd.DataFrame, half_km: float = 25.0,
-                          baseline_m: float = 500.0) -> pd.DataFrame:
-    """Una fila por sitio (contrato: cell_id, body, site, lat, lon 0..360 + FEATURES)."""
-    rows = []
-    with RasterDem(dem_url) as dem:
+def _enter(dem_src):
+    """URL/ruta de un GeoTIFF -> RasterDem abierto; un objeto DEM ya creado se usa tal cual."""
+    return (RasterDem(dem_src) if isinstance(dem_src, str) else dem_src).__enter__()
+
+
+def build_target_features(body: str, dem_src, sites: pd.DataFrame, half_km: float = 25.0,
+                          baseline_m: float = 500.0, retries: int = 3) -> pd.DataFrame:
+    """Una fila por sitio (contrato: cell_id, body, site, lat, lon 0..360 + FEATURES).
+
+    `dem_src`: URL/ruta de un GeoTIFF (RasterDem) o un objeto DEM ya creado con `.res_m`, `.radius_m`,
+    `.elevation()` y `__enter__/__exit__` (p. ej. `pds_dem.lola_dem()`). Si un sitio falla por la red
+    (RasterioIOError y los errores de urllib heredan de OSError) se reabre el DEM y se reintenta; un
+    sitio que sigue fallando se omite con un AVISO, sin tumbar el resto.
+    """
+    rows, failed = [], []
+    dem = _enter(dem_src)
+    try:
         for s in sites[sites["body"] == body].itertuples():
-            f = site_topography(dem, s.lat, s.lon, half_km, baseline_m)
+            f = None
+            for attempt in range(retries):
+                try:
+                    f = site_topography(dem, s.lat, s.lon, half_km, baseline_m)
+                    break
+                except OSError as e:  # corte de red, lectura truncada, DNS
+                    print(f"  reintento {attempt + 1}/{retries} en {s.site}: {str(e)[:80]}")
+                    dem.__exit__(None, None, None)
+                    time.sleep(5 * (attempt + 1))
+                    dem = _enter(dem_src)  # reabrir (las filas ya leídas de pds_dem están en caché)
+            if f is None:
+                failed.append(s.site)
+                continue
             rows.append({"cell_id": f"{body}_{s.site}_0", "body": body, "site": s.site,
                          "lat": s.lat, "lon": s.lon % 360, "kind": getattr(s, "kind", None), **f})
+    finally:
+        dem.__exit__(None, None, None)
+    if failed:
+        print(f"AVISO: sitios sin topografía tras {retries} intentos: {failed}")
     df = pd.DataFrame(rows)
     for col in FEATURES:  # dimensiones aún sin extraer quedan como NaN
         if col not in df:
