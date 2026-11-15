@@ -33,7 +33,7 @@ pip install -e ".[data]"           # solo para regenerar datos: librerías geoes
 ```powershell
 python -m analogos.pipeline          # scores, validación, candidatos (candidates_viable.csv) y clusters en data/results/
 streamlit run app/streamlit_app.py   # mapa, ranking, pesos, filtro de viabilidad y ficha
-pytest                               # 122 tests
+pytest                               # 125 tests
 ```
 
 `data/` no se versiona: hay que generar las features con los módulos de abajo (o `python -m analogos.synthetic` para datos de prueba sin valor científico).

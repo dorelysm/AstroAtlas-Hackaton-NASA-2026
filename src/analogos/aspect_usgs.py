@@ -71,6 +71,45 @@ def run(features_dir: Path = FEATURES_DIR, n_boot: int = 2000) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def compare_stratified(u: np.ndarray, pos: np.ndarray, ctrl: np.ndarray, control_var: np.ndarray, n_bins: int = 5,
+                       min_n: int = 3, n_boot: int = 2000, seed: int = 0) -> dict:
+    """AUC cráter > control DENTRO de estratos de `control_var` (p. ej. la pendiente media), ponderado por n_pos*n_ctrl.
+    Separa "es un cráter" de "es terreno igual de llano que los cráteres". Protocolo: docs/PREREGISTRO_LLANURA.md."""
+    u, cv = np.asarray(u, float), np.asarray(control_var, float)
+    ok = np.isfinite(u) & np.isfinite(cv) & (np.asarray(pos) | np.asarray(ctrl))
+    edges = np.quantile(cv[ok], np.linspace(0, 1, n_bins + 1))
+    bins = np.clip(np.searchsorted(edges, cv, side="right") - 1, 0, n_bins - 1)
+    strata = []
+    for b in range(n_bins):
+        p, c = u[ok & (bins == b) & pos], u[ok & (bins == b) & ctrl]
+        if len(p) >= min_n and len(c) >= min_n:
+            strata.append((p, c))
+    if not strata:
+        return {"estado": "no evaluable", "n_strata": 0}
+    w = np.array([len(p) * len(c) for p, c in strata], float)
+
+    def agg(sets):
+        return float(np.average([auc_rank(p, c) for p, c in sets], weights=w))
+
+    rng = np.random.default_rng(seed)
+    boots = [agg([(rng.choice(p, len(p)), rng.choice(c, len(c))) for p, c in strata]) for _ in range(n_boot)]
+    lo, hi = float(np.percentile(boots, 2.5)), float(np.percentile(boots, 97.5))
+    return {"estado": "ok", "n_strata": len(strata), "n_pos": int(sum(len(p) for p, _ in strata)),
+            "n_ctrl": int(sum(len(c) for _, c in strata)), "auc_estratificado": agg(strata), "ci_lo": lo, "ci_hi": hi,
+            "senal": bool(lo > 0.5)}
+
+
+def run_stratified(features_dir: Path = FEATURES_DIR, n_boot: int = 2000) -> pd.DataFrame:
+    sites = pd.read_parquet(features_dir / "earth_usgs.parquet")
+    pos = sites["group"].isin(["crater", "dunes"]).to_numpy()
+    ctrl = (sites["group"] == "control").to_numpy()
+    rows = []
+    for body in ("moon", "mars"):
+        u = mean_u_per_site(sites, body, features_dir).to_numpy()
+        rows.append({"body": body, **compare_stratified(u, pos, ctrl, sites["topo__slope_mean_deg"].to_numpy(), n_boot=n_boot)})
+    return pd.DataFrame(rows)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--boot", type=int, default=2000)
@@ -82,6 +121,10 @@ def main() -> None:
     (a.out / "aspect_usgs.json").write_text(json.dumps(res.round(4).to_dict("records"), indent=2, ensure_ascii=False, default=str))
     pd.set_option("display.width", 220)
     print(res.round(3).to_string(index=False))
+    strat = run_stratified(n_boot=a.boot)
+    strat.to_csv(a.out / "aspect_usgs_estratificado.csv", index=False)
+    print("\nEstratificado por pendiente media (docs/PREREGISTRO_LLANURA.md):")
+    print(strat.round(3).to_string(index=False))
 
 
 if __name__ == "__main__":

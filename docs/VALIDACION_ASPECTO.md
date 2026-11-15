@@ -145,3 +145,6 @@ La dirección de cada resultado se mantiene. La geología sigue en la dirección
 1. **Más análogos por aspecto, con la razón citada** (al menos 5 por aspecto): campos basálticos, desiertos fríos y secos, cráteres de impacto, zonas polares. Cada uno con su fuente de la NASA o la ESA abierta y su etiqueta fijada antes de medir.
 2. **Cambiar la variable de hielo de la Tierra** por una que mida sequedad o agua del suelo (precipitación o humedad del suelo, como GLDAS, que exige aceptar su licencia) en lugar de la cobertura de nieve.
 3. **Definir de antemano qué objetivos son relevantes** para cada aspecto (térmica: sitios polares; geología: sitios con basalto).
+
+## Control por terreno llano (15 nov 2026)
+Preregistrado en [PREREGISTRO_LLANURA.md](PREREGISTRO_LLANURA.md) antes de medir. Comparando cráteres y controles dentro de estratos de pendiente media, el AUC de Marte baja de 0,567 a **0,494** (IC 0,436-0,552) y el de la Luna de 0,531 a 0,476. **La ventaja de Marte en la prueba USGS se explica por la planitud del terreno, no por la forma de cráter**; la topografía no queda validada como aspecto con esta capa.
