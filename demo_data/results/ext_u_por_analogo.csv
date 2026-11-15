@@ -1,0 +1,33 @@
+body,analog,u,group
+mars,Atacama,0.649,original
+mars,Axel Heiberg (McGill Arctic Research Station),0.099,nuevo
+mars,Craters of the Moon,0.452,original
+mars,Danakil / Dallol (Etiopia),0.734,nuevo
+mars,Death Valley,0.572,original
+mars,Dry Valleys (Antartida),0.035,original
+mars,Eureka (Ellesmere),0.381,nuevo
+mars,Haughton crater (Devon Island),0.419,original
+mars,Lanzarote,0.955,original
+mars,Lava Beds (EE. UU.),0.746,nuevo
+mars,Meteor Crater (EE. UU.),0.691,nuevo
+mars,Pinacate (Mexico),0.792,nuevo
+mars,Ries (Alemania),0.751,nuevo
+mars,Rio Tinto,0.679,original
+mars,Rochechouart (Francia),0.871,nuevo
+mars,Salar Grande (Chile),0.738,nuevo
+mars,Salar de Uyuni (Bolivia),0.248,nuevo
+mars,Sudbury (Canada),0.457,nuevo
+mars,Svalbard,0.18,original
+mars,Vredefort (Sudafrica),0.839,nuevo
+moon,Askja,0.681,original
+moon,Craters of the Moon,0.667,original
+moon,Etna (Italia),0.455,nuevo
+moon,Haughton crater (Devon Island),0.682,original
+moon,Lava Beds (EE. UU.),0.716,nuevo
+moon,Mauna Kea,0.517,original
+moon,Meteor Crater (EE. UU.),0.632,nuevo
+moon,Pinacate (Mexico),0.607,nuevo
+moon,Ries (Alemania),0.464,nuevo
+moon,Rochechouart (Francia),0.64,nuevo
+moon,Sudbury (Canada),0.477,nuevo
+moon,Vredefort (Sudafrica),0.607,nuevo
