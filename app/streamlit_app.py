@@ -58,7 +58,7 @@ def body_image(cuerpo_: str, lat: float, lon: float) -> bytes:
 
 @st.cache_data(ttl="7d", max_entries=300, show_spinner=False)
 def earth_image(lat: float, lon: float, capa: str) -> bytes:
-    datos = earth_view(lat, lon, capa=capa)
+    datos = earth_view(lat, lon, layer=capa)
     if datos is None:
         raise NoImage
     return datos
@@ -243,8 +243,8 @@ with st.container(border=True):
     st.caption(t(lang, "comp_intro", km=int(WINDOW_KM)))
     objetivo = (moon if body == "moon" else mars)
     objetivo = objetivo[objetivo["site"] == site].iloc[0]
-    col_body_name, col_tierra = st.columns(2)
-    with col_cuerpo:
+    col_body, col_earth = st.columns(2)
+    with col_body:
         if not view_available(body, float(objetivo["lat"])):
             st.caption(t(lang, "comp_polar"))
         else:
@@ -256,7 +256,7 @@ with st.container(border=True):
                 st.caption(t(lang, "comp_credito", credit=credit(body, lang=lang)))
             except NoImage:
                 st.caption(t(lang, "comp_error"))
-    with col_tierra:
+    with col_earth:
         try:
             with st.spinner(t(lang, "comp_cargando")):
                 foto = earth_image(round(float(f["lat"]), 4), round(float(f["lon"]), 4), capa)
