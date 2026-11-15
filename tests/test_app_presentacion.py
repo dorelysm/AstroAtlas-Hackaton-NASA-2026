@@ -70,3 +70,12 @@ def test_ids_de_seleccion_del_mapa_y_la_tabla():
     tabla = pd.DataFrame({"cell_id": ["a", "b", "c"]})
     assert id_de_la_tabla({"selection": {"rows": [1]}}, tabla) == "b"
     assert id_de_la_tabla({"selection": {"rows": []}}, tabla) is None and id_de_la_tabla(None, tabla) is None
+
+
+def test_glosario_define_los_terminos_de_la_app():
+    from analogos.presentacion import GLOSARIO
+
+    terminos = [t for t, _ in GLOSARIO]
+    for esperado in ("Análogo", "Candidato", "Parecido", "Aspecto", "Confianza"):
+        assert esperado in terminos
+    assert all(len(d) > 20 for _, d in GLOSARIO)  # definiciones completas, no etiquetas sueltas

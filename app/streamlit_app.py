@@ -11,7 +11,7 @@ import streamlit as st
 from analogos.config import DEMO_DIR, DIMENSIONS, RESULTS_DIR
 from analogos.features import load_features
 from analogos.lugares import etiqueta
-from analogos.presentacion import (ASPECTOS, CONFIABILIDAD, CUERPO_DE, CUERPO_ES, IMPORTANCIA, LIMITES_CORTOS, aviso_confiabilidad,
+from analogos.presentacion import (ASPECTOS, CONFIABILIDAD, CUERPO_DE, CUERPO_ES, GLOSARIO, IMPORTANCIA, LIMITES_CORTOS, aviso_confiabilidad,
                                    describir_terreno, descripcion_sitio, explicar, id_de_la_tabla, id_del_mapa, nivel_parecido, pct,
                                    pesos_desde_importancia, seleccion_nueva)
 from analogos.report import ficha
@@ -136,6 +136,9 @@ for clave, elegido in (("mapa", id_del_mapa(st.session_state.get("mapa"))),
 pick = st.session_state["ficha_celda"]
 
 st.warning(aviso_confiabilidad(), title="Son pistas, no certezas", icon=":material/warning:")
+with st.expander("¿Qué significan estas palabras?"):
+    for termino, definicion in GLOSARIO:
+        st.markdown(f"- **{termino}:** {definicion}")
 
 # ---- Mapa y confiabilidad ----
 col_map, col_rel = st.columns([3, 2])
@@ -146,8 +149,8 @@ with col_map:
     layers = [
         pdk.Layer("ScatterplotLayer", shown, id="candidatos", get_position="[lon, lat]", get_radius=110000,
                   get_fill_color="[255, 140 - score * 100, 0, 60 + score * 180]", pickable=True),
-        pdk.Layer("ScatterplotLayer", known_map, id="conocidos", get_position="[lon, lat]", get_radius=90000,
-                  get_fill_color="[40, 120, 255, 220]", pickable=True),
+        pdk.Layer("ScatterplotLayer", known_map, id="conocidos", get_position="[lon, lat]", get_radius=110000, filled=False,
+                  stroked=True, get_line_color="[76, 141, 246, 255]", line_width_min_pixels=3, pickable=True),
         pdk.Layer("ScatterplotLayer", sel, id="elegido", get_position="[lon, lat]", get_radius=170000, filled=False, stroked=True,
                   get_line_color="[255, 255, 255, 255]", line_width_min_pixels=3),
     ]
@@ -157,8 +160,9 @@ with col_map:
                              tooltip={"text": "{lugar}\n{detalle}"}),
                     on_select="rerun", selection_mode="single-object", key="mapa",
                     alt=f"Mapa del mundo con los lugares más parecidos a {site}. Haz clic en un punto naranja para ver su ficha.")
-    st.caption(":orange[●] Lugares parecidos (candidatos): haz clic en uno para ver su ficha.   "
-               ":blue[●] Lugares que la ciencia ya usa (para comprobar).")
+    st.caption(":orange[●] **Punto naranja lleno:** lugares parecidos (candidatos); haz clic en uno para ver su ficha.  \n"
+               ":blue[○] **Anillo azul:** lugares que la ciencia ya usa (para comprobar).  \n"
+               "○ **Anillo blanco grande:** el lugar elegido.")
 
 with col_rel:
     rel = CONFIABILIDAD[body]
@@ -200,14 +204,15 @@ with st.container(border=True):
     with der:
         st.markdown(f"**Se parece a {site} en un {fila['parecido']} %**")
         st.badge(f"Calculado con {len(usados)} de {len(DIMENSIONS)} aspectos", color="orange")
-    for col, d in zip(st.columns(len(DIMENSIONS)), DIMENSIONS):
+    rejilla = st.grid(len(DIMENSIONS), min_column_width=125, gap="small")  # 4 tarjetas en escritorio, 2 en el móvil
+    for d in DIMENSIONS:
         nombre, _ = ASPECTOS[d]
         score = f["scores"].get(d)
-        with col.container(border=True, height="stretch"):
+        with rejilla.container(border=True, height="stretch"):
             st.markdown(f"**{nombre}**")
             if score is None:
-                st.metric(nombre, "Sin dato", label_visibility="collapsed")
-                st.badge("No se pudo comparar", color="gray")
+                st.markdown("**Sin dato**")  # texto normal, no métrica grande: en el móvil «Sin dato» se cortaba
+                st.badge("Sin comparar", color="gray")
             else:
                 st.metric(nombre, pct(score), label_visibility="collapsed")
                 st.progress(min(max(score, 0.0), 1.0))

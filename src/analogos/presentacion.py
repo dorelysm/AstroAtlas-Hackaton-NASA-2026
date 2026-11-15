@@ -35,6 +35,17 @@ LIMITES_CORTOS = {
 }
 
 
+# Glosario de la app: (término, definición). Mismas ideas que el mini-glosario de RESUMEN.md.
+GLOSARIO = [
+    ("Análogo", "Lugar de la Tierra parecido a otro mundo que los científicos ya usan para ensayar (por ejemplo, Atacama o Lanzarote)."),
+    ("Candidato", "Zona de la Tierra que el método marca como parecida al sitio elegido. Es una hipótesis para revisar con expertos, no un hallazgo."),
+    ("Parecido", "Nota de 0 a 100 %: 100 % es idéntico en los aspectos medidos. No es la probabilidad de que el lugar sirva."),
+    ("Aspecto", "Cada cosa que se compara: relieve, temperatura, hielo o agua y geología. Si falta el dato de uno, no cuenta."),
+    ("Confianza", "Cuánto acierta el método al reconocer análogos conocidos. 50 % es adivinar; con la Luna y Marte queda en torno al 60 %."),
+    ("Azar (50 %)", "Lo que saldría si el método no supiera nada."),
+]
+
+
 def aviso_confiabilidad() -> str:
     m, M = CONFIABILIDAD["moon"], CONFIABILIDAD["mars"]
     return (f"El método acierta ≈ {m['pct']} % en la Luna y ≈ {M['pct']} % en Marte. Como referencia: 50 % sería adivinar. "

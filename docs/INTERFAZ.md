@@ -41,4 +41,9 @@ Se evaluó la app en producción (estructura accesible, contraste, teclado, móv
 | Rueda del ratón sobre el mapa | Sin zoom con la rueda (hay botones + y −), así la rueda sigue desplazando la página |
 | Títulos de desplegables | Sin rutas de archivo en el título (salían a 10,5–12 px); la referencia a `docs/...` va dentro |
 
-**Pendiente (prioridad baja) y límites:** la leyenda del mapa distingue solo por color (naranja y azul); falta un glosario de «análogo», «candidato» y «parecido»; los controles de Streamlit (casillas de 13 px, botones de 16–28 px) son menores de 44 px y no se controlan sin CSS; los textos propios de Streamlit («Show/hide columns», «Download as CSV», «Main menu», «Skip to main content») siguen en inglés y no se pueden traducir por configuración.
+**Prioridad baja (aplicada):**
+- **Leyenda del mapa por forma y no solo por color:** los candidatos son puntos naranjas llenos, los análogos conocidos son anillos azules y el lugar elegido es un anillo blanco grande. La leyenda lo dice con palabras.
+- **Glosario** («¿Qué significan estas palabras?», desplegable bajo el aviso): análogo, candidato, parecido, aspecto, confianza y azar. Los textos están en `presentacion.GLOSARIO`.
+- **Ficha más corta en móvil:** las tarjetas de los cuatro aspectos van en una rejilla (`st.grid`, ancho mínimo 125 px): 4 en una fila en escritorio y 2 por fila en el móvil. Al estrecharse se cortaba «Sin dato» y «No se pudo comparar», así que esa tarjeta usa texto normal y la etiqueta «Sin comparar».
+
+**Límites que siguen:** los controles de Streamlit (casillas de 13 px, botones de 16–28 px) son menores de 44 px y no se controlan sin CSS; los textos propios de Streamlit («Show/hide columns», «Download as CSV», «Main menu», «Skip to main content») siguen en inglés y no se pueden traducir por configuración; el clic real sobre el mapa no se pudo comprobar en el navegador de pruebas.

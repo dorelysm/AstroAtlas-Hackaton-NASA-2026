@@ -112,7 +112,7 @@ También **corregimos errores propios a la vista** (por ejemplo, descubrimos que
 - **23** análogos de validación (10 originales + 13 nuevos) · **9** ideas probadas, todas documentadas.
 - **60 %** de acierto en la Luna, **56 %** en Marte (50 % = azar).
 - **100 %** de estabilidad de Harrat ash-Shamah, **79 %** de Haruj.
-- **175** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
+- **176** pruebas automáticas · una sola rama de código (`main`) · app desplegada.
 
 ## 12. Mini-glosario
 - **Análogo:** lugar de la Tierra parecido a otro mundo, usado para ensayar.
