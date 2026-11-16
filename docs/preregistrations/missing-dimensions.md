@@ -43,3 +43,32 @@ By set: set 3 Moon (7 analogs) +0.051 (0.039 to 0.063) and Mars (12) +0.034 (0.0
 **Decision:** `renormalize` stays the default. The Moon result is encouraging and consistent, but the Moon criterion is met narrowly (8 analogs, 7 from one set), Mars is inconclusive, the criterion was not frozen before measuring, and sets 2 and 3 can no longer serve as confirmation.
 
 **Next step (future work):** agree and freeze a per-body criterion, then measure on a new independent set with more lunar analogs before changing any default; keep checking that `zero` does not over-correct (0 to 5 gap cells in the top 50, against about 13 expected).
+
+## Confirmation protocol (DRAFT, to be agreed and frozen before any measurement)
+Proposed by Mauxy Salcedo, written with Claude. **Every number below is a proposal, not a computed value.** Nothing here changes the published model.
+
+**1. What is tested.** `missing="zero"` against `missing="renormalize"`, one body at a time. The Moon is the primary test. Mars is decided separately, with its own set. The independent unit is the analog.
+
+**2. Frozen model.** `missing="zero"` exactly as released in v1.0.1. No other variant (median fill, complete cases only) may be tried on the new set. Features, weights, windows and the 21 + 14 targets stay as they are.
+
+**3. New set.**
+- No analog from the original 10, set 2 or set 3, and none within 50 km of one of them.
+- The source must be independent of the ones already used (the ESA CAFE catalogue went into set 3). The selection rule is a mechanical filter over the whole source, written before the list is made, never a hand pick.
+- Size: **Moon at least 12 new analogs. Mars at least 20.**
+- Coordinates from the primary source, each with its URL. The list and this protocol are hashed before anything is computed, as in the other preregistrations.
+
+**4. Sample-size check, before measuring.** From the exploratory runs on sets 2 and 3, take `s`, the standard deviation across analogs of the paired change (`python -m astroatlas.missing_data`). The analogs needed to resolve a change of 0.03 are about `(1.96 · s / 0.03)²`. If that is more than 12 for the Moon, use it. If the source cannot supply it, report the test as underpowered and do not adopt.
+
+**5. Decision rule, per body.**
+- **Adopt** `zero` as the default for that body only if the lower bound of the 95 % paired bootstrap CI of the change is > 0 **and** the point change is at least **+0.02**.
+- **Reject** (report as harmful) if the upper bound is < 0.
+- Otherwise keep `renormalize` and publish the result.
+- Why a floor of +0.02: the Moon's +0.049 was measured after `zero` had already been chosen from the first look, so it is probably inflated. The floor avoids adopting a change that is real but trivial.
+- If `zero` is adopted for one body only, the default becomes body-specific. That needs its own code change and PR.
+
+**6. Diagnostic, not a criterion.** Gap cells among the 50 best, before and after, to keep checking that `zero` does not over-correct (0 to 5 of 50, against about 13 expected by chance).
+
+**7. What this will not settle.** The quality of the analog coordinates. And the lunar temperature score, which is about 0 on every Earth cell: part of the Moon gain may come from how gap cells are ordered rather than from matching temperatures. That deserves its own preregistration (range-aware matching).
+
+## Confirmation result
+_Not measured._
